@@ -18,7 +18,7 @@ public class SignupCommandHandler : ICommandHandler<SignupCommand, Guid> {
     public async Task<Guid> ExecuteAsync(SignupCommand command, CancellationToken ct) {
         bool alreadyExists = await _userRepository.ExistsByUsernameAsync(command.Username, ct);
         if (alreadyExists) {
-            throw new CustomException("Username already exists", 404);
+            throw new CustomException("Username already exists", 409);
         }
 
         User user = new User() {
