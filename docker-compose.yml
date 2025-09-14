@@ -1,0 +1,30 @@
+﻿version: '3.8'
+
+services:
+  roborall:
+    image: docker.io/library/roborally_app
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=User ID=postgres;Password=postgres!;Server=roborally_db;Port=5432;Database=roborally_db;
+    depends_on:
+      - roborally_db
+
+  roborally_db:
+    image: postgres:15
+    container_name: roborally_db
+    environment:
+      POSTGRES_DB: roborally_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres!
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

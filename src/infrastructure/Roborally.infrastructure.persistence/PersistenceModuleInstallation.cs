@@ -1,0 +1,22 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Roborally.core.domain.Bases;
+using Roborally.core.domain.User;
+using Roborally.infrastructure.persistence.User;
+
+namespace Roborally.infrastructure.persistence;
+
+public static class PersistenceModuleInstallation {
+    public static IServiceCollection InstallPersistenceModule(this IServiceCollection services,
+        string connectionString) {
+        if (string.IsNullOrEmpty(connectionString)) {
+            throw new ArgumentException("Connection string cannot be null or empty.", nameof(connectionString));
+        }
+
+        services.AddDbContext<AppDatabaseContext>(options => options.UseNpgsql(connectionString));
+
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        return services;
+    }
+}
