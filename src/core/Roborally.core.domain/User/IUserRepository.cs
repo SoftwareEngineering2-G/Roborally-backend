@@ -5,5 +5,7 @@ public interface IUserRepository {
 
     Task AddAsync(User user, CancellationToken cancellationToken = default);
     Task<User?> FindAsync(Guid userId);
+
+    Task<bool> ExistsByUsernameAsync(string username, CancellationToken cancellationToken = default);
     
 }
