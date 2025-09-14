@@ -20,6 +20,6 @@ public class UserRepository : IUserRepository {
     }
 
     public Task<bool> ExistsByUsernameAsync(string username, CancellationToken cancellationToken = default) {
-        return _context.Users.AnyAsync(u => u.Username.Equals(username), cancellationToken);
+        return _context.Users.AnyAsync(u => u.Username.ToLower().Equals(username.ToLower()), cancellationToken);
     }
 }
