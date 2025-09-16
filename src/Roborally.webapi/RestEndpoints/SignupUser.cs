@@ -5,7 +5,7 @@ namespace Roborally.webapi.RestEndpoints;
 
 public class SignupUser : Endpoint<SignUpUserRequest, SignUpUserResponse> {
     public override void Configure() {
-        Post("/users");
+        Post("/users/signup");
     }
 
     public override async Task HandleAsync(SignUpUserRequest req, CancellationToken ct) {

@@ -19,6 +19,10 @@ public class UserRepository : IUserRepository {
         return _context.Users.FindAsync(userId).AsTask();
     }
 
+    public Task<core.domain.User.User?> FindByUsernameAsync(string username, CancellationToken cancellationToken = default) {
+        return _context.Users.FirstOrDefaultAsync(u => u.Username.ToLower().Equals(username.ToLower()), cancellationToken);
+    }
+
     public Task<bool> ExistsByUsernameAsync(string username, CancellationToken cancellationToken = default) {
         return _context.Users.AnyAsync(u => u.Username.ToLower().Equals(username.ToLower()), cancellationToken);
     }
