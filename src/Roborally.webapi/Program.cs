@@ -10,6 +10,16 @@ string? connectionString = builder.Configuration.GetConnectionString("DefaultCon
 if (string.IsNullOrEmpty(connectionString))
     throw new InvalidOperationException("Connection string 'DefaultConnection' is not found.");
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy => {
+        policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 builder.Services.InstallPersistenceModule(connectionString);
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
@@ -21,7 +31,9 @@ builder.Services.AddProblemDetails();
 var app = builder.Build();
 app.Services.RegisterApplicationModule();
 
+
 app.UseHttpsRedirection();
+app.UseCors();
 app.UseFastEndpoints(c => {
     c.Endpoints.RoutePrefix = "api";
     c.Endpoints.Configurator = ep => {
