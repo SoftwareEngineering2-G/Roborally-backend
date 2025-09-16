@@ -4,7 +4,7 @@ namespace Roborally.core.domain.Lobby;
 
 public class GameLobby {
     public List<User.User> JoinedUsers { get; init; }
-    public required Guid GameId { get; set; }
+    public required Guid GameId { get; init; }
     public required bool IsPrivate { get; set; }
     public Guid HostId { get; init; }
 
@@ -15,6 +15,7 @@ public class GameLobby {
             hostUser
         };
         IsPrivate = isPrivate;
+        GameId = Guid.CreateVersion7();
     }
 
     public void JoinLobby(User.User user) {
