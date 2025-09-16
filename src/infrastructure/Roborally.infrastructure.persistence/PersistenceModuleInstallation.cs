@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Roborally.core.domain.Bases;
+using Roborally.core.domain.Lobby;
 using Roborally.core.domain.User;
+using Roborally.infrastructure.persistence.Lobby;
 using Roborally.infrastructure.persistence.User;
 
 namespace Roborally.infrastructure.persistence;
@@ -17,6 +19,7 @@ public static class PersistenceModuleInstallation {
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IGameLobbyRepository, GameLobbyRepository>();
         return services;
     }
 }
