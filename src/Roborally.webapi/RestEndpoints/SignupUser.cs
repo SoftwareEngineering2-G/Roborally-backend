@@ -6,9 +6,7 @@ namespace Roborally.webapi.RestEndpoints;
 public class SignupUser : Endpoint<SignUpUserRequest, SignUpUserResponse> {
     public override void Configure() {
         Post("/users");
-        AllowAnonymous();
     }
-
 
     public override async Task HandleAsync(SignUpUserRequest req, CancellationToken ct) {
         SignupCommand command = new SignupCommand() {
@@ -24,7 +22,7 @@ public class SignupUser : Endpoint<SignUpUserRequest, SignUpUserResponse> {
 }
 
 public class SignUpUserRequest {
-    public string Username { get; set; }
+    public string Username { get; set; }                   
     public string Password { get; set; }
     public DateOnly Birthday { get; set; }
 }

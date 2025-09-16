@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/src/core/Roborally.core.domain/Bases/IUnitOfWork.cs">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/src/core/Roborally.core.domain/Bases/IUnitOfWork.cs" />
+              <option name="originalContent" value="namespace Roborally.core.domain.Bases;&#10;&#10;public interface IUnitOfWork {&#10;    Task SaveChangesAsync(CancellationToken cancellationToken = default);&#10;}" />
+              <option name="updatedContent" value="/**&#13;&#10; * Author: Sachin (s243871)&#13;&#10; * Date: September 14, 2025&#13;&#10; * Description: Unit of Work interface for managing database transactions&#13;&#10; */&#13;&#10;&#13;&#10;namespace Roborally.core.domain.Bases;&#13;&#10;&#13;&#10;public interface IUnitOfWork {&#13;&#10;    Task SaveChangesAsync(CancellationToken cancellationToken = default);&#13;&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
