@@ -1,7 +1,6 @@
 ﻿namespace Roborally.core.domain.Deck;
 
 public class ProgrammingDeck {
-    private static readonly Random Random = new Random();
     public List<ProgrammingCard> ProgrammingCards { get; init; }
 
     // Creates a new shuffled programming deck
@@ -28,7 +27,7 @@ public class ProgrammingDeck {
 
         // Shuffle the cards using Fisher-Yates algorithm
         for (int i = cards.Count - 1; i > 0; i--) {
-            int randomIndex = Random.Next(i + 1);
+            int randomIndex = Random.Shared.Next(i + 1);
             (cards[i], cards[randomIndex]) = (cards[randomIndex], cards[i]);
         }
 
