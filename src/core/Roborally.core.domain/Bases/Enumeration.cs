@@ -2,24 +2,17 @@
 
 public abstract class Enumeration 
 {
-
-    public string? Identifier { get; }
     public string DisplayName { get; }
 
     protected Enumeration()
     {
+        DisplayName = string.Empty;
     }
-
-    protected Enumeration(string identifier, string displayName)
-    {
-        Identifier = identifier;
-        DisplayName = displayName;
-    }
-
 
     protected Enumeration(string displayName) {
         DisplayName = displayName;
     }
+    
     public override string ToString()
     {
         return DisplayName;
@@ -33,15 +26,14 @@ public abstract class Enumeration
         }
 
         bool typeMatches = GetType() == obj.GetType();
-        bool valueMatches = Identifier.Equals(otherValue.Identifier);
         bool displayNameMatches = DisplayName.Equals(otherValue.DisplayName);
 
-        return typeMatches && valueMatches && displayNameMatches;
+        return typeMatches && displayNameMatches;
     }
 
     public override int GetHashCode()
     {
-        return Identifier.GetHashCode() * DisplayName.GetHashCode();
+        return DisplayName.GetHashCode();
     }
 
 }
