@@ -15,7 +15,7 @@ public class SigninCommandHandler : ICommandHandler<SignInCommand, Guid> {
         User? user = await _userRepository.FindByUsernameAsync(command.Username, ct);
 
         if (user is null || !user.Password.Equals(command.Password)) {
-            throw new CustomException("Invalid username or password", 400);
+            throw new CustomException("Invalid username or password", 401);
         }
 
         return user.Id;
