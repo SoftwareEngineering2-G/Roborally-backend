@@ -7,7 +7,7 @@ public class CreateGameLobby : Endpoint<CreateGameLobbyRequest, CreateGameLobbyR
 {
     public override void Configure()
     {
-        Post("/game-lobby");
+        Post("/game-lobbies");
     }
 
     public override async Task HandleAsync(CreateGameLobbyRequest req, CancellationToken ct)
