@@ -29,7 +29,7 @@ public class CreateGameLobby : Endpoint<CreateGameLobbyRequest, CreateGameLobbyR
 public class CreateGameLobbyRequest
 {
     public Guid HostUserId { get; set; }
-    public string GameRoomName { get; set; }
+    public required string GameRoomName { get; set; }
     public bool IsPrivate { get; set; }
 }
 

@@ -3,5 +3,5 @@
 public interface IGameLobbyRepository
 {
     Task AddAsync(GameLobby gameLobby, CancellationToken cancellationToken = default);
-    Task<GameLobby> findByHostIdAsync(Guid hostUserId);
+    Task<GameLobby?> FindByHostIdAsync(Guid hostUserId);
 }

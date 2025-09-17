@@ -28,8 +28,8 @@ public class GameLobbyFactory
     {
         return new List<object[]>()
         {
-            new object[] { "true" },
-            new object[] { "false" },
+            new object[] { true },
+            new object[] { false },
         };
     }
 

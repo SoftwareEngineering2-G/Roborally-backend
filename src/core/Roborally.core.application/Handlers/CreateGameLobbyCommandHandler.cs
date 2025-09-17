@@ -25,7 +25,7 @@ public class CreateGameLobbyCommandHandler : ICommandHandler<CreateGameLobbyComm
         if (hostUser == null)
             throw new CustomException("Host user not found", 409);
         
-        var existingLobby = await  _gameLobbyRepository.findByHostIdAsync(command.HostUserId);
+        var existingLobby = await  _gameLobbyRepository.FindByHostIdAsync(command.HostUserId);
         if (existingLobby != null)
         {
             throw new CustomException("User is already hosting a lobby", 409);

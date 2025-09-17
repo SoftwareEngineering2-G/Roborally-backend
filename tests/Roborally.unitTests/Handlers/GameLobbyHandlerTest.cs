@@ -62,7 +62,7 @@ public class GameLobbyHandlerTest
             .ReturnsAsync(hostUser);
 
         // Already hosting
-        gameLobbyRepoMock.Setup(r => r.findByHostIdAsync(hostUser.Id))
+        gameLobbyRepoMock.Setup(r => r.FindByHostIdAsync(hostUser.Id))
             .ReturnsAsync(new GameLobby(hostUser, false, "Existing Lobby"));
 
         // Act & Assert
@@ -100,7 +100,7 @@ public class GameLobbyHandlerTest
             .ReturnsAsync(hostUser);
 
         // No existing lobby
-        gameLobbyRepoMock.Setup(r => r.findByHostIdAsync(hostUser.Id))
+        gameLobbyRepoMock.Setup(r => r.FindByHostIdAsync(hostUser.Id))
             .ReturnsAsync((GameLobby?)null);
 
         // Act & Assert
@@ -138,7 +138,7 @@ public class GameLobbyHandlerTest
             .ReturnsAsync(hostUser);
 
         // No existing lobby
-        gameLobbyRepoMock.Setup(r => r.findByHostIdAsync(hostUser.Id))
+        gameLobbyRepoMock.Setup(r => r.FindByHostIdAsync(hostUser.Id))
             .ReturnsAsync((GameLobby?)null);
 
         // Act
