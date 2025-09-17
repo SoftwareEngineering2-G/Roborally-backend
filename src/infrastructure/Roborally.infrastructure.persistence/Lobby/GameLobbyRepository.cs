@@ -17,8 +17,9 @@ public class GameLobbyRepository : IGameLobbyRepository
         return _context.GameLobby.AddAsync(gameLobby, cancellationToken).AsTask();
     }
 
-    public async Task<GameLobby?> FindByHostIdAsync(Guid hostUserId)
+    public async Task<bool> IsUserCurrentlyHostingActiveLobbyAsync(Guid hostUserId)
     {
-        return await _context.GameLobby.AsNoTracking().FirstOrDefaultAsync(x => x.HostId == hostUserId);
+        return await _context.GameLobby
+            .AnyAsync(x => x.HostId == hostUserId && x.StartedAt == null);
     }
 }

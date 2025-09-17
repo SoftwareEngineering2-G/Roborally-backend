@@ -10,25 +10,37 @@ namespace Roborally.unitTests.Handlers;
 
 public class GameLobbyHandlerTest
 {
+    private readonly Mock<IGameLobbyRepository> _gameLobbyRepoMock;
+    private readonly Mock<IUserRepository> _userRepoMock;
+    private readonly Mock<IUnitOfWork> _uowMock;
+    private readonly Mock<ISystemTime> _systemTimeMock;
+    private readonly CreateGameLobbyCommandHandler _handler;
+
+    public GameLobbyHandlerTest()
+    {
+        _gameLobbyRepoMock = new Mock<IGameLobbyRepository>();
+        _userRepoMock = new Mock<IUserRepository>();
+        _uowMock = new Mock<IUnitOfWork>();
+        _systemTimeMock = new Mock<ISystemTime>();
+        
+        _systemTimeMock.Setup(x => x.CurrentTime).Returns(DateTime.UtcNow);
+        
+        _handler = new CreateGameLobbyCommandHandler(
+            _gameLobbyRepoMock.Object,
+            _userRepoMock.Object,
+            _uowMock.Object,
+            _systemTimeMock.Object);
+    }
+
     [Fact]
     public async Task CannotCreateLobby_WhenHostUserNotFound()
     {
         // Arrange
-        var gameLobbyRepoMock = new Mock<IGameLobbyRepository>();
-        var userRepoMock = new Mock<IUserRepository>();
-        var uowMock = new Mock<IUnitOfWork>();
-
-        var handler = new CreateGameLobbyCommandHandler(
-            gameLobbyRepoMock.Object,
-            userRepoMock.Object,
-            uowMock.Object);
-
-        // Host user not found
-        userRepoMock.Setup(r => r.FindAsync(It.IsAny<Guid>()))
+        _userRepoMock.Setup(r => r.FindAsync(It.IsAny<Guid>()))
             .ReturnsAsync((User?)null);
 
         // Act & Assert
-        await Assert.ThrowsAsync<CustomException>(() => handler.ExecuteAsync(new CreateGameLobbyCommand
+        await Assert.ThrowsAsync<CustomException>(() => _handler.ExecuteAsync(new CreateGameLobbyCommand
         {
             HostUserId = Guid.NewGuid(),
             IsPrivate = false,
@@ -37,18 +49,9 @@ public class GameLobbyHandlerTest
     }
     
     [Fact]
-    public async Task CannotCreateLobby_WhenHostAlreadyHosting()
+    public async Task CannotCreateLobby_WhenHostAlreadyHostingActiveLobby()
     {
         // Arrange
-        var gameLobbyRepoMock = new Mock<IGameLobbyRepository>();
-        var userRepoMock = new Mock<IUserRepository>();
-        var uowMock = new Mock<IUnitOfWork>();
-
-        var handler = new CreateGameLobbyCommandHandler(
-            gameLobbyRepoMock.Object,
-            userRepoMock.Object,
-            uowMock.Object);
-
         var hostUser = new User
         {
             Id = Guid.NewGuid(),
@@ -57,16 +60,15 @@ public class GameLobbyHandlerTest
             Birthday = DateOnly.FromDateTime(DateTime.Now.AddYears(-20))
         };
 
-        // Host user found
-        userRepoMock.Setup(r => r.FindAsync(hostUser.Id))
+        _userRepoMock.Setup(r => r.FindAsync(hostUser.Id))
             .ReturnsAsync(hostUser);
 
-        // Already hosting
-        gameLobbyRepoMock.Setup(r => r.FindByHostIdAsync(hostUser.Id))
-            .ReturnsAsync(new GameLobby(hostUser, false, "Existing Lobby"));
+        // User is already hosting an active lobby
+        _gameLobbyRepoMock.Setup(r => r.IsUserCurrentlyHostingActiveLobbyAsync(hostUser.Id))
+            .ReturnsAsync(true);
 
         // Act & Assert
-        await Assert.ThrowsAsync<CustomException>(() => handler.ExecuteAsync(new CreateGameLobbyCommand
+        await Assert.ThrowsAsync<CustomException>(() => _handler.ExecuteAsync(new CreateGameLobbyCommand
         {
             HostUserId = hostUser.Id,
             IsPrivate = false,
@@ -75,18 +77,9 @@ public class GameLobbyHandlerTest
     }
     
     [Fact]
-    public async Task CannotCreateLobby_WhenRoomNameEmpty()
+    public async Task CannotCreateLobby_WhenRoomNameInvalid()
     {
         // Arrange
-        var gameLobbyRepoMock = new Mock<IGameLobbyRepository>();
-        var userRepoMock = new Mock<IUserRepository>();
-        var uowMock = new Mock<IUnitOfWork>();
-
-        var handler = new CreateGameLobbyCommandHandler(
-            gameLobbyRepoMock.Object,
-            userRepoMock.Object,
-            uowMock.Object);
-
         var hostUser = new User
         {
             Id = Guid.NewGuid(),
@@ -95,36 +88,25 @@ public class GameLobbyHandlerTest
             Birthday = DateOnly.FromDateTime(DateTime.Now.AddYears(-20))
         };
 
-        // Host user found
-        userRepoMock.Setup(r => r.FindAsync(hostUser.Id))
+        _userRepoMock.Setup(r => r.FindAsync(hostUser.Id))
             .ReturnsAsync(hostUser);
 
-        // No existing lobby
-        gameLobbyRepoMock.Setup(r => r.FindByHostIdAsync(hostUser.Id))
-            .ReturnsAsync((GameLobby?)null);
+        _gameLobbyRepoMock.Setup(r => r.IsUserCurrentlyHostingActiveLobbyAsync(hostUser.Id))
+            .ReturnsAsync(false);
 
         // Act & Assert
-        await Assert.ThrowsAsync<CustomException>(() => handler.ExecuteAsync(new CreateGameLobbyCommand
+        await Assert.ThrowsAsync<CustomException>(() => _handler.ExecuteAsync(new CreateGameLobbyCommand
         {
             HostUserId = hostUser.Id,
             IsPrivate = false,
-            GameRoomName = " "
+            GameRoomName = " " // Invalid room name
         }, CancellationToken.None));
     }
     
     [Fact]
-    public async Task CanCreateLobby_WithValidData()
+    public async Task CanCreatePublicLobby_WithValidData()
     {
         // Arrange
-        var gameLobbyRepoMock = new Mock<IGameLobbyRepository>();
-        var userRepoMock = new Mock<IUserRepository>();
-        var uowMock = new Mock<IUnitOfWork>();
-
-        var handler = new CreateGameLobbyCommandHandler(
-            gameLobbyRepoMock.Object,
-            userRepoMock.Object,
-            uowMock.Object);
-
         var hostUser = new User
         {
             Id = Guid.NewGuid(),
@@ -133,28 +115,96 @@ public class GameLobbyHandlerTest
             Birthday = DateOnly.FromDateTime(DateTime.Now.AddYears(-20))
         };
 
-        // Host user found
-        userRepoMock.Setup(r => r.FindAsync(hostUser.Id))
+        _userRepoMock.Setup(r => r.FindAsync(hostUser.Id))
             .ReturnsAsync(hostUser);
 
-        // No existing lobby
-        gameLobbyRepoMock.Setup(r => r.FindByHostIdAsync(hostUser.Id))
-            .ReturnsAsync((GameLobby?)null);
+        _gameLobbyRepoMock.Setup(r => r.IsUserCurrentlyHostingActiveLobbyAsync(hostUser.Id))
+            .ReturnsAsync(false);
 
         // Act
-        var resultId = await handler.ExecuteAsync(new CreateGameLobbyCommand
+        var resultId = await _handler.ExecuteAsync(new CreateGameLobbyCommand
         {
             HostUserId = hostUser.Id,
-            IsPrivate = true,
+            IsPrivate = false, // Public lobby
+            GameRoomName = "Public Game"
+        }, CancellationToken.None);
+
+        // Assert
+        Assert.NotEqual(Guid.Empty, resultId);
+        _gameLobbyRepoMock.Verify(r => r.AddAsync(It.Is<GameLobby>(lobby => 
+            lobby.HostId == hostUser.Id && 
+            !lobby.IsPrivate && 
+            lobby.GameRoomName == "Public Game" &&
+            lobby.IsActive), It.IsAny<CancellationToken>()), Times.Once);
+        _uowMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+    }
+    
+    [Fact]
+    public async Task CanCreatePrivateLobby_WithValidData()
+    {
+        // Arrange
+        var hostUser = new User
+        {
+            Id = Guid.NewGuid(),
+            Username = "ValidHost",
+            Password = "ValidPassword123",
+            Birthday = DateOnly.FromDateTime(DateTime.Now.AddYears(-20))
+        };
+
+        _userRepoMock.Setup(r => r.FindAsync(hostUser.Id))
+            .ReturnsAsync(hostUser);
+
+        _gameLobbyRepoMock.Setup(r => r.IsUserCurrentlyHostingActiveLobbyAsync(hostUser.Id))
+            .ReturnsAsync(false);
+
+        // Act
+        var resultId = await _handler.ExecuteAsync(new CreateGameLobbyCommand
+        {
+            HostUserId = hostUser.Id,
+            IsPrivate = true, // Private lobby
             GameRoomName = "Private Game"
         }, CancellationToken.None);
 
         // Assert
         Assert.NotEqual(Guid.Empty, resultId);
-        gameLobbyRepoMock.Verify(r => r.AddAsync(It.IsAny<GameLobby>(), It.IsAny<CancellationToken>()), Times.Once);
-        uowMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+        _gameLobbyRepoMock.Verify(r => r.AddAsync(It.Is<GameLobby>(lobby => 
+            lobby.HostId == hostUser.Id && 
+            lobby.IsPrivate && 
+            lobby.GameRoomName == "Private Game" &&
+            lobby.IsActive), It.IsAny<CancellationToken>()), Times.Once);
+        _uowMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
-    
-    
 
+    [Fact]
+    public async Task CanCreateNewLobby_AfterPreviousGameStarted()
+    {
+        // Arrange
+        var hostUser = new User
+        {
+            Id = Guid.NewGuid(),
+            Username = "ValidHost",
+            Password = "ValidPassword123",
+            Birthday = DateOnly.FromDateTime(DateTime.Now.AddYears(-20))
+        };
+
+        _userRepoMock.Setup(r => r.FindAsync(hostUser.Id))
+            .ReturnsAsync(hostUser);
+
+        // User had a lobby before, but it has started (no longer active)
+        _gameLobbyRepoMock.Setup(r => r.IsUserCurrentlyHostingActiveLobbyAsync(hostUser.Id))
+            .ReturnsAsync(false);
+
+        // Act
+        var resultId = await _handler.ExecuteAsync(new CreateGameLobbyCommand
+        {
+            HostUserId = hostUser.Id,
+            IsPrivate = false,
+            GameRoomName = "New Game After Previous"
+        }, CancellationToken.None);
+
+        // Assert
+        Assert.NotEqual(Guid.Empty, resultId);
+        _gameLobbyRepoMock.Verify(r => r.AddAsync(It.IsAny<GameLobby>(), It.IsAny<CancellationToken>()), Times.Once);
+        _uowMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+    }
 }

@@ -11,12 +11,14 @@ public class CreateGameLobbyCommandHandler : ICommandHandler<CreateGameLobbyComm
     private readonly IGameLobbyRepository  _gameLobbyRepository;
     private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ISystemTime _systemTime;
 
-    public CreateGameLobbyCommandHandler(IGameLobbyRepository gameLobbyRepository, IUserRepository userRepository, IUnitOfWork unitOfWork)
+    public CreateGameLobbyCommandHandler(IGameLobbyRepository gameLobbyRepository, IUserRepository userRepository, IUnitOfWork unitOfWork, ISystemTime systemTime)
     {
         _gameLobbyRepository = gameLobbyRepository;
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
+        _systemTime = systemTime;
     }
 
     public async Task<Guid> ExecuteAsync(CreateGameLobbyCommand command, CancellationToken ct)
@@ -25,13 +27,13 @@ public class CreateGameLobbyCommandHandler : ICommandHandler<CreateGameLobbyComm
         if (hostUser == null)
             throw new CustomException("Host user not found", 409);
         
-        var existingLobby = await  _gameLobbyRepository.FindByHostIdAsync(command.HostUserId);
-        if (existingLobby != null)
+        var isCurrentlyHosting = await _gameLobbyRepository.IsUserCurrentlyHostingActiveLobbyAsync(command.HostUserId);
+        if (isCurrentlyHosting)
         {
-            throw new CustomException("User is already hosting a lobby", 409);
+            throw new CustomException("User is already hosting an active lobby", 409);
         }
 
-        var lobby = new GameLobby(hostUser, command.IsPrivate, command.GameRoomName);
+        var lobby = new GameLobby(hostUser, command.IsPrivate, command.GameRoomName, _systemTime);
         
         await _gameLobbyRepository.AddAsync(lobby, ct);
         await _unitOfWork.SaveChangesAsync(ct);

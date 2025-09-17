@@ -1,4 +1,5 @@
 ﻿using Roborally.core.application;
+using Roborally.core.domain.Bases;
 
 namespace Roborally.core.domain.Lobby;
 
@@ -11,6 +12,9 @@ public class GameLobby
     public Guid GameId { get; init; }
     public bool IsPrivate { get; set; }
     public Guid HostId { get; init; }
+    public DateTime? StartedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
+    
     public string GameRoomName
     {
         get => _gameRoomName;
@@ -26,9 +30,11 @@ public class GameLobby
         }
     }
 
+    public bool IsActive => StartedAt == null;
+
     private GameLobby() { } // for EFC
 
-    public GameLobby(User.User hostUser, bool isPrivate, string gameRoomName)
+    public GameLobby(User.User hostUser, bool isPrivate, string gameRoomName, ISystemTime systemTime)
     {
         HostId = hostUser.Id;
         JoinedUsers = new List<User.User>(MaxLobbySize)
@@ -39,10 +45,15 @@ public class GameLobby
         GameRoomName = gameRoomName;
         IsPrivate = isPrivate;
         GameId = Guid.CreateVersion7();
+        CreatedAt = systemTime.CurrentTime;
+        StartedAt = null;
     }
 
     public void JoinLobby(User.User user)
     {
+        if (!IsActive)
+            throw new CustomException("Cannot join lobby - game has already started", 400);
+        
         if (JoinedUsers.Count >= MaxLobbySize)
             throw new CustomException("Lobby is full", 400);
 

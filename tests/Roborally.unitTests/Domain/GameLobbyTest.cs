@@ -1,4 +1,6 @@
-﻿using Roborally.core.application;
+﻿using Moq;
+using Roborally.core.application;
+using Roborally.core.domain.Bases;
 using Roborally.core.domain.Lobby;
 using Roborally.unitTests.Factory;
 
@@ -6,6 +8,14 @@ namespace Roborally.unitTests.Domain;
 
 public class GameLobbyTest
 {
+    private readonly Mock<ISystemTime> _systemTimeMock;
+
+    public GameLobbyTest()
+    {
+        _systemTimeMock = new Mock<ISystemTime>();
+        _systemTimeMock.Setup(x => x.CurrentTime).Returns(DateTime.UtcNow);
+    }
+
     [Theory]
     [MemberData(nameof(GameLobbyFactory.GetValidGameLobbyRoomName), MemberType = typeof(GameLobbyFactory))]
     public void LobbyWith_ValidRoomName_CanBeCreated(string validRoomName)
@@ -14,13 +24,16 @@ public class GameLobbyTest
         var hostUser = GameLobbyFactory.CreateValidUser();
 
         // Act
-        var lobby = new GameLobby(hostUser, false, validRoomName);
+        var lobby = new GameLobby(hostUser, false, validRoomName, _systemTimeMock.Object);
 
         // Assert
         Assert.NotNull(lobby);
         Assert.Equal(hostUser.Id, lobby.HostId);
         Assert.Single(lobby.GetUsersInLobby()); // host auto joined
         Assert.Equal(validRoomName.Trim(), lobby.GameRoomName);
+        Assert.True(lobby.IsActive); // Newly created lobby is active
+        Assert.Null(lobby.StartedAt); // Not started yet
+        Assert.NotEqual(default, lobby.CreatedAt);
     }
     
     [Theory]
@@ -31,7 +44,7 @@ public class GameLobbyTest
         var hostUser = GameLobbyFactory.CreateValidUser();
 
         // Act & Assert
-        Assert.Throws<CustomException>(() => new GameLobby(hostUser, false, invalidRoomName));
+        Assert.Throws<CustomException>(() => new GameLobby(hostUser, false, invalidRoomName, _systemTimeMock.Object));
     }
     
     [Theory]
@@ -42,7 +55,7 @@ public class GameLobbyTest
         var hostUser = GameLobbyFactory.CreateValidUser();
 
         // Act
-        var lobby = new GameLobby(hostUser, false, validRoomName);
+        var lobby = new GameLobby(hostUser, false, validRoomName, _systemTimeMock.Object);
 
         // Assert
         Assert.NotNull(lobby);
@@ -50,6 +63,7 @@ public class GameLobbyTest
         Assert.False(lobby.IsPrivate); // public
         Assert.Equal(validRoomName.Trim(), lobby.GameRoomName);
         Assert.Single(lobby.GetUsersInLobby()); // host auto joined
+        Assert.True(lobby.IsActive); // Active lobby
     }
     
     [Theory]
@@ -60,7 +74,7 @@ public class GameLobbyTest
         var hostUser = GameLobbyFactory.CreateValidUser();
 
         // Act
-        var lobby = new GameLobby(hostUser, true, validRoomName);
+        var lobby = new GameLobby(hostUser, true, validRoomName, _systemTimeMock.Object);
 
         // Assert
         Assert.NotNull(lobby);
@@ -68,7 +82,7 @@ public class GameLobbyTest
         Assert.True(lobby.IsPrivate); // private
         Assert.Equal(validRoomName.Trim(), lobby.GameRoomName);
         Assert.Single(lobby.GetUsersInLobby()); // host auto joined
+        Assert.True(lobby.IsActive); // Active lobby
     }
-    
     
 }
