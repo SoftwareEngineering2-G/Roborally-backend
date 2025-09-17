@@ -31,11 +31,6 @@ public class CreateGameLobbyCommandHandler : ICommandHandler<CreateGameLobbyComm
             throw new CustomException("User is already hosting a lobby", 409);
         }
 
-        if (string.IsNullOrWhiteSpace(command.GameRoomName))
-        {
-            throw new  CustomException("Game room name cannot be empty", 409);
-        }
-
         var lobby = new GameLobby(hostUser, command.IsPrivate, command.GameRoomName);
         
         await _gameLobbyRepository.AddAsync(lobby, ct);

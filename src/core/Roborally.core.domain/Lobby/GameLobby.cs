@@ -2,9 +2,12 @@
 
 namespace Roborally.core.domain.Lobby;
 
-public class GameLobby {
+public class GameLobby
+{
     private const int MaxLobbySize = 6;
     private List<User.User> JoinedUsers { get; init; }
+    private readonly string _gameRoomName = string.Empty;
+
     public Guid GameId { get; init; }
     public bool IsPrivate { get; set; }
     public Guid HostId { get; init; }
@@ -22,14 +25,14 @@ public class GameLobby {
             };
         }
     }
-    
-    private readonly string _gameRoomName = string.Empty;
 
-    private GameLobby() {} //for EFC
-    
-    public GameLobby(User.User hostUser, bool isPrivate, string gameRoomName) {
+    private GameLobby() { } // for EFC
+
+    public GameLobby(User.User hostUser, bool isPrivate, string gameRoomName)
+    {
         HostId = hostUser.Id;
-        JoinedUsers = new List<User.User>(MaxLobbySize) {
+        JoinedUsers = new List<User.User>(MaxLobbySize)
+        {
             // Host already enters the lobby
             hostUser
         };
@@ -38,19 +41,19 @@ public class GameLobby {
         GameId = Guid.CreateVersion7();
     }
 
-    public void JoinLobby(User.User user) {
-        if (JoinedUsers.Count >= MaxLobbySize) {
+    public void JoinLobby(User.User user)
+    {
+        if (JoinedUsers.Count >= MaxLobbySize)
             throw new CustomException("Lobby is full", 400);
-        }
 
-        if (JoinedUsers.Contains(user)) {
+        if (JoinedUsers.Contains(user))
             return;
-        }
 
         JoinedUsers.Add(user);
     }
 
-    public IReadOnlyList<User.User> GetUsersInLobby() {
+    public IReadOnlyList<User.User> GetUsersInLobby()
+    {
         return JoinedUsers.AsReadOnly();
     }
 }
