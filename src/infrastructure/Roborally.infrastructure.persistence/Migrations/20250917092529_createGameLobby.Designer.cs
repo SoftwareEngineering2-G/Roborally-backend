@@ -12,7 +12,7 @@ using Roborally.infrastructure.persistence;
 namespace Roborally.infrastructure.persistence.Migrations
 {
     [DbContext(typeof(AppDatabaseContext))]
-    [Migration("20250917084233_createGameLobby")]
+    [Migration("20250917092529_createGameLobby")]
     partial class createGameLobby
     {
         /// <inheritdoc />
