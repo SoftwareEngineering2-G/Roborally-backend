@@ -24,12 +24,19 @@ public class CreateGameLobbyCommandHandler : ICommandHandler<CreateGameLobbyComm
         var hostUser = await _userRepository.FindAsync(command.HostUserId);
         if (hostUser == null)
             throw new CustomException("Host user not found", 409);
-
-        var lobby = new GameLobby(hostUser, command.IsPrivate, command.GameRoomName)
+        
+        var existingLobby = await  _gameLobbyRepository.findByHostIdAsync(command.HostUserId);
+        if (existingLobby != null)
         {
-            GameId = Guid.CreateVersion7(),
-            IsPrivate = false
-        };
+            throw new CustomException("User is already hosting a lobby", 409);
+        }
+
+        if (string.IsNullOrWhiteSpace(command.GameRoomName))
+        {
+            throw new  CustomException("Game room name cannot be empty", 409);
+        }
+
+        var lobby = new GameLobby(hostUser, command.IsPrivate, command.GameRoomName);
         
         await _gameLobbyRepository.AddAsync(lobby, ct);
         await _unitOfWork.SaveChangesAsync(ct);

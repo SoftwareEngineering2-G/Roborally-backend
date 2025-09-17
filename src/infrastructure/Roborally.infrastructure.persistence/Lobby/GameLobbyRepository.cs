@@ -1,4 +1,5 @@
-﻿using Roborally.core.domain.Lobby;
+﻿using Microsoft.EntityFrameworkCore;
+using Roborally.core.domain.Lobby;
 
 namespace Roborally.infrastructure.persistence.Lobby;
 
@@ -14,5 +15,10 @@ public class GameLobbyRepository : IGameLobbyRepository
     public Task AddAsync(GameLobby gameLobby, CancellationToken cancellationToken = default)
     {
         return _context.GameLobby.AddAsync(gameLobby, cancellationToken).AsTask();
+    }
+
+    public async Task<GameLobby?> findByHostIdAsync(Guid hostUserId)
+    {
+        return await _context.GameLobby.AsNoTracking().FirstOrDefaultAsync(x => x.HostId == hostUserId);
     }
 }
