@@ -20,6 +20,6 @@ public class GameLobbyRepository : IGameLobbyRepository
     public async Task<bool> IsUserCurrentlyHostingActiveLobbyAsync(Guid hostUserId)
     {
         return await _context.GameLobby
-            .AnyAsync(x => x.HostId == hostUserId && x.IsActive);
+            .AnyAsync(x => x.HostId == hostUserId && x.StartedAt == null);
     }
 }
