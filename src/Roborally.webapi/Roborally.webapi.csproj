@@ -19,6 +19,7 @@
     <ItemGroup>
       <ProjectReference Include="..\core\Roborally.core.application\Roborally.core.application.csproj" />
       <ProjectReference Include="..\infrastructure\Roborally.infrastructure.persistence\Roborally.infrastructure.persistence.csproj" />
+      <ProjectReference Include="..\infrastructure\Roborally.infrastructure.broadcaster\Roborally.infrastructure.broadcaster.csproj" />
     </ItemGroup>
 
 </Project>

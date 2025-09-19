@@ -1,10 +1,10 @@
 ﻿using FastEndpoints;
-using Roborally.core.application.Contracts;
+using Roborally.core.application.CommandContracts;
 using Roborally.core.domain.Bases;
 using Roborally.core.domain.Lobby;
 using Roborally.core.domain.User;
 
-namespace Roborally.core.application.Handlers;
+namespace Roborally.core.application.CommandHandlers;
 
 public class CreateGameLobbyCommandHandler : ICommandHandler<CreateGameLobbyCommand, Guid>
 {
@@ -23,11 +23,11 @@ public class CreateGameLobbyCommandHandler : ICommandHandler<CreateGameLobbyComm
 
     public async Task<Guid> ExecuteAsync(CreateGameLobbyCommand command, CancellationToken ct)
     {
-        var hostUser = await _userRepository.FindAsync(command.HostUserId);
+        var hostUser = await _userRepository.FindAsync(command.HostUsername, ct);
         if (hostUser == null)
             throw new CustomException("Host user not found", 409);
         
-        var isCurrentlyHosting = await _gameLobbyRepository.IsUserCurrentlyHostingActiveLobbyAsync(command.HostUserId);
+        var isCurrentlyHosting = await _gameLobbyRepository.IsUserCurrentlyHostingActiveLobbyAsync(command.HostUsername);
         if (isCurrentlyHosting)
         {
             throw new CustomException("User is already hosting an active lobby", 409);

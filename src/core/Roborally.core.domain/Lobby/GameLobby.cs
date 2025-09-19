@@ -3,26 +3,26 @@ using Roborally.core.domain.Bases;
 
 namespace Roborally.core.domain.Lobby;
 
-public class GameLobby
-{
+public class GameLobby : Entity {
     private const int MaxLobbySize = 6;
-    private List<User.User> JoinedUsers { get; init; }
+    private readonly List<User.User> _joinedUsers;
+    public IReadOnlyList<User.User> JoinedUsers => _joinedUsers.AsReadOnly();
     private readonly string _gameRoomName = string.Empty;
 
     public Guid GameId { get; init; }
     public bool IsPrivate { get; set; }
-    public Guid HostId { get; init; }
+    
+    // Foreign key property - no need for navigation property
+    public string HostUsername { get; init; } = string.Empty;
+    
     public DateTime? StartedAt { get; set; }
     public DateTime CreatedAt { get; set; }
-    
-    public string GameRoomName
-    {
+
+    public string GameRoomName {
         get => _gameRoomName;
-        init
-        {
+        init {
             var trimmed = value?.Trim() ?? string.Empty;
-            _gameRoomName = trimmed.Length switch
-            {
+            _gameRoomName = trimmed.Length switch {
                 < 2 => throw new CustomException("Game room name must be at least 2 characters long", 400),
                 > 100 => throw new CustomException("Game room name must be at most 100 characters long", 400),
                 _ => trimmed
@@ -32,13 +32,15 @@ public class GameLobby
 
     public bool IsActive => StartedAt == null;
 
-    private GameLobby() { } // for EFC
+    private GameLobby() {
+        _joinedUsers = new List<User.User>();
+        HostUsername = string.Empty;
+        _gameRoomName = string.Empty;
+    } // for EFC
 
-    public GameLobby(User.User hostUser, bool isPrivate, string gameRoomName, ISystemTime systemTime)
-    {
-        HostId = hostUser.Id;
-        JoinedUsers = new List<User.User>(MaxLobbySize)
-        {
+    public GameLobby(User.User hostUser, bool isPrivate, string gameRoomName, ISystemTime systemTime) {
+        HostUsername = hostUser.Username;
+        _joinedUsers = new List<User.User>(MaxLobbySize) {
             // Host already enters the lobby
             hostUser
         };
@@ -49,22 +51,37 @@ public class GameLobby
         StartedAt = null;
     }
 
-    public void JoinLobby(User.User user)
-    {
+    public void JoinLobby(User.User user) {
         if (!IsActive)
             throw new CustomException("Cannot join lobby - game has already started", 400);
-        
-        if (JoinedUsers.Count >= MaxLobbySize)
+
+        if (_joinedUsers.Count >= MaxLobbySize)
             throw new CustomException("Lobby is full", 400);
 
-        if (JoinedUsers.Contains(user))
+        if (_joinedUsers.Contains(user))
             return;
 
-        JoinedUsers.Add(user);
+        _joinedUsers.Add(user);
+
+        // Add the domain event
+        var userJoinedLobbyEvent = new UserJoinedLobbyEvent() {
+            GameId = this.GameId,
+            NewUserUsername = user.Username
+        };
+        this.AddDomainEvent(userJoinedLobbyEvent);
     }
 
-    public IReadOnlyList<User.User> GetUsersInLobby()
-    {
-        return JoinedUsers.AsReadOnly();
+    public void LeaveLobby(User.User user) {
+        if (!_joinedUsers.Contains(user))
+            return;
+
+        _joinedUsers.Remove(user);
+
+        // Add the domain event
+        var userLeftLobbyEvent = new UserLeftLobbyEvent() {
+            GameId = this.GameId,
+            UserUsername = user.Username
+        };
+        this.AddDomainEvent(userLeftLobbyEvent);
     }
 }

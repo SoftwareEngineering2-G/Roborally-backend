@@ -1,9 +1,9 @@
 ﻿using FastEndpoints;
-using Roborally.core.application.Contracts;
+using Roborally.core.application.CommandContracts;
 
 namespace Roborally.webapi.RestEndpoints;
 
-public class SignupUser : Endpoint<SignUpUserRequest, SignUpUserResponse> {
+public class SignupUserEndpoint : Endpoint<SignUpUserRequest, SignUpUserResponse> {
     public override void Configure() {
         Post("/users/signup");
     }
@@ -14,9 +14,9 @@ public class SignupUser : Endpoint<SignUpUserRequest, SignUpUserResponse> {
             Password = req.Password,
             Username = req.Username
         };
-        Guid userid = await command.ExecuteAsync(ct);
+        string username = await command.ExecuteAsync(ct);
         await Send.OkAsync(new SignUpUserResponse {
-            UserId = userid
+            Username = username
         }, ct);
     }
 }
@@ -28,5 +28,5 @@ public class SignUpUserRequest {
 }
 
 public class SignUpUserResponse {
-    public Guid UserId { get; set; }
+    public string Username { get; set; }
 }

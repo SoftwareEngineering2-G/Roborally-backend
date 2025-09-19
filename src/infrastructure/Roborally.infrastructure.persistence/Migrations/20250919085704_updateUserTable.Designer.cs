@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Roborally.infrastructure.persistence;
@@ -11,9 +12,11 @@ using Roborally.infrastructure.persistence;
 namespace Roborally.infrastructure.persistence.Migrations
 {
     [DbContext(typeof(AppDatabaseContext))]
-    partial class AppDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250919085704_updateUserTable")]
+    partial class updateUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,19 +25,19 @@ namespace Roborally.infrastructure.persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("GameLobbyJoinedUsers", b =>
+            modelBuilder.Entity("GameLobbyUsers", b =>
                 {
                     b.Property<Guid>("GameLobbyGameId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("JoinedUsersUsername")
+                    b.Property<string>("Username")
                         .HasColumnType("text");
 
-                    b.HasKey("GameLobbyGameId", "JoinedUsersUsername");
+                    b.HasKey("GameLobbyGameId", "Username");
 
-                    b.HasIndex("JoinedUsersUsername");
+                    b.HasIndex("Username");
 
-                    b.ToTable("GameLobbyJoinedUsers");
+                    b.ToTable("GameLobbyUsers");
                 });
 
             modelBuilder.Entity("Roborally.core.domain.Lobby.GameLobby", b =>
@@ -62,8 +65,6 @@ namespace Roborally.infrastructure.persistence.Migrations
 
                     b.HasKey("GameId");
 
-                    b.HasIndex("HostUsername");
-
                     b.ToTable("GameLobby", (string)null);
                 });
 
@@ -75,16 +76,21 @@ namespace Roborally.infrastructure.persistence.Migrations
                     b.Property<DateOnly>("Birthday")
                         .HasColumnType("date");
 
+                    b.Property<Guid?>("GameLobbyGameId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Username");
 
+                    b.HasIndex("GameLobbyGameId");
+
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("GameLobbyJoinedUsers", b =>
+            modelBuilder.Entity("GameLobbyUsers", b =>
                 {
                     b.HasOne("Roborally.core.domain.Lobby.GameLobby", null)
                         .WithMany()
@@ -94,18 +100,21 @@ namespace Roborally.infrastructure.persistence.Migrations
 
                     b.HasOne("Roborally.core.domain.User.User", null)
                         .WithMany()
-                        .HasForeignKey("JoinedUsersUsername")
+                        .HasForeignKey("Username")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Roborally.core.domain.User.User", b =>
+                {
+                    b.HasOne("Roborally.core.domain.Lobby.GameLobby", null)
+                        .WithMany("JoinedUsers")
+                        .HasForeignKey("GameLobbyGameId");
+                });
+
             modelBuilder.Entity("Roborally.core.domain.Lobby.GameLobby", b =>
                 {
-                    b.HasOne("Roborally.core.domain.User.User", null)
-                        .WithMany()
-                        .HasForeignKey("HostUsername")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.Navigation("JoinedUsers");
                 });
 #pragma warning restore 612, 618
         }

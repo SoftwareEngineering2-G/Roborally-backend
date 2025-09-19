@@ -10,16 +10,12 @@ public class UserRepository : IUserRepository {
         _context = context;
     }
 
-
     public Task AddAsync(core.domain.User.User user, CancellationToken cancellationToken = default) {
         return _context.Users.AddAsync(user, cancellationToken).AsTask();
     }
 
-    public Task<core.domain.User.User?> FindAsync(Guid userId) {
-        return _context.Users.FindAsync(userId).AsTask();
-    }
 
-    public Task<core.domain.User.User?> FindByUsernameAsync(string username, CancellationToken cancellationToken = default) {
+    public Task<core.domain.User.User?> FindAsync(string username, CancellationToken cancellationToken = default) {
         return _context.Users.FirstOrDefaultAsync(u => u.Username.ToLower().Equals(username.ToLower()), cancellationToken);
     }
 

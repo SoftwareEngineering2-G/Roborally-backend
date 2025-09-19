@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Roborally.integrationTests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Documentations", "docs\Documentations\Documentations.csproj", "{3BAAB867-DE54-4970-9589-0F97C480E43F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Roborally.infrastructure.broadcaster", "src\infrastructure\Roborally.infrastructure.broadcaster\Roborally.infrastructure.broadcaster.csproj", "{AACADD1A-AA20-473B-AB0C-63194651CC6A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,7 @@ Global
 		{CF954805-8279-4AD6-B763-5E47F190BDA1} = {06BF60B1-2DDB-4BFC-9160-B0DD71A34BE5}
 		{73EB7F41-4753-47E3-86A4-A253A0F859FB} = {06BF60B1-2DDB-4BFC-9160-B0DD71A34BE5}
 		{3BAAB867-DE54-4970-9589-0F97C480E43F} = {66714335-3E2E-438F-9B87-82478D8CF8EA}
+		{AACADD1A-AA20-473B-AB0C-63194651CC6A} = {CC50031B-45BD-40E9-B7DE-946914300EC4}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{169B0E01-850B-431B-BC77-67447D465653}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -69,5 +72,9 @@ Global
 		{3BAAB867-DE54-4970-9589-0F97C480E43F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BAAB867-DE54-4970-9589-0F97C480E43F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BAAB867-DE54-4970-9589-0F97C480E43F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AACADD1A-AA20-473B-AB0C-63194651CC6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AACADD1A-AA20-473B-AB0C-63194651CC6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AACADD1A-AA20-473B-AB0C-63194651CC6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AACADD1A-AA20-473B-AB0C-63194651CC6A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

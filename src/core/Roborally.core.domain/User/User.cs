@@ -1,10 +1,9 @@
 ﻿using Roborally.core.application;
+using Roborally.core.domain.Bases;
 
 namespace Roborally.core.domain.User;
 
-public class User {
-    public Guid Id { get; init; }
-
+public class User : Entity{
     public required string Username {
         get => _username;
         init {

@@ -1,7 +1,7 @@
 ﻿using Moq;
 using Roborally.core.application;
-using Roborally.core.application.Contracts;
-using Roborally.core.application.Handlers;
+using Roborally.core.application.CommandContracts;
+using Roborally.core.application.CommandHandlers;
 using Roborally.core.domain.Bases;
 using Roborally.core.domain.User;
 
@@ -58,8 +58,7 @@ public class SignupHandlerTests {
         var result = await handler.ExecuteAsync(command, CancellationToken.None);
 
         // Assert
-        Assert.IsType<Guid>(result);
-        Assert.NotEqual(Guid.Empty, result);
+        Assert.Equal("NewUser", result);
         
         // Verify that the user is added and changes are saved
         repositoryMock.Verify(r => r.AddAsync(It.Is<User>(u => 
