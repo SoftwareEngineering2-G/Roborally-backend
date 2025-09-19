@@ -11,6 +11,7 @@ public class GameLobby : Entity {
 
     public Guid GameId { get; init; }
     public bool IsPrivate { get; set; }
+    public int MaxPlayers => MaxLobbySize;
     
     // Foreign key property - no need for navigation property
     public string HostUsername { get; init; } = string.Empty;
@@ -58,8 +59,8 @@ public class GameLobby : Entity {
         if (_joinedUsers.Count >= MaxLobbySize)
             throw new CustomException("Lobby is full", 400);
 
-        if (_joinedUsers.Contains(user))
-            return;
+        if (_joinedUsers.Find( u => u.Username == user.Username) != null)
+            throw new CustomException("User already in lobby", 400);
 
         _joinedUsers.Add(user);
 
