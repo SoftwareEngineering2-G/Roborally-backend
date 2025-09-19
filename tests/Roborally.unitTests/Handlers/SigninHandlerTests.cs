@@ -1,7 +1,7 @@
 ﻿using Moq;
 using Roborally.core.application;
-using Roborally.core.application.Contracts;
-using Roborally.core.application.Handlers;
+using Roborally.core.application.CommandContracts;
+using Roborally.core.application.CommandHandlers;
 using Roborally.core.domain.User;
 
 namespace Roborally.unitTests.Handlers;
@@ -14,7 +14,7 @@ public class SigninHandlerTests {
 
 
         // When the user is not found
-        repositoryMock.Setup(r => r.FindByUsernameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+        repositoryMock.Setup(r => r.FindAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((User?) null);
 
         await Assert.ThrowsAsync<CustomException>(() => handler.ExecuteAsync(new SignInCommand() {
@@ -24,21 +24,46 @@ public class SigninHandlerTests {
     }
 
     [Fact]
+    public async Task CannotSigninWithWrongPassword() {
+        // Arrange
+        var repositoryMock = new Mock<IUserRepository>();
+        SigninCommandHandler handler = new SigninCommandHandler(repositoryMock.Object);
+
+        var existingUser = new User() {
+            Username = "ValidUser",
+            Password = "correctpassword",
+            Birthday = DateOnly.FromDateTime(DateTime.Now.AddYears(-25))
+        };
+
+        // When the user is found but password doesn't match
+        repositoryMock.Setup(r => r.FindAsync("ValidUser", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(existingUser);
+
+        // Act & Assert
+        var exception = await Assert.ThrowsAsync<CustomException>(() => handler.ExecuteAsync(new SignInCommand() {
+            Username = "ValidUser",
+            Password = "wrongpassword"
+        }, CancellationToken.None));
+        
+        Assert.Equal("Invalid username or password", exception.Message);
+        Assert.Equal(401, exception.StatusCode);
+    }
+
+    [Fact]
     public async Task CanSigninWithValidCredentials() {
         // Arrange
         var repositoryMock = new Mock<IUserRepository>();
         SigninCommandHandler handler = new SigninCommandHandler(repositoryMock.Object);
 
-        var expectedUserId = Guid.NewGuid();
+
         var existingUser = new User() {
-            Id = expectedUserId,
             Username = "ValidUser",
             Password = "correctpassword",
             Birthday = DateOnly.FromDateTime(DateTime.Now.AddYears(-25))
         };
 
         // When the user is found with matching credentials
-        repositoryMock.Setup(r => r.FindByUsernameAsync("ValidUser", It.IsAny<CancellationToken>()))
+        repositoryMock.Setup(r => r.FindAsync("ValidUser", It.IsAny<CancellationToken>()))
             .ReturnsAsync(existingUser);
 
         // Act
@@ -48,7 +73,7 @@ public class SigninHandlerTests {
         }, CancellationToken.None);
 
         // Assert
-        Assert.Equal(expectedUserId, result);
-        repositoryMock.Verify(r => r.FindByUsernameAsync("ValidUser", It.IsAny<CancellationToken>()), Times.Once);
+        Assert.Equal("ValidUser", result);
+        repositoryMock.Verify(r => r.FindAsync("ValidUser", It.IsAny<CancellationToken>()), Times.Once);
     }
 }

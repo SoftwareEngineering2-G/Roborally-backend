@@ -1,5 +1,5 @@
 ﻿using FastEndpoints;
-using Roborally.core.application.Contracts;
+using Roborally.core.application.CommandContracts;
 
 namespace Roborally.webapi.RestEndpoints;
 
@@ -16,7 +16,7 @@ public class CreateGameLobby : Endpoint<CreateGameLobbyRequest, CreateGameLobbyR
         {
             GameRoomName = req.GameRoomName,
             IsPrivate = req.IsPrivate,
-            HostUserId = req.HostUserId,
+            HostUsername = req.HostUsername,
         };
         Guid gameid = await command.ExecuteAsync(ct);
         await Send.OkAsync(new CreateGameLobbyResponse
@@ -28,7 +28,7 @@ public class CreateGameLobby : Endpoint<CreateGameLobbyRequest, CreateGameLobbyR
 
 public class CreateGameLobbyRequest
 {
-    public Guid HostUserId { get; set; }
+    public string HostUsername { get; set; }
     public required string GameRoomName { get; set; }
     public bool IsPrivate { get; set; }
 }

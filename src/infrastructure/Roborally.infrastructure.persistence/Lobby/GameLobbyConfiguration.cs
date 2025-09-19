@@ -11,17 +11,22 @@ public class GameLobbyConfiguration : IEntityTypeConfiguration<GameLobby>  {
         
         builder.Property(x => x.GameRoomName).IsRequired();
         builder.Property(x => x.IsPrivate).IsRequired();
-        builder.Property(x => x.HostId).IsRequired();
+        builder.Property(x => x.HostUsername).IsRequired();
         builder.Property(x => x.CreatedAt).IsRequired();
         builder.Property(x => x.StartedAt).IsRequired(false);
         
-        
-        // one-to-one relationship since one user can only host one gamelobby at a time
+        // Configure HostUsername as foreign key to User table
         builder.HasOne<Roborally.core.domain.User.User>()
-            .WithOne()
-            .HasForeignKey<GameLobby>(x => x.HostId)
-            .OnDelete(DeleteBehavior.Restrict);
+               .WithMany()
+               .HasForeignKey(gl => gl.HostUsername)
+               .OnDelete(DeleteBehavior.Restrict);
         
+        // Configure many-to-many relationship for joined users
+        builder.Navigation(e => e.JoinedUsers).HasField("_joinedUsers");
+        builder.HasMany(gl => gl.JoinedUsers)
+               .WithMany()
+               .UsingEntity("GameLobbyJoinedUsers");
+
         builder.ToTable("GameLobby");
     }
 }

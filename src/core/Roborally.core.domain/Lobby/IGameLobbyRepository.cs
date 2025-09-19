@@ -3,5 +3,6 @@
 public interface IGameLobbyRepository
 {
     Task AddAsync(GameLobby gameLobby, CancellationToken cancellationToken = default);
-    Task<bool> IsUserCurrentlyHostingActiveLobbyAsync(Guid hostUserId);
+    Task<bool> IsUserCurrentlyHostingActiveLobbyAsync(string hostUsername);
+    Task<GameLobby?> FindAsync(Guid gameId);
 }

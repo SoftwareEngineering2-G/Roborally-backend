@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Roborally.infrastructure.persistence;
@@ -11,9 +12,11 @@ using Roborally.infrastructure.persistence;
 namespace Roborally.infrastructure.persistence.Migrations
 {
     [DbContext(typeof(AppDatabaseContext))]
-    partial class AppDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250919084037_updateUseer")]
+    partial class updateUseer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace Roborally.infrastructure.persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("GameLobbyJoinedUsers", b =>
-                {
-                    b.Property<Guid>("GameLobbyGameId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("JoinedUsersUsername")
-                        .HasColumnType("text");
-
-                    b.HasKey("GameLobbyGameId", "JoinedUsersUsername");
-
-                    b.HasIndex("JoinedUsersUsername");
-
-                    b.ToTable("GameLobbyJoinedUsers");
-                });
 
             modelBuilder.Entity("Roborally.core.domain.Lobby.GameLobby", b =>
                 {
@@ -62,7 +50,8 @@ namespace Roborally.infrastructure.persistence.Migrations
 
                     b.HasKey("GameId");
 
-                    b.HasIndex("HostUsername");
+                    b.HasIndex("HostUsername")
+                        .IsUnique();
 
                     b.ToTable("GameLobby", (string)null);
                 });
@@ -75,37 +64,39 @@ namespace Roborally.infrastructure.persistence.Migrations
                     b.Property<DateOnly>("Birthday")
                         .HasColumnType("date");
 
+                    b.Property<Guid?>("GameLobbyGameId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Username");
 
+                    b.HasIndex("GameLobbyGameId");
+
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("GameLobbyJoinedUsers", b =>
-                {
-                    b.HasOne("Roborally.core.domain.Lobby.GameLobby", null)
-                        .WithMany()
-                        .HasForeignKey("GameLobbyGameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Roborally.core.domain.User.User", null)
-                        .WithMany()
-                        .HasForeignKey("JoinedUsersUsername")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Roborally.core.domain.Lobby.GameLobby", b =>
                 {
                     b.HasOne("Roborally.core.domain.User.User", null)
-                        .WithMany()
-                        .HasForeignKey("HostUsername")
+                        .WithOne()
+                        .HasForeignKey("Roborally.core.domain.Lobby.GameLobby", "HostUsername")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Roborally.core.domain.User.User", b =>
+                {
+                    b.HasOne("Roborally.core.domain.Lobby.GameLobby", null)
+                        .WithMany("JoinedUsers")
+                        .HasForeignKey("GameLobbyGameId");
+                });
+
+            modelBuilder.Entity("Roborally.core.domain.Lobby.GameLobby", b =>
+                {
+                    b.Navigation("JoinedUsers");
                 });
 #pragma warning restore 612, 618
         }
