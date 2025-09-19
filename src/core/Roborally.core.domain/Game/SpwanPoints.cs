@@ -1,5 +1,5 @@
 ﻿namespace Roborally.core.domain.Game;
 
-public abstract class Space {
-
+public class SpawnPoints : Space{
+    
 }

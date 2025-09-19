@@ -1,6 +1,5 @@
 ﻿namespace Roborally.core.domain.Game;
 
-public class GameBoard
-{
-    public BoardElement[][] BoardElements { get; init; }
+public class GameBoard {
+    public Space[][] Space { get; init; }
 }
