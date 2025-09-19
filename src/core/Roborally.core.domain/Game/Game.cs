@@ -1,6 +1,5 @@
 ﻿namespace Roborally.core.domain.Game;
 
-public class Game {
-
-    
+public class Game
+{
 }

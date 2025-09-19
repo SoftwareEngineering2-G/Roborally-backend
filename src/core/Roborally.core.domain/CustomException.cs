@@ -1,6 +1,7 @@
 ﻿namespace Roborally.core.application;
 
-public class CustomException : Exception {
+public class CustomException : Exception
+{
     public int StatusCode { get; }
 
     public CustomException(string message, int statusCode = 500) : base(message)
@@ -8,7 +9,7 @@ public class CustomException : Exception {
         StatusCode = statusCode;
     }
 
-    public CustomException(string message, Exception innerException, int statusCode = 500) 
+    public CustomException(string message, Exception innerException, int statusCode = 500)
         : base(message, innerException)
     {
         StatusCode = statusCode;

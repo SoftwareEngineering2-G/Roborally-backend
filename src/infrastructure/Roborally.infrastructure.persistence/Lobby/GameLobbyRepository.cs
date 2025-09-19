@@ -23,4 +23,28 @@ public class GameLobbyRepository : IGameLobbyRepository {
         return _context.GameLobby.Include(gl => gl.JoinedUsers)
             .FirstOrDefaultAsync(gl => gl.GameId.Equals(gameId));
     }
+
+    public async Task<List<GameLobby>> FindPublicLobbiesAsync(CancellationToken cancellationToken = default)
+    {
+        return await _context.GameLobby
+            .Where(x => !x.IsPrivate && x.StartedAt == null &&
+                        x.JoinedUsers.Count < 6) // TODO: change 6 to a variable if max lobby size becomes configurable
+            .Include(x => x.JoinedUsers)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<GameLobby?> GetLobbyByIdAsync(Guid gameLobbyId, CancellationToken cancellationToken = default)
+    {
+        return await _context.GameLobby
+            .Include(x => x.JoinedUsers)
+            .FirstOrDefaultAsync(x => x.GameId == gameLobbyId, cancellationToken);
+    }
+
+    public Task JoinLobbyAsync(GameLobby lobby, core.domain.User.User user,
+        CancellationToken cancellationToken = default)
+    {
+        lobby.JoinLobby(user);
+        _context.GameLobby.Update(lobby);
+        return Task.CompletedTask;
+    }
 }

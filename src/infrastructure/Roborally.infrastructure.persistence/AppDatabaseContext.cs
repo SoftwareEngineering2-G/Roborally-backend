@@ -4,14 +4,17 @@ using Roborally.core.domain.Bases;
 
 namespace Roborally.infrastructure.persistence;
 
-public class AppDatabaseContext: DbContext{
-
-    public AppDatabaseContext(DbContextOptions<AppDatabaseContext> options) : base(options){}
+public class AppDatabaseContext : DbContext
+{
+    public AppDatabaseContext(DbContextOptions<AppDatabaseContext> options) : base(options)
+    {
+    }
 
     public required DbSet<core.domain.User.User> Users { get; set; }
     public required DbSet<core.domain.Lobby.GameLobby> GameLobby { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder) {
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDatabaseContext).Assembly);
     }
 

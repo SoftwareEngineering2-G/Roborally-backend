@@ -2,10 +2,12 @@
 
 namespace Roborally.core.application;
 
-public static class ApplicationModuleInstallation {
-    public static IServiceProvider RegisterApplicationModule(this IServiceProvider services) {
+public static class ApplicationModuleInstallation
+{
+    public static IServiceProvider RegisterApplicationModule(this IServiceProvider services)
+    {
         var assembly = typeof(ApplicationModuleInstallation).Assembly;
-        
+
         // Get all handler types that implement ICommandHandler<,>
         var handlerTypes = assembly.GetTypes()
             .Where(type => type.IsClass && !type.IsAbstract)
@@ -14,14 +16,14 @@ public static class ApplicationModuleInstallation {
             .ToList();
 
         // Register each handler with its interface
-        foreach (var handlerType in handlerTypes) {
+        foreach (var handlerType in handlerTypes)
+        {
             var handlerInterface = handlerType.GetInterfaces()
                 .First(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ICommandHandler<,>));
-            
+
             services.RegisterGenericCommand(handlerType, handlerInterface);
         }
 
         return services;
     }
-    
 }
