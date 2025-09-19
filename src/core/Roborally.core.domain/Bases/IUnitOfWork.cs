@@ -1,5 +1,6 @@
 ﻿namespace Roborally.core.domain.Bases;
 
-public interface IUnitOfWork {
+public interface IUnitOfWork
+{
     Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }

@@ -7,12 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="FastEndpoints" Version="7.0.1" />
-      <PackageReference Include="FastEndpoints.Messaging.Core" Version="7.0.1" />
+        <PackageReference Include="FastEndpoints" Version="7.0.1"/>
+        <PackageReference Include="FastEndpoints.Messaging.Core" Version="7.0.1"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Roborally.core.domain\Roborally.core.domain.csproj" />
+        <ProjectReference Include="..\Roborally.core.domain\Roborally.core.domain.csproj"/>
     </ItemGroup>
 
 </Project>

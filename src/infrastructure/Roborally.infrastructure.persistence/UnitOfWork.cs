@@ -2,15 +2,18 @@
 
 namespace Roborally.infrastructure.persistence;
 
-public class UnitOfWork : IUnitOfWork{
+public class UnitOfWork : IUnitOfWork
+{
     private readonly AppDatabaseContext _context;
 
-    public UnitOfWork(AppDatabaseContext context) {
+    public UnitOfWork(AppDatabaseContext context)
+    {
         _context = context;
     }
 
 
-    public Task SaveChangesAsync(CancellationToken cancellationToken = default) {
+    public Task SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
         return _context.SaveChangesAsync(cancellationToken);
     }
 }

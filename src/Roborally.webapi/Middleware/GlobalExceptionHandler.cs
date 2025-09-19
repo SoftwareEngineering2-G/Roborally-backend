@@ -4,21 +4,25 @@ using Roborally.core.application;
 
 namespace Roborally.webapi.Middleware;
 
-public class GlobalExceptionHandler: IExceptionHandler {
+public class GlobalExceptionHandler : IExceptionHandler
+{
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception,
-        CancellationToken cancellationToken) {
+        CancellationToken cancellationToken)
+    {
         int statusCode = 500;
 
-        if (exception is CustomException customException) {
+        if (exception is CustomException customException)
+        {
             statusCode = customException.StatusCode;
         }
 
-        ProblemDetails problemDetails = new ProblemDetails() {
+        ProblemDetails problemDetails = new ProblemDetails()
+        {
             Title = statusCode == 500 ? "Internal server error" : exception.Message,
             Status = statusCode,
             Detail = exception.Message,
         };
-        httpContext.Response.StatusCode = statusCode;   
+        httpContext.Response.StatusCode = statusCode;
         await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
         return true;
     }

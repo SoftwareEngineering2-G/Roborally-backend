@@ -1,6 +1,6 @@
 ﻿namespace Roborally.core.domain.Bases;
 
-public abstract class Enumeration 
+public abstract class Enumeration
 {
     public string DisplayName { get; }
 
@@ -9,10 +9,11 @@ public abstract class Enumeration
         DisplayName = string.Empty;
     }
 
-    protected Enumeration(string displayName) {
+    protected Enumeration(string displayName)
+    {
         DisplayName = displayName;
     }
-    
+
     public override string ToString()
     {
         return DisplayName;
@@ -35,5 +36,4 @@ public abstract class Enumeration
     {
         return DisplayName.GetHashCode();
     }
-
 }

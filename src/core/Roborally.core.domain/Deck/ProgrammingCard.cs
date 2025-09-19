@@ -2,8 +2,8 @@
 
 namespace Roborally.core.domain.Deck;
 
-public class ProgrammingCard : Enumeration{
-
+public class ProgrammingCard : Enumeration
+{
     public static readonly ProgrammingCard Move1 = new ProgrammingCard("Move 1");
     public static readonly ProgrammingCard Move2 = new ProgrammingCard("Move 2");
     public static readonly ProgrammingCard Move3 = new ProgrammingCard("Move 3");
@@ -14,8 +14,7 @@ public class ProgrammingCard : Enumeration{
     public static readonly ProgrammingCard PowerUp = new ProgrammingCard("Power Up");
     public static readonly ProgrammingCard Again = new ProgrammingCard("Again");
 
-    private ProgrammingCard(string displayName) : base(displayName){
-
+    private ProgrammingCard(string displayName) : base(displayName)
+    {
     }
-    
 }

@@ -9,10 +9,13 @@ using Roborally.infrastructure.persistence.User;
 
 namespace Roborally.infrastructure.persistence;
 
-public static class PersistenceModuleInstallation {
+public static class PersistenceModuleInstallation
+{
     public static IServiceCollection InstallPersistenceModule(this IServiceCollection services,
-        string connectionString) {
-        if (string.IsNullOrEmpty(connectionString)) {
+        string connectionString)
+    {
+        if (string.IsNullOrEmpty(connectionString))
+        {
             throw new ArgumentException("Connection string cannot be null or empty.", nameof(connectionString));
         }
 
