@@ -2,6 +2,7 @@
 
 public class ProgrammingDeck {
     public List<ProgrammingCard> ProgrammingCards { get; init; }
+    public List<ProgrammingCard> DiscardPiles { get; set; }
 
     // Creates a new shuffled programming deck
     public static ProgrammingDeck New() {
