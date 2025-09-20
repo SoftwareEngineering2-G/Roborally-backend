@@ -7,7 +7,7 @@ public class GameLobby : Entity {
     private const int MaxLobbySize = 6;
     private readonly List<User.User> _joinedUsers;
     public IReadOnlyList<User.User> JoinedUsers => _joinedUsers.AsReadOnly();
-    private readonly string _gameRoomName = string.Empty;
+    private readonly string _name = string.Empty;
 
     public Guid GameId { get; init; }
     public bool IsPrivate { get; set; }
@@ -19,11 +19,11 @@ public class GameLobby : Entity {
     public DateTime? StartedAt { get; set; }
     public DateTime CreatedAt { get; set; }
 
-    public string GameRoomName {
-        get => _gameRoomName;
+    public string Name {
+        get => _name;
         init {
             var trimmed = value?.Trim() ?? string.Empty;
-            _gameRoomName = trimmed.Length switch {
+            _name = trimmed.Length switch {
                 < 2 => throw new CustomException("Game room name must be at least 2 characters long", 400),
                 > 100 => throw new CustomException("Game room name must be at most 100 characters long", 400),
                 _ => trimmed
@@ -36,16 +36,16 @@ public class GameLobby : Entity {
     private GameLobby() {
         _joinedUsers = new List<User.User>();
         HostUsername = string.Empty;
-        _gameRoomName = string.Empty;
+        _name = string.Empty;
     } // for EFC
 
-    public GameLobby(User.User hostUser, bool isPrivate, string gameRoomName, ISystemTime systemTime) {
+    public GameLobby(User.User hostUser, bool isPrivate, string name, ISystemTime systemTime) {
         HostUsername = hostUser.Username;
         _joinedUsers = new List<User.User>(MaxLobbySize) {
             // Host already enters the lobby
             hostUser
         };
-        GameRoomName = gameRoomName;
+        Name = name;
         IsPrivate = isPrivate;
         GameId = Guid.CreateVersion7();
         CreatedAt = systemTime.CurrentTime;

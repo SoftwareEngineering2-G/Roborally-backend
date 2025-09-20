@@ -30,7 +30,7 @@ public class GameLobbyTest
         Assert.NotNull(lobby);
         Assert.Equal(hostUser.Username, lobby.HostUsername);
         Assert.Single(lobby.JoinedUsers); // host auto joined
-        Assert.Equal(validRoomName.Trim(), lobby.GameRoomName);
+        Assert.Equal(validRoomName.Trim(), lobby.Name);
         Assert.True(lobby.IsActive); // Newly created lobby is active
         Assert.Null(lobby.StartedAt); // Not started yet
         Assert.NotEqual(default, lobby.CreatedAt);
@@ -61,7 +61,7 @@ public class GameLobbyTest
         Assert.NotNull(lobby);
         Assert.Equal(hostUser.Username, lobby.HostUsername);
         Assert.False(lobby.IsPrivate); // public
-        Assert.Equal(validRoomName.Trim(), lobby.GameRoomName);
+        Assert.Equal(validRoomName.Trim(), lobby.Name);
         Assert.Single(lobby.JoinedUsers); // host auto joined
         Assert.True(lobby.IsActive); // Active lobby
     }
@@ -80,7 +80,7 @@ public class GameLobbyTest
         Assert.NotNull(lobby);
         Assert.Equal(hostUser.Username, lobby.HostUsername);
         Assert.True(lobby.IsPrivate); // private
-        Assert.Equal(validRoomName.Trim(), lobby.GameRoomName);
+        Assert.Equal(validRoomName.Trim(), lobby.Name);
         Assert.Single(lobby.JoinedUsers); // host auto joined
         Assert.True(lobby.IsActive); // Active lobby
     }
