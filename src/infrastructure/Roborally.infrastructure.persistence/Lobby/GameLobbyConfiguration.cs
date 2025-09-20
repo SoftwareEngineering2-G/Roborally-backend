@@ -9,7 +9,7 @@ public class GameLobbyConfiguration : IEntityTypeConfiguration<GameLobby>  {
     {
         builder.HasKey(x => x.GameId);
         
-        builder.Property(x => x.GameRoomName).IsRequired();
+        builder.Property(x => x.Name).IsRequired().HasColumnName("LobbyName");
         builder.Property(x => x.IsPrivate).IsRequired();
         builder.Property(x => x.HostUsername).IsRequired();
         builder.Property(x => x.CreatedAt).IsRequired();

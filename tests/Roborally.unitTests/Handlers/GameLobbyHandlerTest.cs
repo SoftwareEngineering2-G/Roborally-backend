@@ -131,7 +131,7 @@ public class GameLobbyHandlerTest
         _gameLobbyRepoMock.Verify(r => r.AddAsync(It.Is<GameLobby>(lobby => 
             lobby.HostUsername == hostUser.Username && 
             !lobby.IsPrivate && 
-            lobby.GameRoomName == "Public Game" &&
+            lobby.Name == "Public Game" &&
             lobby.IsActive), It.IsAny<CancellationToken>()), Times.Once);
         _uowMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
@@ -166,7 +166,7 @@ public class GameLobbyHandlerTest
         _gameLobbyRepoMock.Verify(r => r.AddAsync(It.Is<GameLobby>(lobby => 
             lobby.HostUsername == hostUser.Username && 
             lobby.IsPrivate && 
-            lobby.GameRoomName == "Private Game" &&
+            lobby.Name == "Private Game" &&
             lobby.IsActive), It.IsAny<CancellationToken>()), Times.Once);
         _uowMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
