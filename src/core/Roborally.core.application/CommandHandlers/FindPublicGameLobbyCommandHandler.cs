@@ -5,9 +5,7 @@ using Roborally.core.domain.Lobby;
 
 namespace Roborally.core.application.CommandHandlers;
 
-public class
-    FindPublicGameLobbyCommandHandler : ICommandHandler<GetActiveGameLobbiesCommand,
-    IList<GetActiveGameLobbyCommandResponse>> {
+public class FindPublicGameLobbyCommandHandler : ICommandHandler<GetActiveGameLobbiesCommand, IList<GetActiveGameLobbyCommandResponse>> {
     private readonly IGameLobbyRepository _gameLobbyRepository;
 
     public FindPublicGameLobbyCommandHandler(IGameLobbyRepository gameLobbyRepository) {
