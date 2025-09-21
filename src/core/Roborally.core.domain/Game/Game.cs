@@ -9,4 +9,11 @@ public class Game {
     private List<Player> _players;
     public IReadOnlyList<Player> Players => _players.AsReadOnly();
     
+    public void AddPlayer(Player player)
+    {
+        if (_players == null)
+            _players = new List<Player>();
+        _players.Add(player);
+    }
+    
 }
