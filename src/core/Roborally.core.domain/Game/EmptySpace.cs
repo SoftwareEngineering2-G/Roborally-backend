@@ -2,5 +2,5 @@
 
 public class EmptySpace : Space
 {
-    
+    public override string Name => "empty";
 }

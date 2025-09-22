@@ -37,6 +37,21 @@ namespace Roborally.infrastructure.persistence.Migrations
                     b.ToTable("GameLobbyJoinedUsers");
                 });
 
+            modelBuilder.Entity("Roborally.core.domain.Game.GameBoard", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("SpaceNames")
+                        .IsRequired()
+                        .HasColumnType("jsonb");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GameBoards", (string)null);
+                });
+
             modelBuilder.Entity("Roborally.core.domain.Lobby.GameLobby", b =>
                 {
                     b.Property<Guid>("GameId")

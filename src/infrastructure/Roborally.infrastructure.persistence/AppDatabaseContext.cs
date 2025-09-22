@@ -12,6 +12,7 @@ public class AppDatabaseContext : DbContext
 
     public required DbSet<core.domain.User.User> Users { get; set; }
     public required DbSet<core.domain.Lobby.GameLobby> GameLobby { get; set; }
+    public required DbSet<core.domain.Game.GameBoard> GameBoards { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
