@@ -11,4 +11,11 @@ public class GamePhase : Enumeration {
     private GamePhase(string displayName) : base(displayName) {
         
     }
+    
+    public static GamePhase From(string name) => name switch
+    {
+        "ProgrammingPhase"   => ProgrammingPhase,
+        "ActivationPhase" => ProgrammingPhase,
+        _ => throw new ArgumentOutOfRangeException(nameof(name), name, "Unknown GamePhase")
+    };
 }

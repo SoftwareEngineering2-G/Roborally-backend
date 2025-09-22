@@ -37,6 +37,42 @@ namespace Roborally.infrastructure.persistence.Migrations
                     b.ToTable("GameLobbyJoinedUsers");
                 });
 
+            modelBuilder.Entity("GamePlayer", b =>
+                {
+                    b.Property<Guid>("GameId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("PlayerId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("GameId", "PlayerId");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("GamePlayers", (string)null);
+                });
+
+            modelBuilder.Entity("Roborally.core.domain.Game.Game", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("GameBoardId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("GamePhase")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameBoardId");
+
+                    b.ToTable("Game");
+                });
+
             modelBuilder.Entity("Roborally.core.domain.Game.GameBoard", b =>
                 {
                     b.Property<Guid>("Id")
@@ -139,6 +175,32 @@ namespace Roborally.infrastructure.persistence.Migrations
                         .HasForeignKey("JoinedUsersUsername")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("GamePlayer", b =>
+                {
+                    b.HasOne("Roborally.core.domain.Game.Game", null)
+                        .WithMany()
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Roborally.core.domain.Game.Player", null)
+                        .WithMany()
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Roborally.core.domain.Game.Game", b =>
+                {
+                    b.HasOne("Roborally.core.domain.Game.GameBoard", "GameBoard")
+                        .WithMany()
+                        .HasForeignKey("GameBoardId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("GameBoard");
                 });
 
             modelBuilder.Entity("Roborally.core.domain.Game.Player", b =>
