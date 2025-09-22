@@ -70,7 +70,7 @@ namespace Roborally.infrastructure.persistence.Migrations
 
                     b.HasIndex("GameBoardId");
 
-                    b.ToTable("Game");
+                    b.ToTable("Games");
                 });
 
             modelBuilder.Entity("Roborally.core.domain.Game.GameBoard", b =>
@@ -152,6 +152,9 @@ namespace Roborally.infrastructure.persistence.Migrations
 
                     b.Property<DateOnly>("Birthday")
                         .HasColumnType("date");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Password")
                         .IsRequired()

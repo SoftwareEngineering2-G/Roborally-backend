@@ -3,7 +3,7 @@
 namespace Roborally.core.domain.Game;
 
 public class Player {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }  = Guid.NewGuid();
     public required User.User User { get; set; }
     public required Robot Robot { get; set; }
 

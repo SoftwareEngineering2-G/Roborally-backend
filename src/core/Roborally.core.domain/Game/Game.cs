@@ -4,7 +4,7 @@ namespace Roborally.core.domain.Game;
 
 public class Game {
 
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }  = Guid.NewGuid();
     public GameBoard GameBoard { get; set; }
     public GamePhase GamePhase { get; set; }
     

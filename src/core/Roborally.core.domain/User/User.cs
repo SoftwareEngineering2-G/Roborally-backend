@@ -4,6 +4,8 @@ using Roborally.core.domain.Bases;
 namespace Roborally.core.domain.User;
 
 public class User : Entity{
+    
+    public Guid Id { get; set; } = Guid.NewGuid();
     public required string Username {
         get => _username;
         init {

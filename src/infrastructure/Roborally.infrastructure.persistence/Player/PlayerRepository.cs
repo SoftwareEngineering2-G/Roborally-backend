@@ -1,16 +1,23 @@
-﻿using Roborally.core.domain.Game;
+﻿using Microsoft.EntityFrameworkCore;
+using Roborally.core.domain.Game;
 
 namespace Roborally.infrastructure.persistence.Player;
 
 public class PlayerRepository:IPlayerRepository
 {
+    private readonly AppDatabaseContext _context;
+    
+    public PlayerRepository(AppDatabaseContext context)
+    {
+        _context = context;
+    }
     public async Task AddAsync(core.domain.Game.Player player, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        await _context.Players.AddAsync(player, cancellationToken);
     }
 
-    public async Task<core.domain.Game.Player> FindAsync(Guid playerId, CancellationToken cancellationToken = default)
+    public async Task<core.domain.Game.Player?> FindAsync(Guid playerId, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return await _context.Players.FirstOrDefaultAsync(p => p.Id == playerId, cancellationToken);
     }
 }
