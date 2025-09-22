@@ -34,7 +34,7 @@ namespace Roborally.infrastructure.persistence.Migrations
 
                     b.HasIndex("JoinedUsersUsername");
 
-                    b.ToTable("GameLobbyJoinedUsers");
+                    b.ToTable("GameLobbyJoinedUsers", (string)null);
                 });
 
             modelBuilder.Entity("GamePlayer", b =>
@@ -70,7 +70,7 @@ namespace Roborally.infrastructure.persistence.Migrations
 
                     b.HasIndex("GameBoardId");
 
-                    b.ToTable("Games");
+                    b.ToTable("Game", (string)null);
                 });
 
             modelBuilder.Entity("Roborally.core.domain.Game.GameBoard", b =>
@@ -153,16 +153,13 @@ namespace Roborally.infrastructure.persistence.Migrations
                     b.Property<DateOnly>("Birthday")
                         .HasColumnType("date");
 
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Username");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("GameLobbyJoinedUsers", b =>
@@ -227,7 +224,7 @@ namespace Roborally.infrastructure.persistence.Migrations
 
                             b1.HasKey("PlayerId");
 
-                            b1.ToTable("Players");
+                            b1.ToTable("Players", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("PlayerId");
