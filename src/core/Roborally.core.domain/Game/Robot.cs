@@ -16,4 +16,14 @@ public class Robot : Enumeration{
         
     }
     
+    public static Robot From(string name) => name switch
+    {
+        "Red"    => RED,
+        "Blue"   => BLUE,
+        "Green"  => GREEN,
+        "Yellow" => YELLOW,
+        "Black"  => BLACK,
+        "White"  => WHITE,
+        _ => throw new ArgumentOutOfRangeException(nameof(name), name, "Unknown Robot")
+    };
 }

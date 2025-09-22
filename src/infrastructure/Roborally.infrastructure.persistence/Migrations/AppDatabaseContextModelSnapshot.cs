@@ -52,6 +52,33 @@ namespace Roborally.infrastructure.persistence.Migrations
                     b.ToTable("GameBoards", (string)null);
                 });
 
+            modelBuilder.Entity("Roborally.core.domain.Game.Player", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CurrentFacingDirection")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
+
+                    b.Property<string>("Robot")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Players", (string)null);
+                });
+
             modelBuilder.Entity("Roborally.core.domain.Lobby.GameLobby", b =>
                 {
                     b.Property<Guid>("GameId")
@@ -112,6 +139,39 @@ namespace Roborally.infrastructure.persistence.Migrations
                         .HasForeignKey("JoinedUsersUsername")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Roborally.core.domain.Game.Player", b =>
+                {
+                    b.HasOne("Roborally.core.domain.User.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("Roborally.core.domain.Game.Position", "CurrentPosition", b1 =>
+                        {
+                            b1.Property<Guid>("PlayerId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<int>("X")
+                                .HasColumnType("integer");
+
+                            b1.Property<int>("Y")
+                                .HasColumnType("integer");
+
+                            b1.HasKey("PlayerId");
+
+                            b1.ToTable("Players");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PlayerId");
+                        });
+
+                    b.Navigation("CurrentPosition")
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Roborally.core.domain.Lobby.GameLobby", b =>
