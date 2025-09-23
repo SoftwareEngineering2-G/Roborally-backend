@@ -33,5 +33,6 @@ public class StartGameCommandHandler : ICommandHandler<StartGameCommand> {
         }
 
         lobby.StartGame(_systemTime);
+        await _unitOfWork.SaveChangesAsync(ct);
     }
 }

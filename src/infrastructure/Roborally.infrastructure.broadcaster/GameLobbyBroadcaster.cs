@@ -12,11 +12,10 @@ public class GameLobbyBroadcaster : IGameLobbyBroadcaster
         _hubContext = hubContext;
     }
 
-    private string GetGroupId(Guid gameId) => $"lobby-{gameId}";
+    private static string GetGroupId(Guid gameId) => $"lobby-{gameId}";
 
     public async Task BroadcastUserJoinedAsync(Guid gameId, string username, CancellationToken cancellationToken = default)
     {
-        Console.WriteLine("GameLobbyBroadcaster: Broadcasting UserJoinedLobby");
         string groupId = GetGroupId(gameId);
         var payload = new { GameId = gameId, Username = username };
         await _hubContext.Clients.Group(groupId).SendAsync("UserJoinedLobby", payload, cancellationToken);
