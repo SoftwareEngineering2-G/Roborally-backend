@@ -1,5 +1,6 @@
 ﻿using FastEndpoints;
 using Roborally.core.domain.Lobby;
+using Roborally.core.domain.Lobby.DomainEvents;
 
 namespace Roborally.core.application.DomainEventsHandlers;
 

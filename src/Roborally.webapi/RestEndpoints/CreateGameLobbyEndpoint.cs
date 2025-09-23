@@ -3,7 +3,7 @@ using Roborally.core.application.CommandContracts;
 
 namespace Roborally.webapi.RestEndpoints;
 
-public class CreateGameLobby : Endpoint<CreateGameLobbyRequest, CreateGameLobbyResponse>
+public class CreateGameLobbyEndpoint : Endpoint<CreateGameLobbyRequest, CreateGameLobbyResponse>
 {
     public override void Configure()
     {
@@ -18,10 +18,10 @@ public class CreateGameLobby : Endpoint<CreateGameLobbyRequest, CreateGameLobbyR
             IsPrivate = req.IsPrivate,
             HostUsername = req.HostUsername,
         };
-        Guid gameid = await command.ExecuteAsync(ct);
+        Guid gameId = await command.ExecuteAsync(ct);
         await Send.OkAsync(new CreateGameLobbyResponse
         {
-            GameRoomId = gameid
+            GameRoomId = gameId
         }, ct);
     }
 }

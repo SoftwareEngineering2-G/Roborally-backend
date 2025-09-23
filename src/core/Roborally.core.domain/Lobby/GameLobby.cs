@@ -1,5 +1,6 @@
 ﻿using Roborally.core.application;
 using Roborally.core.domain.Bases;
+using Roborally.core.domain.Lobby.DomainEvents;
 
 namespace Roborally.core.domain.Lobby;
 
@@ -10,14 +11,12 @@ public class GameLobby : Entity {
     private readonly string _name = string.Empty;
 
     public Guid GameId { get; init; }
-    public bool IsPrivate { get; set; }
-    public int MaxPlayers => MaxLobbySize;
-    
+    public bool IsPrivate { get; init; }
     // Foreign key property - no need for navigation property
-    public string HostUsername { get; init; } = string.Empty;
-    
+    public string HostUsername { get; init; }
+
     public DateTime? StartedAt { get; set; }
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; init; }
 
     public string Name {
         get => _name;
@@ -59,7 +58,7 @@ public class GameLobby : Entity {
         if (_joinedUsers.Count >= MaxLobbySize)
             throw new CustomException("Lobby is full", 400);
 
-        if (_joinedUsers.Find( u => u.Username == user.Username) != null)
+        if (_joinedUsers.Find(u => u.Username == user.Username) != null)
             throw new CustomException("User already in lobby", 400);
 
         _joinedUsers.Add(user);
@@ -84,5 +83,18 @@ public class GameLobby : Entity {
             UserUsername = user.Username
         };
         this.AddDomainEvent(userLeftLobbyEvent);
+    }
+
+    public void StartGame(ISystemTime systemTime) {
+        if (this.StartedAt is not null) {
+            throw new CustomException("Cannot start game - game has already started", 400);
+        }
+
+        this.StartedAt = systemTime.CurrentTime;
+
+        GameStartedEvent gameStartedEvent = new GameStartedEvent() {
+            GameId = this.GameId
+        };
+        this.AddDomainEvent(gameStartedEvent);
     }
 }
