@@ -1,7 +1,7 @@
 ﻿using FastEndpoints;
 using Roborally.core.application.CommandContracts;
 
-namespace Roborally.webapi.RestEndpoints;
+namespace Roborally.webapi.RestEndpoints.User;
 
 public class SigninUserEndpoint : Endpoint<SigninUserRequest, SigninUserResponse> {
     public override void Configure() {

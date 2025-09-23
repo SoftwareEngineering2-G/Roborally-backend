@@ -1,7 +1,7 @@
 ﻿using FastEndpoints;
 using Roborally.core.application.CommandContracts;
 
-namespace Roborally.webapi.RestEndpoints;
+namespace Roborally.webapi.RestEndpoints.Lobby;
 
 public class GetActiveGameLobbies : EndpointWithoutRequest<IList<GetActiveGameLobbiesResponse>> {
     public override void Configure() {

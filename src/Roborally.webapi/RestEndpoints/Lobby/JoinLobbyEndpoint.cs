@@ -1,7 +1,7 @@
 ﻿using FastEndpoints;
 using Roborally.core.application.CommandContracts;
 
-namespace Roborally.webapi.RestEndpoints;
+namespace Roborally.webapi.RestEndpoints.Lobby;
 
 public class JoinLobbyEndpoint : Endpoint<JoinLobbyRequest> {
     public override void Configure() {
