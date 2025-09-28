@@ -19,6 +19,6 @@ public class PlayerEventsBroadcaster : IPlayerEventsBroadcaster{
         var payload = new {
             username,
         };
-        return _hubContext.Clients.Groups(GroupName(gameId)) .SendAsync("PlayerLockedInRegister", payload, ct);
+        return _hubContext.Clients.Groups(GroupName(gameId)).SendAsync("PlayerLockedInRegister", payload, ct);
     }
 }
