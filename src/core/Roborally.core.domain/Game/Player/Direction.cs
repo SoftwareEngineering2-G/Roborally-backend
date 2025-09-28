@@ -1,6 +1,6 @@
 ﻿using Roborally.core.domain.Bases;
 
-namespace Roborally.core.domain.Game;
+namespace Roborally.core.domain.Game.Player;
 
 public class Direction : Enumeration
 {

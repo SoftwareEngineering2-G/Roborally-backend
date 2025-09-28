@@ -1,6 +1,8 @@
 ﻿using FastEndpoints;
+using Roborally.core.application.Broadcasters;
 using Roborally.core.application.CommandContracts;
 using Roborally.core.domain.Bases;
+using Roborally.core.domain.Game;
 using Roborally.core.domain.Lobby;
 using Roborally.core.domain.User;
 
@@ -9,14 +11,21 @@ namespace Roborally.core.application.CommandHandlers;
 public class StartGameCommandHandler : ICommandHandler<StartGameCommand> {
     private readonly IUserRepository _userRepository;
     private readonly IGameLobbyRepository _gameLobbyRepository;
-    private IUnitOfWork _unitOfWork;
-    private ISystemTime _systemTime;
+    private readonly IGameRepository _gameRepository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly ISystemTime _systemTime;
 
-    public StartGameCommandHandler(IUserRepository userRepository, IGameLobbyRepository gameLobbyRepository, IUnitOfWork unitOfWork, ISystemTime systemTime) {
+    private readonly IGameLobbyBroadcaster _gameLobbyBroadcaster;
+
+    public StartGameCommandHandler(IUserRepository userRepository, IGameLobbyRepository gameLobbyRepository,
+        IUnitOfWork unitOfWork, ISystemTime systemTime, IGameLobbyBroadcaster gameLobbyBroadcaster,
+        IGameRepository gameRepository) {
         _userRepository = userRepository;
         _gameLobbyRepository = gameLobbyRepository;
         _unitOfWork = unitOfWork;
         _systemTime = systemTime;
+        _gameLobbyBroadcaster = gameLobbyBroadcaster;
+        _gameRepository = gameRepository;
     }
 
 
@@ -32,7 +41,9 @@ public class StartGameCommandHandler : ICommandHandler<StartGameCommand> {
             throw new CustomException("Game lobby does not exist", 404);
         }
 
-        lobby.StartGame(_systemTime);
+        Game game = lobby.StartGame(command.Username, _systemTime);
+        await _gameRepository.AddAsync(game, ct);
         await _unitOfWork.SaveChangesAsync(ct);
+        await _gameLobbyBroadcaster.BroadcastGameStartedAsync(command.GameId, ct);
     }
 }

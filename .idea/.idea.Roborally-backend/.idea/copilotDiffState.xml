@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/src/infrastructure/Roborally.infrastructure.persistence/User/UserConfiguration.cs">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/src/infrastructure/Roborally.infrastructure.persistence/User/UserConfiguration.cs" />
+              <option name="originalContent" value="using Microsoft.EntityFrameworkCore;&#10;using Microsoft.EntityFrameworkCore.Metadata.Builders;&#10;&#10;namespace Roborally.infrastructure.persistence.User;&#10;&#10;public class UserConfiguration : IEntityTypeConfiguration&lt;core.domain.User.User&gt; {&#10;&#10;    public void Configure(EntityTypeBuilder&lt;core.domain.User.User&gt; builder) {&#10;        builder.HasKey(x =&gt; x.Username);&#10;        &#10;        // Configure relationship with Players - one User can have many Players (across different games)&#10;        builder.HasMany&lt;core.domain.Game.Player.Player&gt;()&#10;            .WithOne() // Player doesn't have a navigation property back to User&#10;            .HasForeignKey(p =&gt; p.Username) // Use Player.Username as foreign key&#10;            .IsRequired();&#10;    }&#10;}" />
+              <option name="updatedContent" value="using Microsoft.EntityFrameworkCore;&#10;using Microsoft.EntityFrameworkCore.Metadata.Builders;&#10;&#10;namespace Roborally.infrastructure.persistence.User;&#10;&#10;public class UserConfiguration : IEntityTypeConfiguration&lt;core.domain.User.User&gt; {&#10;&#10;    public void Configure(EntityTypeBuilder&lt;core.domain.User.User&gt; builder) {&#10;        builder.HasKey(x =&gt; x.Username);&#10;        &#10;        // Configure relationship with Players - one User can have many Players (across different games)&#10;        builder.HasMany&lt;core.domain.Game.Player.Player&gt;()&#10;            .WithOne() // Player doesn't have a navigation property back to User&#10;            .HasForeignKey(p =&gt; p.Username) // Use Player.Username as foreign key&#10;            .IsRequired();&#10;    }&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

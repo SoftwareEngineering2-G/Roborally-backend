@@ -1,4 +1,4 @@
-﻿namespace Roborally.core.application;
+﻿namespace Roborally.core.application.Broadcasters;
 
 public interface IGameLobbyBroadcaster
 {

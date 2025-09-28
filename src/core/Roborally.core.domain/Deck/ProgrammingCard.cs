@@ -1,4 +1,5 @@
 ﻿using Roborally.core.domain.Bases;
+using System.Reflection;
 
 namespace Roborally.core.domain.Deck;
 
@@ -16,5 +17,19 @@ public class ProgrammingCard : Enumeration
 
     private ProgrammingCard(string displayName) : base(displayName)
     {
+    }
+
+    public static ProgrammingCard FromString(string cardName)
+    {
+        // Use reflection to get all static readonly ProgrammingCard fields
+        var fields = typeof(ProgrammingCard)
+            .GetFields(BindingFlags.Public | BindingFlags.Static)
+            .Where(f => f.FieldType == typeof(ProgrammingCard))
+            .Select(f => f.GetValue(null) as ProgrammingCard)
+            .Where(card => card != null);
+
+        var matchingCard = fields.FirstOrDefault(card => card!.DisplayName == cardName);
+        
+        return matchingCard ?? throw new ArgumentException($"Unknown card name: {cardName}");
     }
 }

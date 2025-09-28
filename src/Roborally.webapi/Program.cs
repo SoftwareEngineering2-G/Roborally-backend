@@ -3,7 +3,7 @@ using FastEndpoints.Swagger;
 using Roborally.core.application;
 using Roborally.infrastructure.persistence;
 using Roborally.infrastructure.broadcaster;
-using Roborally.infrastructure.broadcaster.GameLobby;
+using Roborally.infrastructure.persistence.Migrations;
 using Roborally.webapi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,7 +19,7 @@ builder.Services.AddCors(options =>
         policy.WithOrigins("http://localhost:3000", "https://localhost:3000") // Add your frontend URLs
             .AllowAnyMethod()
             .AllowAnyHeader()
-            .AllowCredentials(); // Required for SignalR
+            .AllowCredentials(); 
     });
 });
 
@@ -35,6 +35,10 @@ builder.Services.AddProblemDetails();
 var app = builder.Build();
 app.Services.RegisterApplicationModule();
 
+if (app.Environment.IsDevelopment()) {
+    await app.ApplyMigrations();
+}
+
 
 app.UseHttpsRedirection();
 app.UseCors();
@@ -46,7 +50,7 @@ app.UseFastEndpoints(c => {
     };
 }).UseSwaggerGen();
 
-app.MapHub<GameLobbyHub>("/game-lobbies"); // Map the SignalR hub to match REST endpoint pattern
+app.InstallBroadcasterModule(); // Map the SignalR hub to match REST endpoint pattern
 app.UseExceptionHandler();
 
 app.Run();

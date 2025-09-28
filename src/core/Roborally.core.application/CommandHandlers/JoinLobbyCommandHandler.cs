@@ -1,4 +1,5 @@
 ﻿using FastEndpoints;
+using Roborally.core.application.Broadcasters;
 using Roborally.core.application.CommandContracts;
 using Roborally.core.domain.Bases;
 using Roborally.core.domain.Game;
@@ -8,15 +9,17 @@ using Roborally.core.domain.User;
 namespace Roborally.core.application.CommandHandlers;
 
 public class JoinLobbyCommandHandler : ICommandHandler<JoinLobbyCommand> {
-
     private readonly IGameLobbyRepository _gameLobbyRepository;
     private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IGameLobbyBroadcaster _gameLobbyBroadcaster;
 
-    public JoinLobbyCommandHandler(IGameLobbyRepository gameLobbyRepository, IUserRepository userRepository, IUnitOfWork unitOfWork) {
+    public JoinLobbyCommandHandler(IGameLobbyRepository gameLobbyRepository, IUserRepository userRepository,
+        IUnitOfWork unitOfWork, IGameLobbyBroadcaster gameLobbyBroadcaster) {
         _gameLobbyRepository = gameLobbyRepository;
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
+        _gameLobbyBroadcaster = gameLobbyBroadcaster;
     }
 
     public async Task ExecuteAsync(JoinLobbyCommand command, CancellationToken ct) {
@@ -29,10 +32,10 @@ public class JoinLobbyCommandHandler : ICommandHandler<JoinLobbyCommand> {
         if (gameLobby is null)
             throw new CustomException("Game lobby not found", 404);
 
-        // Join the lobby (this will raise the UserJoinedLobbyEvent)
         gameLobby.JoinLobby(user);
 
-        // Save changes (this will publish the domain event and broadcast via SignalR)
         await _unitOfWork.SaveChangesAsync(ct);
+        // Broadcast to fronted...
+        await _gameLobbyBroadcaster.BroadcastUserJoinedAsync(command.GameId, command.Username, ct);
     }
 }
