@@ -17,7 +17,7 @@ public class StartGameEndpoint : Endpoint<StartGameRequest> {
 
         await command.ExecuteAsync(ct);
 
-        await Send.OkAsync(null,ct);
+        await Send.OkAsync(cancellation:ct);
     }
 }
 

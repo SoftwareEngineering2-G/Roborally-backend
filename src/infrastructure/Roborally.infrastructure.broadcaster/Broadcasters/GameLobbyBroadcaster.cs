@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Roborally.core.application;
+using Roborally.core.application.Broadcasters;
 using Roborally.infrastructure.broadcaster.GameLobby;
 
-namespace Roborally.infrastructure.broadcaster;
+namespace Roborally.infrastructure.broadcaster.Broadcasters;
 
 public class GameLobbyBroadcaster : IGameLobbyBroadcaster
 {

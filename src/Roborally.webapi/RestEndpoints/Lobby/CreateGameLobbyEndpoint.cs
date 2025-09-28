@@ -1,7 +1,7 @@
 ﻿using FastEndpoints;
 using Roborally.core.application.CommandContracts;
 
-namespace Roborally.webapi.RestEndpoints.User;
+namespace Roborally.webapi.RestEndpoints.Lobby;
 
 public class CreateGameLobbyEndpoint : Endpoint<CreateGameLobbyRequest, CreateGameLobbyResponse>
 {

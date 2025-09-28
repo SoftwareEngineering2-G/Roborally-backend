@@ -1,17 +1,21 @@
 ﻿using Roborally.core.application;
 using Roborally.core.domain.Bases;
+using Roborally.core.domain.Game.Gameboard;
+using Roborally.core.domain.Game.Player;
 using Roborally.core.domain.Lobby.DomainEvents;
 
 namespace Roborally.core.domain.Lobby;
 
-public class GameLobby : Entity {
+public class GameLobby {
     private const int MaxLobbySize = 6;
     private readonly List<User.User> _joinedUsers;
     public IReadOnlyList<User.User> JoinedUsers => _joinedUsers.AsReadOnly();
     private readonly string _name = string.Empty;
 
     public Guid GameId { get; init; }
+
     public bool IsPrivate { get; init; }
+
     // Foreign key property - no need for navigation property
     public string HostUsername { get; init; }
 
@@ -62,13 +66,6 @@ public class GameLobby : Entity {
             throw new CustomException("User already in lobby", 400);
 
         _joinedUsers.Add(user);
-
-        // Add the domain event
-        var userJoinedLobbyEvent = new UserJoinedLobbyEvent() {
-            GameId = this.GameId,
-            NewUserUsername = user.Username
-        };
-        this.AddDomainEvent(userJoinedLobbyEvent);
     }
 
     public void LeaveLobby(User.User user) {
@@ -82,19 +79,29 @@ public class GameLobby : Entity {
             GameId = this.GameId,
             UserUsername = user.Username
         };
-        this.AddDomainEvent(userLeftLobbyEvent);
     }
 
-    public void StartGame(ISystemTime systemTime) {
+    public Game.Game StartGame(string username, ISystemTime systemTime) {
+        if (!username.ToLower().Equals(HostUsername.ToLower())) {
+             throw new CustomException("Only the host can start the game", 403);
+        }
         if (this.StartedAt is not null) {
             throw new CustomException("Cannot start game - game has already started", 400);
         }
 
+        Robot[] robots = Robot.All();
+
+
+        // Convert joined users to players with assigned robots and spawn positions
+
+        // For now, we assign spawn positions in a simple manner
+        List<Player> players = this._joinedUsers.Select((user, index) =>
+            new Player(user.Username, this.GameId, new Position(0, index), robots[index])).ToList();
+
+        Game.Game game = new Game.Game(this.GameId, players, BoardFactory.GetEmptyBoard());
+
         this.StartedAt = systemTime.CurrentTime;
 
-        GameStartedEvent gameStartedEvent = new GameStartedEvent() {
-            GameId = this.GameId
-        };
-        this.AddDomainEvent(gameStartedEvent);
+        return game;
     }
 }

@@ -1,26 +1,22 @@
 ﻿namespace Roborally.core.domain.Deck;
 
-public class ProgrammingDeck
-{
-    public List<ProgrammingCard> ProgrammingCards { get; init; }
-    public List<ProgrammingCard> DiscardPiles { get; set; }
+public class ProgrammingDeck {
+    public List<ProgrammingCard> PickPiles { get; init; }
+    public List<ProgrammingCard> DiscardedPiles { get; init; }
 
     // Creates a new shuffled programming deck
-    public static ProgrammingDeck New()
-    {
+    public static ProgrammingDeck NewShuffled() {
         List<ProgrammingCard> cards = new List<ProgrammingCard>(20);
         // 4 copies of Move 1, rotate right, rotate left
 
-        for (int i = 0; i < 4; i++)
-        {
+        for (int i = 0; i < 4; i++) {
             cards.Add(ProgrammingCard.Move1);
             cards.Add(ProgrammingCard.RotateLeft);
             cards.Add(ProgrammingCard.RotateRight);
         }
 
         // 3 copies of Move 2
-        for (int i = 0; i < 3; i++)
-        {
+        for (int i = 0; i < 3; i++) {
             cards.Add(ProgrammingCard.Move2);
         }
 
@@ -31,8 +27,7 @@ public class ProgrammingDeck
         cards.Add(ProgrammingCard.Again);
 
         // Shuffle the cards using Fisher-Yates algorithm
-        for (int i = cards.Count - 1; i > 0; i--)
-        {
+        for (int i = cards.Count - 1; i > 0; i--) {
             int randomIndex = Random.Shared.Next(i + 1);
             (cards[i], cards[randomIndex]) = (cards[randomIndex], cards[i]);
         }
@@ -40,8 +35,12 @@ public class ProgrammingDeck
         return new ProgrammingDeck(cards);
     }
 
-    private ProgrammingDeck(List<ProgrammingCard> cards)
-    {
-        ProgrammingCards = cards;
+    private ProgrammingDeck(List<ProgrammingCard> cards) {
+        PickPiles = cards;
+        DiscardedPiles = [];
+    }
+
+    private ProgrammingDeck() {
+        // For EF Core
     }
 }

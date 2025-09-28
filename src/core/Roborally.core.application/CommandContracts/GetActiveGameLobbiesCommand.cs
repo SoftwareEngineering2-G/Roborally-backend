@@ -8,8 +8,8 @@ public class GetActiveGameLobbiesCommand : ICommand<IList<GetActiveGameLobbyComm
 }
 
 public class GetActiveGameLobbyCommandResponse {
-    public Guid GameId { get; set; }
-    public string Name { get; set; }
-    public string HostUsername { get; set; }
-    public int CurrentAmountOfPlayers { get; set; }
+    public Guid GameId { get; init; }
+    public string Name { get; init; }
+    public string HostUsername { get; init; }
+    public int CurrentAmountOfPlayers { get; init; }
 }

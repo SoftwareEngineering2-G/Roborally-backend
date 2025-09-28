@@ -1,5 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using Roborally.core.application;
+using Roborally.core.application.Broadcasters;
+using Roborally.infrastructure.broadcaster.Broadcasters;
+using Roborally.infrastructure.broadcaster.Game;
+using Roborally.infrastructure.broadcaster.GameLobby;
 
 namespace Roborally.infrastructure.broadcaster;
 
@@ -11,5 +16,15 @@ public static class BroadcasterModuleInstallation
         services.AddScoped<IGameLobbyBroadcaster, GameLobbyBroadcaster>();
         
         return services;
+    }
+
+    public static WebApplication InstallBroadcasterModule(this WebApplication application)
+    {
+        // This method can be used to resolve services if needed
+        application.MapHub<GameLobbyHub>("/game-lobbies");
+        application.MapHub<GameHub>("/game");
+
+
+        return application;
     }
 }

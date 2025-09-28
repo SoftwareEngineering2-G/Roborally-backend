@@ -6,7 +6,6 @@ namespace Roborally.webapi.RestEndpoints.Lobby;
 public class JoinLobbyEndpoint : Endpoint<JoinLobbyRequest> {
     public override void Configure() {
         Post("/game-lobbies/{gameId}/join");
-        AllowAnonymous();
         Summary(s => {
             s.Summary = "Join a game lobby";
             s.Description = "Allows a user to join an existing game lobby";
@@ -23,7 +22,7 @@ public class JoinLobbyEndpoint : Endpoint<JoinLobbyRequest> {
         };
 
         await command.ExecuteAsync(ct);
-        await Send.OkAsync(new {Message = "Successfully joined the lobby"}, ct);
+        await Send.OkAsync(cancellation: ct);
     }
 }
 

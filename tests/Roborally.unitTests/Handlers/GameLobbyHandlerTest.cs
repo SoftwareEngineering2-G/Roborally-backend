@@ -71,7 +71,7 @@ public class GameLobbyHandlerTest
         {
             HostUsername = hostUser.Username,
             IsPrivate = false,
-            GameRoomName = "New Lobby"
+            GameRoomName = "NewShuffled Lobby"
         }, CancellationToken.None));
     }
     
@@ -194,7 +194,7 @@ public class GameLobbyHandlerTest
         {
             HostUsername = hostUser.Username,
             IsPrivate = false,
-            GameRoomName = "New Game After Previous"
+            GameRoomName = "NewShuffled Game After Previous"
         }, CancellationToken.None);
 
         // Assert

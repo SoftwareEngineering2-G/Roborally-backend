@@ -3,6 +3,6 @@
 namespace Roborally.core.application.CommandContracts;
 
 public class StartGameCommand : ICommand{
-    public string Username { get; set; }
-    public required Guid GameId { get; set; }
+    public required string Username { get; init; }
+    public required Guid GameId { get; init; }
 }

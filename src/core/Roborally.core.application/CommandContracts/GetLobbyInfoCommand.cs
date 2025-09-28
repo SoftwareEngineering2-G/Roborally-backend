@@ -3,14 +3,14 @@
 namespace Roborally.core.application.CommandContracts;
 
 public class GetLobbyInfoCommand : ICommand<GetLobbyInfoCommandResponse> {
-    public string Username { get; set; }
-    public Guid GameId { get; set; }
+    public required string Username { get; init; }
+    public required Guid GameId { get; init; }
 } 
 
 public class GetLobbyInfoCommandResponse {
-    public Guid GameId { get; set; }
+    public Guid GameId { get; init; }
 
-    public string Lobbyname { get; set; }
-    public List<string> JoinedUsernames { get; set; }
-    public string HostUsername { get; set; }
+    public string Lobbyname { get; init; }
+    public List<string> JoinedUsernames { get; init; }
+    public string HostUsername { get; init; }
 }
