@@ -3,5 +3,5 @@
 public interface IGameRepository {
 
     Task AddAsync(Game game, CancellationToken ct);
-    Task <Game?> FindAsync(Guid gameId, CancellationToken ct);
+    Task<Game?> FindAsync(Guid gameId, CancellationToken ct);
 }     
