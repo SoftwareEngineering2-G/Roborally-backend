@@ -48,4 +48,31 @@ public class Player {
         
         this.PlayerEvents.Add(lockedInEvent);
     }
+
+    public List<ProgrammingCard> DealProgrammingCards(int count, ISystemTime systemTime) {
+        var dealt = new List<ProgrammingCard>(count);
+
+        // Draw as many as possible from PickPiles
+        dealt.AddRange(ProgrammingDeck.Draw(count));
+
+        // If not enough, refill from discard and continue drawing
+        if (dealt.Count < count && ProgrammingDeck.DiscardedPiles.Count > 0) {
+            int remaining = count - dealt.Count;
+            ProgrammingDeck.RefillFromDiscard();
+            dealt.AddRange(ProgrammingDeck.Draw(remaining));
+
+            // TODO: We need to add an event called DiscardPilesShuffledIntoPickPilesEvent
+        }
+
+        ProgrammingCardsDealtEvent dealtEvent = new ProgrammingCardsDealtEvent() {
+            HappenedAt = systemTime.CurrentTime,
+            GameId = this.GameId,
+            Username = this.Username,
+            DealtCards = dealt
+        };
+        this.PlayerEvents.Add(dealtEvent);
+
+
+        return dealt;
+    }
 }
