@@ -6,13 +6,13 @@ public class GameLobbyHub : Hub
 {
     public async Task JoinLobby(string gameId)
     {
-        var groupId = $"lobby-{gameId}";
+        var groupId = GroupName.GameLobby(gameId);
         await Groups.AddToGroupAsync(Context.ConnectionId, groupId);
     }
 
     public async Task LeaveLobby(string gameId)
     {
-        var groupId = $"lobby-{gameId}";
+        var groupId = GroupName.GameLobby(gameId);
         await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupId);
     }
 

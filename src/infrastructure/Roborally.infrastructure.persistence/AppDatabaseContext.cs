@@ -2,6 +2,7 @@
 using FastEndpoints;
 using Roborally.core.domain.Bases;
 using Roborally.core.domain.Game;
+using Roborally.core.domain.Game.Gameboard;
 using Roborally.core.domain.Game.Player.Events;
 
 namespace Roborally.infrastructure.persistence;
@@ -17,6 +18,8 @@ public class AppDatabaseContext : DbContext
     public required DbSet<core.domain.Game.Player.Player> Players { get; set; }
     public required DbSet<PlayerEvent> PlayerEvents { get; set; }
     public required DbSet<core.domain.Game.Game> Games { get; set; }
+
+    public required DbSet<GameBoard> GameBoards { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

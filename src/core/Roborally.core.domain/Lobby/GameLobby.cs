@@ -81,7 +81,7 @@ public class GameLobby {
         };
     }
 
-    public Game.Game StartGame(string username, ISystemTime systemTime) {
+    public Game.Game StartGame(string username, ISystemTime systemTime, GameBoard gameBoard) {
         if (!username.ToLower().Equals(HostUsername.ToLower())) {
              throw new CustomException("Only the host can start the game", 403);
         }
@@ -98,7 +98,7 @@ public class GameLobby {
         List<Player> players = this._joinedUsers.Select((user, index) =>
             new Player(user.Username, this.GameId, new Position(0, index), robots[index])).ToList();
 
-        Game.Game game = new Game.Game(this.GameId, players, BoardFactory.GetEmptyBoard());
+        Game.Game game = new Game.Game(this.GameId, players, gameBoard);
 
         this.StartedAt = systemTime.CurrentTime;
 

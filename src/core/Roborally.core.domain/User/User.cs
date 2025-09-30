@@ -3,7 +3,7 @@ using Roborally.core.domain.Bases;
 
 namespace Roborally.core.domain.User;
 
-public class User : Entity{
+public class User{
     public required string Username {
         get => _username;
         init {
