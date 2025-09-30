@@ -9,7 +9,7 @@ public class GameBroadcaster : IGameBroadcaster{
     private readonly IHubContext<GameHub> _hubContext;
 
     private static string GroupName(Guid gameId) => $"game-{gameId.ToString()}";
-
+    
     public GameBroadcaster(IHubContext<GameHub> hubContext) {
         this._hubContext = hubContext;
     }

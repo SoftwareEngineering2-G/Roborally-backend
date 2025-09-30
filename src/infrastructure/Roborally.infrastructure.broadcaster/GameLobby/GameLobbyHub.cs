@@ -19,7 +19,7 @@ public class GameLobbyHub : Hub
 
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
-        // Groups are automatically cleaned up by SignalR
+        // SignalR automatically cleans up groups
         await base.OnDisconnectedAsync(exception);
     }
 }

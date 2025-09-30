@@ -35,10 +35,9 @@ public class Game {
     }
 
     public Dictionary<Player.Player, List<ProgrammingCard>> DealDecksToAllPlayers(ISystemTime systemTime) {
-        if (!IsActive()) {
-            throw new CustomException("Game is not in activation phase", 400);
+        if (IsActive()) {
+            throw new CustomException("The game needs to be in programming phase", 400);
         }
-
         
         Dictionary<Player.Player, List<ProgrammingCard>> playerDealtCards = new();
 

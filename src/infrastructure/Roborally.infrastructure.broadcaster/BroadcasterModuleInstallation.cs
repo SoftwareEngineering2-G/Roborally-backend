@@ -14,6 +14,8 @@ public static class BroadcasterModuleInstallation
     {
         services.AddSignalR();
         services.AddScoped<IGameLobbyBroadcaster, GameLobbyBroadcaster>();
+        services.AddScoped<IGameBroadcaster, GameBroadcaster>();
+        services.AddScoped<IIndividualPlayerBroadcaster, IndividualPlayerBroadcaster>();
         
         return services;
     }
