@@ -98,7 +98,7 @@ public class GameLobby {
         List<Player> players = this._joinedUsers.Select((user, index) =>
             new Player(user.Username, this.GameId, new Position(0, index), robots[index])).ToList();
 
-        Game.Game game = new Game.Game(this.GameId, players, gameBoard);
+        Game.Game game = new Game.Game(this.GameId, HostUsername, Name,players, gameBoard);
 
         this.StartedAt = systemTime.CurrentTime;
 

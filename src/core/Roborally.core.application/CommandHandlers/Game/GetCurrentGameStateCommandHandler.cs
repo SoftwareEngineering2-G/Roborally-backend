@@ -25,6 +25,8 @@ public class
 
         return new GetCurrentGameStateCommandResponse() {
             GameId = game.GameId.ToString(),
+            HostUsername = game.HostUsername,
+            Name = game.Name,
             CurrentPhase = game.CurrentPhase.DisplayName,
             Players = game.Players
                 .Select(p => new GetCurrentGameStateCommandResponse.Player(p.Username, p.Robot.DisplayName)).ToList()

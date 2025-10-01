@@ -9,6 +9,10 @@ public class Game
 {
     public Guid GameId { get; set; }
 
+    public string HostUsername { get; set; }
+
+    public string Name { get; set; }
+
     // Store the GameBoard name as foreign key
     public string GameBoardName { get; set; } = string.Empty;
 
@@ -28,13 +32,15 @@ public class Game
         _players = new List<Player.Player>();
     }
 
-    public Game(Guid gameId, List<Player.Player> players, GameBoard gameBoard)
+    public Game(Guid gameId, string hostUsername, string name, List<Player.Player> players, GameBoard gameBoard)
     {
         GameId = gameId;
         _players = players;
         GameBoardName = gameBoard.Name;
         GameBoard = gameBoard;
         CurrentPhase = GamePhase.ProgrammingPhase;
+        HostUsername = hostUsername;
+        Name = name;
     }
 
     public Dictionary<Player.Player, List<ProgrammingCard>> DealDecksToAllPlayers(ISystemTime systemTime)

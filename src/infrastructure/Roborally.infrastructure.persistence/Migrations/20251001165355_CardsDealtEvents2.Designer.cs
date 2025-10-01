@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Roborally.infrastructure.persistence;
@@ -12,9 +13,11 @@ using Roborally.infrastructure.persistence;
 namespace Roborally.infrastructure.persistence.Migrations
 {
     [DbContext(typeof(AppDatabaseContext))]
-    partial class AppDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20251001165355_CardsDealtEvents2")]
+    partial class CardsDealtEvents2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,16 +52,6 @@ namespace Roborally.infrastructure.persistence.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<string>("HostUsername")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
                     b.ComplexProperty<Dictionary<string, object>>("CurrentPhase", "Roborally.core.domain.Game.Game.CurrentPhase#GamePhase", b1 =>
                         {
                             b1.IsRequired();
@@ -72,8 +65,6 @@ namespace Roborally.infrastructure.persistence.Migrations
                     b.HasKey("GameId");
 
                     b.HasIndex("GameBoardName");
-
-                    b.HasIndex("HostUsername");
 
                     b.ToTable("Games");
                 });
@@ -287,12 +278,6 @@ namespace Roborally.infrastructure.persistence.Migrations
                     b.HasOne("Roborally.core.domain.Game.Gameboard.GameBoard", "GameBoard")
                         .WithMany()
                         .HasForeignKey("GameBoardName")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Roborally.core.domain.User.User", null)
-                        .WithMany()
-                        .HasForeignKey("HostUsername")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

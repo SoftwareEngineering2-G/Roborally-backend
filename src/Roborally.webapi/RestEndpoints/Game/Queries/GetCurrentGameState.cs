@@ -12,10 +12,12 @@ public class GetCurrentGameState : Endpoint<GetCurrentGameStateRequest, GetCurre
         GetCurrentGameStateCommand command = new GetCurrentGameStateCommand() {
             GameId = req.GameId
         };
-        
+
         var response = await command.ExecuteAsync(ct);
         await Send.OkAsync(new GetCurrentGameStateResponse() {
             GameId = response.GameId,
+            HostUsername = response.HostUsername,
+            Name = response.Name,
             CurrentPhase = response.CurrentPhase,
             Players =
                 response.Players.Select(p => new GetCurrentGameStateResponse.Player(p.Username, p.Robot)).ToList(),
@@ -28,9 +30,13 @@ public class GetCurrentGameStateRequest {
 }
 
 public class GetCurrentGameStateResponse {
-    public string GameId { get; set; }
-    public List<Player> Players { get; set; } = [];
-    public string CurrentPhase { get; set; }
+    public required string GameId { get; set; }
+    public required List<Player> Players { get; set; } = [];
+    public required string CurrentPhase { get; set; }
+
+    public required string HostUsername { get; set; }
+
+    public required string Name { get; set; }
 
     // TODO:  We probably need information about gameboards, current positions and stuff
 

@@ -10,12 +10,14 @@ public class DealDecksToAllCommandHandler : ICommandHandler<DealDecksToAllComman
     private readonly IGameRepository _gameRepository;
     private readonly ISystemTime _systemTime;
     private readonly IIndividualPlayerBroadcaster _individualPlayerBroadcaster;
+    private readonly IUnitOfWork _unitOfWork;
 
     public DealDecksToAllCommandHandler(IGameRepository gameRepository, ISystemTime systemTime,
-        IIndividualPlayerBroadcaster individualPlayerBroadcaster) {
+        IIndividualPlayerBroadcaster individualPlayerBroadcaster, IUnitOfWork unitOfWork) {
         _gameRepository = gameRepository;
         _systemTime = systemTime;
         _individualPlayerBroadcaster = individualPlayerBroadcaster;
+        _unitOfWork = unitOfWork;
     }
 
 
@@ -36,5 +38,6 @@ public class DealDecksToAllCommandHandler : ICommandHandler<DealDecksToAllComman
 
         // Await all broadcast tasks to ensure they complete and are done in parallel
         await Task.WhenAll(broadcastTasks);
+        await _unitOfWork.SaveChangesAsync(ct);
     }
 }

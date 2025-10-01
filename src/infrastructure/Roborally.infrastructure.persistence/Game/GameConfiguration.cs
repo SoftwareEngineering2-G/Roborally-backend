@@ -26,6 +26,23 @@ public class GameConfiguration : IEntityTypeConfiguration<core.domain.Game.Game>
             .HasForeignKey(p => p.GameId) // Use Player.GameId as foreign key
             .IsRequired();
 
+        // Map Name and HostUsername properties
+        builder.Property(g => g.Name)
+            .IsRequired()
+            .HasMaxLength(100);
+
+        builder.Property(g => g.HostUsername)
+            .IsRequired()
+            .HasMaxLength(100);
+
+        // Configure HostUsername as a foreign key to User.Username
+        builder.HasOne<core.domain.User.User>()
+            .WithMany()
+            .HasForeignKey(g => g.HostUsername)
+            .HasPrincipalKey(u => u.Username)
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired();
+
         builder.ComplexProperty(game => game.CurrentPhase,
             propBuilder => { propBuilder.Property(cp => cp.DisplayName).HasColumnName("CurrentPhase"); });
     }

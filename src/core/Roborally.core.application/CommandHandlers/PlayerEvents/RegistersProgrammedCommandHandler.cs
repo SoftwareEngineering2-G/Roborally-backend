@@ -35,10 +35,10 @@ public class RegistersProgrammedCommandHandler : ICommandHandler<RegistersProgra
         
         game.LockInRegisters(command.Username, lockedInCards, _systemTime);
 
+        await _unitOfWork.SaveChangesAsync(ct);
 
         // Broadcast that the player has locked in their registers
         await _gameBroadcaster.BroadcastPlayerLockedInRegisterAsync(command.Username,
             command.GameId, ct);
-        await _unitOfWork.SaveChangesAsync(ct);
     }
 }

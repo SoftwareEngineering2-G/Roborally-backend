@@ -1,7 +1,7 @@
 ﻿using FastEndpoints;
 using Roborally.core.application.CommandContracts.Game;
 
-namespace Roborally.webapi.RestEndpoints.Game;
+namespace Roborally.webapi.RestEndpoints.Game.Commands;
 
 public class DealDecksToAllEndpoint : Endpoint<DealDecksToAllRequest> {
     public override void Configure() {
