@@ -15,7 +15,6 @@ public class AppDatabaseContext : DbContext
 
     public required DbSet<core.domain.User.User> Users { get; set; }
     public required DbSet<core.domain.Lobby.GameLobby> GameLobby { get; set; }
-    public required DbSet<core.domain.Game.Player.Player> Players { get; set; }
     public required DbSet<PlayerEvent> PlayerEvents { get; set; }
     public required DbSet<core.domain.Game.Game> Games { get; set; }
 

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Roborally.core.domain.Game.Player.Events;
 
-namespace Roborally.infrastructure.persistence.Player.Events;
+namespace Roborally.infrastructure.persistence.Game.Player.Events;
 
 public class PlayerEventConfiguration : IEntityTypeConfiguration<PlayerEvent>
 {
