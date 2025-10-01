@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Roborally.infrastructure.persistence;
@@ -12,9 +13,11 @@ using Roborally.infrastructure.persistence;
 namespace Roborally.infrastructure.persistence.Migrations
 {
     [DbContext(typeof(AppDatabaseContext))]
-    partial class AppDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250929154701_fix")]
+    partial class fix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,16 +52,6 @@ namespace Roborally.infrastructure.persistence.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<string>("HostUsername")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
                     b.ComplexProperty<Dictionary<string, object>>("CurrentPhase", "Roborally.core.domain.Game.Game.CurrentPhase#GamePhase", b1 =>
                         {
                             b1.IsRequired();
@@ -72,8 +65,6 @@ namespace Roborally.infrastructure.persistence.Migrations
                     b.HasKey("GameId");
 
                     b.HasIndex("GameBoardName");
-
-                    b.HasIndex("HostUsername");
 
                     b.ToTable("Games");
                 });
@@ -244,17 +235,6 @@ namespace Roborally.infrastructure.persistence.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Roborally.core.domain.Game.Player.Events.ProgrammingCardsDealtEvent", b =>
-                {
-                    b.HasBaseType("Roborally.core.domain.Game.Player.Events.PlayerEvent");
-
-                    b.Property<string>("DealtCards")
-                        .IsRequired()
-                        .HasColumnType("json");
-
-                    b.ToTable("ProgrammingCardsDealtEvents", (string)null);
-                });
-
             modelBuilder.Entity("Roborally.core.domain.Game.Player.Events.RegistersProgrammedEvent", b =>
                 {
                     b.HasBaseType("Roborally.core.domain.Game.Player.Events.PlayerEvent");
@@ -287,12 +267,6 @@ namespace Roborally.infrastructure.persistence.Migrations
                     b.HasOne("Roborally.core.domain.Game.Gameboard.GameBoard", "GameBoard")
                         .WithMany()
                         .HasForeignKey("GameBoardName")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Roborally.core.domain.User.User", null)
-                        .WithMany()
-                        .HasForeignKey("HostUsername")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -329,15 +303,6 @@ namespace Roborally.infrastructure.persistence.Migrations
                         .WithMany()
                         .HasForeignKey("HostUsername")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Roborally.core.domain.Game.Player.Events.ProgrammingCardsDealtEvent", b =>
-                {
-                    b.HasOne("Roborally.core.domain.Game.Player.Events.PlayerEvent", null)
-                        .WithOne()
-                        .HasForeignKey("Roborally.core.domain.Game.Player.Events.ProgrammingCardsDealtEvent", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

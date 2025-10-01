@@ -1,11 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System.Text.Json;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Roborally.core.domain.Deck;
 
-
-namespace Roborally.infrastructure.persistence.Player;
+namespace Roborally.infrastructure.persistence.Game.Player;
 
 public class PlayerConfiguration : IEntityTypeConfiguration<core.domain.Game.Player.Player> {
     public void Configure(EntityTypeBuilder<core.domain.Game.Player.Player> builder) {

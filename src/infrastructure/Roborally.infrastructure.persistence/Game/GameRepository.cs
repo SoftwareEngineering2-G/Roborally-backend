@@ -1,4 +1,5 @@
-﻿using Roborally.core.domain.Game;
+﻿using Microsoft.EntityFrameworkCore;
+using Roborally.core.domain.Game;
 
 namespace Roborally.infrastructure.persistence.Game;
 
@@ -15,6 +16,9 @@ public class GameRepository : IGameRepository{
     }
 
     public Task<core.domain.Game.Game?> FindAsync(Guid gameId, CancellationToken ct) {
-        return _context.Games.FindAsync([gameId],ct).AsTask();
+        return _context.Games.Include(game => game.Players)
+            .ThenInclude(player => player.PlayerEvents)
+            .Include(game=> game.GameBoard)
+            .FirstOrDefaultAsync(game => game.GameId.Equals(gameId), ct);
     }
 }

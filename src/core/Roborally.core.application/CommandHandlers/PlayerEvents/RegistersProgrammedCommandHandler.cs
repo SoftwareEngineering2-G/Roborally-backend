@@ -1,34 +1,44 @@
 ﻿using FastEndpoints;
+using Roborally.core.application.Broadcasters;
 using Roborally.core.application.CommandContracts.PlayerEvents;
 using Roborally.core.domain.Bases;
 using Roborally.core.domain.Deck;
-using Roborally.core.domain.Game.Player;
+using Roborally.core.domain.Game;
 
 namespace Roborally.core.application.CommandHandlers.PlayerEvents;
 
 public class RegistersProgrammedCommandHandler : ICommandHandler<RegistersProgrammedCommand> {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IPlayerRepository _playerRepository;
+    private readonly IGameRepository _gameRepository;
     private readonly ISystemTime _systemTime;
+    private readonly IGameBroadcaster _gameBroadcaster;
 
-
-    public RegistersProgrammedCommandHandler(IUnitOfWork unitOfWork, IPlayerRepository playerRepository,
-        ISystemTime systemTime) {
+    
+    public RegistersProgrammedCommandHandler(IUnitOfWork unitOfWork,
+        ISystemTime systemTime, IGameBroadcaster gameBroadcaster, IGameRepository gameRepository) {
         _unitOfWork = unitOfWork;
-        _playerRepository = playerRepository;
         _systemTime = systemTime;
+        _gameBroadcaster = gameBroadcaster;
+        _gameRepository = gameRepository;
     }
 
-    public async Task ExecuteAsync(RegistersProgrammedCommand programmedCommand, CancellationToken ct) {
-        Player? player = await _playerRepository.FindAsync(programmedCommand.Username, programmedCommand.GameId, ct);
-        if (player is null) {
-            throw new CustomException("Player not found", 400);
+    public async Task ExecuteAsync(RegistersProgrammedCommand command, CancellationToken ct) {
+        domain.Game.Game? game = await _gameRepository.FindAsync(command.GameId, ct);
+        if (game is null)
+        {
+            throw new CustomException("Game does not exist", 404);
         }
-
-
+        
+        
         List<ProgrammingCard> lockedInCards =
-            programmedCommand.LockedInCardsInOrder.Select(ProgrammingCard.FromString).ToList();
-        player.LockInRegisters(lockedInCards, _systemTime);
+            command.LockedInCardsInOrder.Select(ProgrammingCard.FromString).ToList();
+        
+        game.LockInRegisters(command.Username, lockedInCards, _systemTime);
+
         await _unitOfWork.SaveChangesAsync(ct);
+
+        // Broadcast that the player has locked in their registers
+        await _gameBroadcaster.BroadcastPlayerLockedInRegisterAsync(command.Username,
+            command.GameId, ct);
     }
 }

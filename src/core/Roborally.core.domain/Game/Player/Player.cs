@@ -34,11 +34,27 @@ public class Player {
     }
 
 
-    public void LockInRegisters(List<ProgrammingCard> lockedInCards, ISystemTime systemTime) {
+    internal void LockInRegisters(List<ProgrammingCard> lockedInCards, ISystemTime systemTime) {
+        
         if (lockedInCards.Count != 5) {
             throw new CustomException("You must lock in exactly 5 cards.", 400);
         }
-
+        
+        var lastProgrammingCardsDealtEvent = this.PlayerEvents
+            .OfType<ProgrammingCardsDealtEvent>()
+            .OrderByDescending(e => e.HappenedAt)
+            .FirstOrDefault();
+        
+        if (lastProgrammingCardsDealtEvent is null) {
+            throw new CustomException("No cards have been dealt to the player yet.", 400);
+        }
+        
+        // Ensure all lockedInCards were actually dealt
+        if (lockedInCards.Any(card => !lastProgrammingCardsDealtEvent.DealtCards.Contains(card)))
+        {
+            throw new CustomException("You can only lock in cards that were dealt to you.", 400);
+        }
+        
         RegistersProgrammedEvent lockedInEvent = new RegistersProgrammedEvent() {
             HappenedAt = systemTime.CurrentTime,
             GameId = this.GameId,
@@ -47,5 +63,32 @@ public class Player {
         };
         
         this.PlayerEvents.Add(lockedInEvent);
+    }
+
+    internal List<ProgrammingCard> DealProgrammingCards(int count, ISystemTime systemTime) {
+        var dealt = new List<ProgrammingCard>(count);
+
+        // Draw as many as possible from PickPiles
+        dealt.AddRange(ProgrammingDeck.Draw(count));
+
+        // If not enough, refill from discard and continue drawing
+        if (dealt.Count < count && ProgrammingDeck.DiscardedPiles.Count > 0) {
+            int remaining = count - dealt.Count;
+            ProgrammingDeck.RefillFromDiscard();
+            dealt.AddRange(ProgrammingDeck.Draw(remaining));
+
+            // TODO: We need to add an event called DiscardPilesShuffledIntoPickPilesEvent
+        }
+
+        ProgrammingCardsDealtEvent dealtEvent = new ProgrammingCardsDealtEvent() {
+            HappenedAt = systemTime.CurrentTime,
+            GameId = this.GameId,
+            Username = this.Username,
+            DealtCards = dealt
+        };
+        this.PlayerEvents.Add(dealtEvent);
+
+
+        return dealt;
     }
 }
