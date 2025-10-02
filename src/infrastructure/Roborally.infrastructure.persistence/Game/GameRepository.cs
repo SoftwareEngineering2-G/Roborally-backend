@@ -16,9 +16,9 @@ public class GameRepository : IGameRepository{
     }
 
     public Task<core.domain.Game.Game?> FindAsync(Guid gameId, CancellationToken ct) {
-        return _context.Games
-            .Include(g => g.Players)
-            .Include(g => g.GameBoard)
-            .FirstOrDefaultAsync(g => g.GameId == gameId, ct);
+        return _context.Games.Include(game => game.Players)
+            .ThenInclude(player => player.PlayerEvents)
+            .Include(game=> game.GameBoard)
+            .FirstOrDefaultAsync(game => game.GameId.Equals(gameId), ct);
     }
 }

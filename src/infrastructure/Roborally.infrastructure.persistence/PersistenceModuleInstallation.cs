@@ -2,13 +2,12 @@
 using Microsoft.Extensions.DependencyInjection;
 using Roborally.core.domain.Bases;
 using Roborally.core.domain.Game;
-using Roborally.core.domain.Game.Player;
+using Roborally.core.domain.Game.Gameboard;
 using Roborally.core.domain.Lobby;
 using Roborally.core.domain.User;
 using Roborally.infrastructure.persistence.Contracts;
 using Roborally.infrastructure.persistence.Game;
 using Roborally.infrastructure.persistence.Lobby;
-using Roborally.infrastructure.persistence.Player;
 using Roborally.infrastructure.persistence.User;
 
 namespace Roborally.infrastructure.persistence;
@@ -29,7 +28,7 @@ public static class PersistenceModuleInstallation
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IGameLobbyRepository, GameLobbyRepository>();
         services.AddScoped<IGameRepository, GameRepository>();
-        services.AddScoped<IPlayerRepository, PlayerRepository>();
+        services.AddScoped<IGameBoardRepository, GameBoardRepository>();
         services.AddScoped<ISystemTime, SystemTime>();
         return services;
     }

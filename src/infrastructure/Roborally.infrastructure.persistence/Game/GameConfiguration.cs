@@ -7,16 +7,40 @@ public class GameConfiguration : IEntityTypeConfiguration<core.domain.Game.Game>
     public void Configure(EntityTypeBuilder<core.domain.Game.Game> builder) {
         builder.HasKey(x => x.GameId);
 
-        // Configure relationship with GameBoard - one GameBoard can be used by many Games
+        // Configure GameBoardName as foreign key to GameBoard table
+        builder.Property(g => g.GameBoardName)
+            .IsRequired()
+            .HasMaxLength(100);
+
+        // Configure the navigation property relationship with GameBoard
         builder.HasOne(g => g.GameBoard)
             .WithMany() // GameBoard doesn't have a navigation property back to Games
-            .HasForeignKey("GameBoardName") // Use GameBoard.Name as foreign key
+            .HasForeignKey(g => g.GameBoardName)
+            .HasPrincipalKey(gb => gb.Name)
+            .OnDelete(DeleteBehavior.Restrict) // Prevent deletion of GameBoard if it has Games
             .IsRequired();
 
         // Configure relationship with Players - one Game can have many Players
         builder.HasMany(g => g.Players)
             .WithOne() // Player doesn't have a navigation property back to Game
             .HasForeignKey(p => p.GameId) // Use Player.GameId as foreign key
+            .IsRequired();
+
+        // Map Name and HostUsername properties
+        builder.Property(g => g.Name)
+            .IsRequired()
+            .HasMaxLength(100);
+
+        builder.Property(g => g.HostUsername)
+            .IsRequired()
+            .HasMaxLength(100);
+
+        // Configure HostUsername as a foreign key to User.Username
+        builder.HasOne<core.domain.User.User>()
+            .WithMany()
+            .HasForeignKey(g => g.HostUsername)
+            .HasPrincipalKey(u => u.Username)
+            .OnDelete(DeleteBehavior.Restrict)
             .IsRequired();
 
         builder.ComplexProperty(game => game.CurrentPhase,

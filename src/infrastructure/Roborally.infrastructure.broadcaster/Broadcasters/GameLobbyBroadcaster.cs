@@ -12,7 +12,7 @@ public class GameLobbyBroadcaster : IGameLobbyBroadcaster
         _hubContext = hubContext;
     }
 
-    private static string GetGroupId(Guid gameId) => $"lobby-{gameId}";
+    private static string GetGroupId(Guid gameId) => GroupName.GameLobby(gameId.ToString());
 
     public async Task BroadcastUserJoinedAsync(Guid gameId, string username, CancellationToken cancellationToken = default)
     {
@@ -30,7 +30,7 @@ public class GameLobbyBroadcaster : IGameLobbyBroadcaster
 
     public Task BroadcastGameStartedAsync(Guid gameId, CancellationToken cancellationToken = default) {
         string groupId = GetGroupId(gameId);
-        var payload = new { GameId = gameId };
+        var payload = new { GameId = gameId };  
         return _hubContext.Clients.Group(groupId).SendAsync("GameStarted", payload, cancellationToken);
     }
 }
