@@ -2,6 +2,7 @@
 using Roborally.core.domain.Bases;
 using Roborally.core.domain.Deck;
 using Roborally.core.domain.Game.Player.Events;
+using Roborally.core.domain.Game.Gameboard;
 
 namespace Roborally.core.domain.Game.Player;
 
@@ -14,6 +15,22 @@ public class Player {
     public Position CurrentPosition { get; set; }
 
     public Position SpawnPosition { get; init; }
+
+    public int CheckpointIndex { get; set; } = 0;
+
+    public void MoveTo(Position newPosition, Game.Game game)
+    {
+        CurrentPosition = newPosition;
+
+        // bounds check (optional)
+        var y = newPosition.Y;
+        var x = newPosition.X;
+        if (y < 0 || y >= game.GameBoard.Space.Length ||
+            x < 0 || x >= game.GameBoard.Space[y].Length) return;
+
+        var space = game.GameBoard.Space[y][x];
+        space.OnEnter(this);
+    }
 
     public ProgrammingDeck ProgrammingDeck { get; init; }
     public List<PlayerEvent> PlayerEvents { get; init; } = [];

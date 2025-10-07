@@ -25,6 +25,13 @@ public static class BoardFactory {
                     spaces[i][j] = new EmptySpace();
                 }
             }
+            // hardcoded checkpoints
+            spaces[2][2] = new Checkpoint(1);
+            spaces[5][5] = new Checkpoint(2);
+            spaces[4][4] = new Checkpoint(3);
+            spaces[8][8] = new Checkpoint(4);
+            spaces[9][9] = new Checkpoint(5);
+            spaces[3][9] = new Checkpoint(6);
 
             _emptyBoard = new GameBoard() {
                 Name = "Empty Board",
