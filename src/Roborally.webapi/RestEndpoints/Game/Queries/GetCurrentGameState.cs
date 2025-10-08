@@ -1,6 +1,5 @@
 using FastEndpoints;
 using Roborally.core.application.CommandContracts.Game;
-using Roborally.core.domain.Game.Gameboard;
 
 namespace Roborally.webapi.RestEndpoints.Game.Queries;
 
@@ -20,9 +19,14 @@ public class GetCurrentGameState : Endpoint<GetCurrentGameStateRequest, GetCurre
             HostUsername = response.HostUsername,
             Name = response.Name,
             CurrentPhase = response.CurrentPhase,
-            GameBoard = response.GameBoard,
-            Players =
-                response.Players.Select(p => new GetCurrentGameStateResponse.Player(p.Username, p.Robot)).ToList(),
+            GameBoard = new GetCurrentGameStateResponse.GameBoardSpaces(response.GameBoard.Name,
+                response.GameBoard.Space.Select(row => row.Select(space => new GetCurrentGameStateResponse.Space(space.Name())).ToArray()).ToArray()),
+            Players = response.Players.Select(player => new GetCurrentGameStateResponse.Player(
+                player.Username,
+                player.Robot,
+                player.CurrentFacingDirection,
+                player.CurrentPosition is null ? null : new GetCurrentGameStateResponse.Position(player.CurrentPosition.X, player.CurrentPosition.Y)
+            )).ToList()
         }, ct);
     }
 }
@@ -41,7 +45,12 @@ public class GetCurrentGameStateResponse {
     public required string Name { get; set; }
 
     // TODO:  We probably need information about gameboards, current positions and stuff
-    public GameBoard GameBoard { get; set; }
+    public GameBoardSpaces GameBoard { get; set; }
+    
+    public record GameBoardSpaces(string Name, Space[][] Spaces);
 
-    public record Player(string Username, string Robot);
+    public record Space(string Name);
+
+    public record Player(string Username, string Robot,string CurrentFacingDirection, Position CurrentPosition);
+    public record Position(int X, int Y);
 }

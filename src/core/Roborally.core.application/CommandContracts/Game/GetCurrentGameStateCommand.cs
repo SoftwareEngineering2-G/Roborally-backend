@@ -18,6 +18,11 @@ public class GetCurrentGameStateCommandResponse {
 
     // TODO:  We probably need information about gameboards, current positions and stuff
     public GameBoard GameBoard { get; init; }
+    
+    public record GameBoardSpaces(string Name, Space[][] Spaces);
 
-    public record Player(string Username, string Robot);
+    public record Space(string Name);
+
+    public record Player(string Username, string Robot,string CurrentFacingDirection, Position CurrentPosition);
+    public record Position(int X, int Y);
 }

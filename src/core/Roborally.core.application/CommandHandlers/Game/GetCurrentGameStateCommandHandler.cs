@@ -29,8 +29,15 @@ public class
             Name = game.Name,
             CurrentPhase = game.CurrentPhase.DisplayName,
             GameBoard = game.GameBoard,
-            Players = game.Players
-                .Select(p => new GetCurrentGameStateCommandResponse.Player(p.Username, p.Robot.DisplayName)).ToList()
+            Players = game.Players.Select(player => new GetCurrentGameStateCommandResponse.Player(
+                player.Username,
+                player.Robot.DisplayName,
+                player.CurrentFacingDirection.ToString(),
+                player.CurrentPosition is null
+                    ? null
+                    : new GetCurrentGameStateCommandResponse.Position(player.CurrentPosition.X,
+                        player.CurrentPosition.Y)
+            )).ToList()
         };
     }
 }
