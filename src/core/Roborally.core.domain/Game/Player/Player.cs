@@ -1,7 +1,7 @@
-﻿using Roborally.core.application;
-using Roborally.core.domain.Bases;
+﻿using Roborally.core.domain.Bases;
 using Roborally.core.domain.Deck;
 using Roborally.core.domain.Game.Player.Events;
+using Roborally.core.domain.Game.Actions;
 
 namespace Roborally.core.domain.Game.Player;
 
@@ -17,6 +17,8 @@ public class Player {
 
     public ProgrammingDeck ProgrammingDeck { get; init; }
     public List<PlayerEvent> PlayerEvents { get; init; } = [];
+    
+    public IAction? LastExecutedAction { get; set; }
 
     private Player() {
         // For EF Core
@@ -90,5 +92,59 @@ public class Player {
 
 
         return dealt;
+    }
+
+    public void RotateLeft() {
+        CurrentFacingDirection = CurrentFacingDirection.DisplayName switch {
+            "North" => Direction.West,
+            "West" => Direction.South,
+            "South" => Direction.East,
+            "East" => Direction.North,
+            _ => throw new CustomException($"Invalid direction: {CurrentFacingDirection.DisplayName}", 500)
+        };
+    }
+
+    public void RotateRight() {
+        CurrentFacingDirection = CurrentFacingDirection.DisplayName switch {
+            "North" => Direction.East,
+            "East" => Direction.South,
+            "South" => Direction.West,
+            "West" => Direction.North,
+            _ => throw new CustomException($"Invalid direction: {CurrentFacingDirection.DisplayName}", 500)
+        };
+    }
+
+    public void UTurn() {
+        CurrentFacingDirection = CurrentFacingDirection.DisplayName switch {
+            "North" => Direction.South,
+            "South" => Direction.North,
+            "East" => Direction.West,
+            "West" => Direction.East,
+            _ => throw new CustomException($"Invalid direction: {CurrentFacingDirection.DisplayName}", 500)
+        };
+    }
+
+    public Position GetNextPosition(Direction direction) {
+        return direction.DisplayName switch {
+            "North" => new Position(CurrentPosition.X, CurrentPosition.Y - 1),
+            "South" => new Position(CurrentPosition.X, CurrentPosition.Y + 1),
+            "East" => new Position(CurrentPosition.X + 1, CurrentPosition.Y),
+            "West" => new Position(CurrentPosition.X - 1, CurrentPosition.Y),
+            _ => throw new CustomException($"Invalid direction: {direction.DisplayName}", 500)
+        };
+    }
+
+    public Position GetPositionBehind() {
+        return CurrentFacingDirection.DisplayName switch {
+            "North" => new Position(CurrentPosition.X, CurrentPosition.Y + 1),
+            "South" => new Position(CurrentPosition.X, CurrentPosition.Y - 1),
+            "East" => new Position(CurrentPosition.X - 1, CurrentPosition.Y),
+            "West" => new Position(CurrentPosition.X + 1, CurrentPosition.Y),
+            _ => throw new CustomException($"Invalid direction: {CurrentFacingDirection.DisplayName}", 500)
+        };
+    }
+
+    public void MoveTo(Position newPosition) {
+        CurrentPosition = newPosition;
     }
 }
