@@ -15,7 +15,7 @@ public class GetGameCommandHandler:ICommandHandler<GetGameCommand,GetGameCommand
 
     public async Task<GetGameCommandResponse> ExecuteAsync(GetGameCommand command, CancellationToken ct)
     {
-        Game? game = await _gameRepository.FindAsync(command.GameId,ct);
+        domain.Game.Game? game = await _gameRepository.FindAsync(command.GameId,ct);
         if (game is null)
         {
             throw new CustomException("Game not found", 404);

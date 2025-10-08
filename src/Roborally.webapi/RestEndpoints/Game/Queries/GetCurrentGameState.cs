@@ -1,5 +1,6 @@
 using FastEndpoints;
 using Roborally.core.application.CommandContracts.Game;
+using Roborally.core.domain.Game.Gameboard;
 
 namespace Roborally.webapi.RestEndpoints.Game.Queries;
 
@@ -19,6 +20,7 @@ public class GetCurrentGameState : Endpoint<GetCurrentGameStateRequest, GetCurre
             HostUsername = response.HostUsername,
             Name = response.Name,
             CurrentPhase = response.CurrentPhase,
+            GameBoard = response.GameBoard,
             Players =
                 response.Players.Select(p => new GetCurrentGameStateResponse.Player(p.Username, p.Robot)).ToList(),
         }, ct);
@@ -39,6 +41,7 @@ public class GetCurrentGameStateResponse {
     public required string Name { get; set; }
 
     // TODO:  We probably need information about gameboards, current positions and stuff
+    public GameBoard GameBoard { get; set; }
 
     public record Player(string Username, string Robot);
 }

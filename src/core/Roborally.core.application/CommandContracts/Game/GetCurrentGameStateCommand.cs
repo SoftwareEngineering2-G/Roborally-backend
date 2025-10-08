@@ -1,4 +1,5 @@
 using FastEndpoints;
+using Roborally.core.domain.Game.Gameboard;
 
 namespace Roborally.core.application.CommandContracts.Game;
 
@@ -16,6 +17,7 @@ public class GetCurrentGameStateCommandResponse {
     public required string Name { get; init; }
 
     // TODO:  We probably need information about gameboards, current positions and stuff
+    public GameBoard GameBoard { get; init; }
 
     public record Player(string Username, string Robot);
 }

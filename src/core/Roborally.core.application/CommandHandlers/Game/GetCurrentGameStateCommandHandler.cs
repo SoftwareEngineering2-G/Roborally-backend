@@ -28,6 +28,7 @@ public class
             HostUsername = game.HostUsername,
             Name = game.Name,
             CurrentPhase = game.CurrentPhase.DisplayName,
+            GameBoard = game.GameBoard,
             Players = game.Players
                 .Select(p => new GetCurrentGameStateCommandResponse.Player(p.Username, p.Robot.DisplayName)).ToList()
         };
