@@ -13,7 +13,13 @@ public class Player {
     public Direction CurrentFacingDirection { get; set; }
     public Position CurrentPosition { get; set; }
 
-    public Position SpawnPosition { get; init; }
+    public Position SpawnPosition { get; set; } // was init; now settable so Game can assign position
+
+    public void Respawn(Game.Game game)
+    {
+        CurrentFacingDirection = Direction.North; // simple default
+        MoveTo(SpawnPosition, game);
+    }
 
     public ProgrammingDeck ProgrammingDeck { get; init; }
     public List<PlayerEvent> PlayerEvents { get; init; } = [];
@@ -25,9 +31,6 @@ public class Player {
     public Player(string username, Guid gameId, Position spawnPosition, Robot robot) {
         Username = username;
         GameId = gameId;
-        SpawnPosition = spawnPosition;
-        // When a player is created, they start at their spawn position
-        CurrentPosition = spawnPosition;
         Robot = robot;
         CurrentFacingDirection = Direction.North;
         ProgrammingDeck = ProgrammingDeck.NewShuffled();

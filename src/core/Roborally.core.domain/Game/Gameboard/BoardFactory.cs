@@ -25,13 +25,19 @@ public static class BoardFactory {
                     spaces[i][j] = new EmptySpace();
                 }
             }
+            // Spawnpoints 1-6
+            spaces[0][0] = new SpawnPoint(1);
+            spaces[0][9] = new SpawnPoint(2);
+            spaces[9][0] = new SpawnPoint(3);
+            spaces[0][5] = new SpawnPoint(4);
+            spaces[5][0] = new SpawnPoint(5);
+            spaces[2][0] = new SpawnPoint(6);
 
             _emptyBoard = new GameBoard() {
                 Name = "Empty Board",
                 Space = spaces
             };
         }
-
         return _emptyBoard;
     }
 }
