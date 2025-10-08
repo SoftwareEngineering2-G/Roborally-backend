@@ -28,16 +28,12 @@ public class
             HostUsername = game.HostUsername,
             Name = game.Name,
             CurrentPhase = game.CurrentPhase.DisplayName,
-            GameBoard = game.GameBoard,
-            Players = game.Players.Select(player => new GetCurrentGameStateCommandResponse.Player(
-                player.Username,
-                player.Robot.DisplayName,
-                player.CurrentFacingDirection.ToString(),
-                player.CurrentPosition is null
-                    ? null
-                    : new GetCurrentGameStateCommandResponse.Position(player.CurrentPosition.X,
-                        player.CurrentPosition.Y)
-            )).ToList()
+            GameBoard = new GetCurrentGameStateCommandResponse.GameBoardSpaces(game.GameBoard.Name,
+                game.GameBoard.Space.Select(row =>
+                        row.Select(space => new GetCurrentGameStateCommandResponse.Space(space.Name())).ToArray())
+                    .ToArray()),
+            Players = game.Players
+                .Select(p => new GetCurrentGameStateCommandResponse.Player(p.Username, p.Robot.DisplayName)).ToList()
         };
     }
 }

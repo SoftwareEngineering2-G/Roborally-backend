@@ -20,13 +20,9 @@ public class GetCurrentGameState : Endpoint<GetCurrentGameStateRequest, GetCurre
             Name = response.Name,
             CurrentPhase = response.CurrentPhase,
             GameBoard = new GetCurrentGameStateResponse.GameBoardSpaces(response.GameBoard.Name,
-                response.GameBoard.Space.Select(row => row.Select(space => new GetCurrentGameStateResponse.Space(space.Name())).ToArray()).ToArray()),
-            Players = response.Players.Select(player => new GetCurrentGameStateResponse.Player(
-                player.Username,
-                player.Robot,
-                player.CurrentFacingDirection,
-                player.CurrentPosition is null ? null : new GetCurrentGameStateResponse.Position(player.CurrentPosition.X, player.CurrentPosition.Y)
-            )).ToList()
+                response.GameBoard.Spaces.Select(row => row.Select(space => new GetCurrentGameStateResponse.Space(space.Name)).ToArray()).ToArray()),
+            Players =
+                response.Players.Select(p => new GetCurrentGameStateResponse.Player(p.Username, p.Robot)).ToList(),
         }, ct);
     }
 }
@@ -51,6 +47,5 @@ public class GetCurrentGameStateResponse {
 
     public record Space(string Name);
 
-    public record Player(string Username, string Robot,string CurrentFacingDirection, Position CurrentPosition);
-    public record Position(int X, int Y);
+    public record Player(string Username, string Robot);
 }
