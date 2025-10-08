@@ -32,6 +32,10 @@ public static class BoardFactory {
             };
         }
 
+        spaces[4][4] = new Pit();
+        spaces[2][8] = new Pit();
+        spaces[8][2] = new Pit();
+
         return _emptyBoard;
     }
 }
