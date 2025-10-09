@@ -20,6 +20,8 @@ public class Game
     public GameBoard GameBoard { get; set; } = null!;
 
     public GamePhase CurrentPhase { get; set; }
+    
+    public int CurrentRevealedRegister { get; set; } = 0; // 0 means none revealed, 1-5 for each register
 
     // Make sure the list is ordered in a way where we can also get the next player
     private readonly List<Player.Player> _players;
@@ -78,5 +80,39 @@ public class Game
         if (player is null)
             throw new CustomException("Player does not exist", 404);
         player.LockInRegisters(lockedInCards, systemTime);
+    }
+
+    public Dictionary<string, ProgrammingCard> RevealNextRegister()
+    {
+        if (!IsActive())
+        {
+            throw new CustomException("The game needs to be in activation phase", 400);
+        }
+
+        if (CurrentRevealedRegister >= 5)
+        {
+            throw new CustomException("All registers have already been revealed", 400);
+        }
+
+        CurrentRevealedRegister++;
+        int registerIndex = CurrentRevealedRegister - 1; // 0-indexed
+
+        // Get each player's card for this register
+        Dictionary<string, ProgrammingCard> revealedCards = new();
+        
+        foreach (var player in _players)
+        {
+            var lastLockedEvent = player.PlayerEvents
+                .OfType<Player.Events.RegistersProgrammedEvent>()
+                .OrderByDescending(e => e.HappenedAt)
+                .FirstOrDefault();
+
+            if (lastLockedEvent != null && lastLockedEvent.ProgrammedCardsInOrder.Count > registerIndex)
+            {
+                revealedCards[player.Username] = lastLockedEvent.ProgrammedCardsInOrder[registerIndex];
+            }
+        }
+
+        return revealedCards;
     }
 }
