@@ -1,6 +1,7 @@
 using FastEndpoints;
 using Roborally.core.application.CommandContracts.Game;
 using Roborally.core.domain.Game;
+using Roborally.core.domain.Game.Player.Events;
 
 namespace Roborally.core.application.CommandHandlers.Game;
 
@@ -29,7 +30,22 @@ public class
             Name = game.Name,
             CurrentPhase = game.CurrentPhase.DisplayName,
             Players = game.Players
-                .Select(p => new GetCurrentGameStateCommandResponse.Player(p.Username, p.Robot.DisplayName)).ToList()
+                .Select(p => {
+                    var lastLockedEvent = p.PlayerEvents
+                        .OfType<RegistersProgrammedEvent>()
+                        .OrderByDescending(e => e.HappenedAt)
+                        .FirstOrDefault();
+                    
+                    var programmedCards = lastLockedEvent?.ProgrammedCardsInOrder
+                        .Select(card => card.DisplayName)
+                        .ToList();
+                    
+                    return new GetCurrentGameStateCommandResponse.Player(
+                        p.Username, 
+                        p.Robot.DisplayName,
+                        programmedCards
+                    );
+                }).ToList()
         };
     }
 }

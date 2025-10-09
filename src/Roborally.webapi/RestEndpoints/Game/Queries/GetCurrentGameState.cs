@@ -20,7 +20,10 @@ public class GetCurrentGameState : Endpoint<GetCurrentGameStateRequest, GetCurre
             Name = response.Name,
             CurrentPhase = response.CurrentPhase,
             Players =
-                response.Players.Select(p => new GetCurrentGameStateResponse.Player(p.Username, p.Robot)).ToList(),
+                response.Players.Select(p => new GetCurrentGameStateResponse.Player(
+                    p.Username, 
+                    p.Robot ,
+                    p.ProgrammedCards)).ToList(),
         }, ct);
     }
 }
@@ -40,5 +43,5 @@ public class GetCurrentGameStateResponse {
 
     // TODO:  We probably need information about gameboards, current positions and stuff
 
-    public record Player(string Username, string Robot);
+    public record Player(string Username, string Robot, List<string>? ProgrammedCards = null);
 }

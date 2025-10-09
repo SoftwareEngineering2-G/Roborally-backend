@@ -32,7 +32,7 @@ public class RevealNextRegisterCommandHandler : ICommandHandler<RevealNextRegist
         }
 
         // Verify that the user is the host
-        if (game.HostUsername != command.Username)
+        if (!string.Equals(game.HostUsername, command.Username, StringComparison.Ordinal))
         {
             throw new CustomException("Only the host can reveal registers", 403);
         }

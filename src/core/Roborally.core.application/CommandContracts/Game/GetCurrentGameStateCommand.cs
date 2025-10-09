@@ -17,5 +17,5 @@ public class GetCurrentGameStateCommandResponse {
 
     // TODO:  We probably need information about gameboards, current positions and stuff
 
-    public record Player(string Username, string Robot);
+    public record Player(string Username, string Robot, List<string>? ProgrammedCards = null);
 }
