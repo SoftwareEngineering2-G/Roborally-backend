@@ -1,4 +1,4 @@
-﻿namespace Roborally.core.application;
+﻿namespace Roborally.core.domain;
 
 public class CustomException : Exception
 {

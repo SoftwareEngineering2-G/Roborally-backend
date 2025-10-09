@@ -1,4 +1,5 @@
 ﻿using Roborally.core.application;
+using Roborally.core.domain;
 using Roborally.core.domain.User;
 using Roborally.unitTests.Factory;
 
