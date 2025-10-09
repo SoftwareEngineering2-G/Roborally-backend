@@ -21,11 +21,6 @@ builder.Services.AddControllers().AddJsonOptions(opts =>
 });
 
 
-builder.Services.AddControllers().AddJsonOptions(opts =>
-{
-    opts.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-    opts.JsonSerializerOptions.Converters.Add(new SpaceObjectJsonConverter());
-});
 
 
 builder.Services.AddCors(options =>
@@ -57,8 +52,6 @@ if (app.Environment.IsDevelopment()) {
 
 app.UseHttpsRedirection();
 app.UseCors();
-app.MapControllers();
-app.MapControllers();
 app.UseFastEndpoints(c => {
     c.Endpoints.RoutePrefix = "api";
     c.Endpoints.Configurator = ep => {
