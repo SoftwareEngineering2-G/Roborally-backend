@@ -47,7 +47,7 @@ public class GetCurrentGameStateResponse {
     public required string Name { get; set; }
 
     // TODO:  We probably need information about gameboards, current positions and stuff
-    public GameBoardSpaces GameBoard { get; set; }
+    public required GameBoardSpaces GameBoard { get; set; }
     
     public record GameBoardSpaces(string Name, Space[][] Spaces);
 
