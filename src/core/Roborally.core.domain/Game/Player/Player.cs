@@ -98,53 +98,23 @@ public class Player {
     }
 
     public void RotateLeft() {
-        CurrentFacingDirection = CurrentFacingDirection.DisplayName switch {
-            "North" => Direction.West,
-            "West" => Direction.South,
-            "South" => Direction.East,
-            "East" => Direction.North,
-            _ => throw new CustomException($"Invalid direction: {CurrentFacingDirection.DisplayName}", 500)
-        };
+        CurrentFacingDirection = CurrentFacingDirection.RotateLeft();
     }
 
     public void RotateRight() {
-        CurrentFacingDirection = CurrentFacingDirection.DisplayName switch {
-            "North" => Direction.East,
-            "East" => Direction.South,
-            "South" => Direction.West,
-            "West" => Direction.North,
-            _ => throw new CustomException($"Invalid direction: {CurrentFacingDirection.DisplayName}", 500)
-        };
+        CurrentFacingDirection = CurrentFacingDirection.RotateRight();
     }
 
     public void UTurn() {
-        CurrentFacingDirection = CurrentFacingDirection.DisplayName switch {
-            "North" => Direction.South,
-            "South" => Direction.North,
-            "East" => Direction.West,
-            "West" => Direction.East,
-            _ => throw new CustomException($"Invalid direction: {CurrentFacingDirection.DisplayName}", 500)
-        };
+        CurrentFacingDirection = CurrentFacingDirection.Opposite();
     }
 
     public Position GetNextPosition(Direction direction) {
-        return direction.DisplayName switch {
-            "North" => new Position(CurrentPosition.X, CurrentPosition.Y - 1),
-            "South" => new Position(CurrentPosition.X, CurrentPosition.Y + 1),
-            "East" => new Position(CurrentPosition.X + 1, CurrentPosition.Y),
-            "West" => new Position(CurrentPosition.X - 1, CurrentPosition.Y),
-            _ => throw new CustomException($"Invalid direction: {direction.DisplayName}", 500)
-        };
+        return direction.GetNextPosition(CurrentPosition);
     }
 
     public Position GetPositionBehind() {
-        return CurrentFacingDirection.DisplayName switch {
-            "North" => new Position(CurrentPosition.X, CurrentPosition.Y + 1),
-            "South" => new Position(CurrentPosition.X, CurrentPosition.Y - 1),
-            "East" => new Position(CurrentPosition.X - 1, CurrentPosition.Y),
-            "West" => new Position(CurrentPosition.X + 1, CurrentPosition.Y),
-            _ => throw new CustomException($"Invalid direction: {CurrentFacingDirection.DisplayName}", 500)
-        };
+        return CurrentFacingDirection.GetPositionBehind(CurrentPosition);
     }
 
     public void MoveTo(Position newPosition) {
