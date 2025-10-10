@@ -16,6 +16,11 @@ public class GetCurrentGameStateCommandResponse {
     public required string Name { get; init; }
 
     // TODO:  We probably need information about gameboards, current positions and stuff
+    public required GameBoardSpaces GameBoard { get; init; }
+    
+    public record GameBoardSpaces(string Name, Space[][] Spaces);
+
+    public record Space(string Name);
 
     public record Player(
         string Username, 

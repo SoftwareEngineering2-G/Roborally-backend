@@ -30,6 +30,10 @@ public class
             HostUsername = game.HostUsername,
             Name = game.Name,
             CurrentPhase = game.CurrentPhase.DisplayName,
+            GameBoard = new GetCurrentGameStateCommandResponse.GameBoardSpaces(game.GameBoard.Name,
+                game.GameBoard.Space.Select(row =>
+                        row.Select(space => new GetCurrentGameStateCommandResponse.Space(space.Name())).ToArray())
+                    .ToArray()),
             Players = game.Players
                 .Select(p => {
                     var lastLockedEvent = p.PlayerEvents
