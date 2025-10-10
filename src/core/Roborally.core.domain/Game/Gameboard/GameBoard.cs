@@ -20,9 +20,7 @@ public class GameBoard {
     }
 
     public bool HasWallBetween(Position from, Position to, Direction direction) {
-        // Check if there's a wall blocking movement from 'from' position to 'to' position
-        // This is a placeholder - implement based on your wall structure
-        // For now, return false (no walls implemented yet)
-        return false;
+        Space.Space fromSpace = Space[from.Y][from.X];
+        return fromSpace.Walls().Contains(direction);
     }
 }
