@@ -23,5 +23,12 @@ public class GetCurrentGameStateCommandResponse {
 
     public record Space(string Name);
 
-    public record Player(string Username, string Robot);
+    public record Player(
+        string Username, 
+        string Robot, 
+        List<string>? ProgrammedCards = null,
+        int PositionX = 0,
+        int PositionY = 0,
+        string Direction = "North"
+    );
 }

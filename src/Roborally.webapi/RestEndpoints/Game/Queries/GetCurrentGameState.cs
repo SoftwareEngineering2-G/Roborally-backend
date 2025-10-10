@@ -22,7 +22,13 @@ public class GetCurrentGameState : Endpoint<GetCurrentGameStateRequest, GetCurre
             GameBoard = new GetCurrentGameStateResponse.GameBoardSpaces(response.GameBoard.Name,
                 response.GameBoard.Spaces.Select(row => row.Select(space => new GetCurrentGameStateResponse.Space(space.Name)).ToArray()).ToArray()),
             Players =
-                response.Players.Select(p => new GetCurrentGameStateResponse.Player(p.Username, p.Robot)).ToList(),
+                response.Players.Select(p => new GetCurrentGameStateResponse.Player(
+                    p.Username, 
+                    p.Robot,
+                    p.ProgrammedCards,
+                    p.PositionX,
+                    p.PositionY,
+                    p.Direction)).ToList(),
         }, ct);
     }
 }
@@ -47,5 +53,12 @@ public class GetCurrentGameStateResponse {
 
     public record Space(string Name);
 
-    public record Player(string Username, string Robot);
+    public record Player(
+        string Username, 
+        string Robot, 
+        List<string>? ProgrammedCards,
+        int PositionX,
+        int PositionY,
+        string Direction
+    );
 }
