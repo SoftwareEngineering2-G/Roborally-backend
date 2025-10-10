@@ -1,4 +1,5 @@
-﻿using Roborally.core.domain.Game.Player;
+﻿using Roborally.core.domain.Bases;
+using Roborally.core.domain.Game.Player;
 
 namespace Roborally.core.domain.Game.Gameboard;
 
@@ -9,7 +10,7 @@ public class GameBoard {
     internal GameBoard() {
 
     }
-    
+
     public bool IsWithinBounds(Position position) {
         if (position.Y < 0 || position.Y >= Space.Length) 
             return false;
