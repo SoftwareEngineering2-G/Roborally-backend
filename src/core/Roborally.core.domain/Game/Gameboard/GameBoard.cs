@@ -32,4 +32,10 @@ public class GameBoard {
             return true;
         return false;
     }
+    
+    public Space.Space GetSpaceAt(int x, int y) {
+        if (y < 0 || y >= Space.Length || x < 0 || x >= Space[0].Length)
+            throw new ArgumentOutOfRangeException();
+        return Space[y][x];
+    }
 }
