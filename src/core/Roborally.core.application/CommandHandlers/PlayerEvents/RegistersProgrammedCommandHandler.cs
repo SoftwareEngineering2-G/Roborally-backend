@@ -1,6 +1,7 @@
 ﻿using FastEndpoints;
 using Roborally.core.application.Broadcasters;
 using Roborally.core.application.CommandContracts.PlayerEvents;
+using Roborally.core.domain;
 using Roborally.core.domain.Bases;
 using Roborally.core.domain.Deck;
 using Roborally.core.domain.Game;

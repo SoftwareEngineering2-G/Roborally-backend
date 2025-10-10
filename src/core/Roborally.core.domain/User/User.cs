@@ -1,5 +1,4 @@
-﻿using Roborally.core.application;
-using Roborally.core.domain.Bases;
+﻿using Roborally.core.domain.Bases;
 
 namespace Roborally.core.domain.User;
 

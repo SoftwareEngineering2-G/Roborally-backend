@@ -1,5 +1,6 @@
 ﻿using Moq;
 using Roborally.core.application;
+using Roborally.core.domain;
 using Roborally.core.domain.Bases;
 using Roborally.core.domain.Lobby;
 using Roborally.unitTests.Factory;
