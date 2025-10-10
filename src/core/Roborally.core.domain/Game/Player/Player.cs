@@ -19,6 +19,9 @@ public class Player {
     public List<PlayerEvent> PlayerEvents { get; init; } = [];
     
     public IAction? LastExecutedAction { get; set; }
+    
+    // Store the last executed card name for persistence (used by Again card)
+    public string? LastExecutedCardName { get; set; }
 
     private Player() {
         // For EF Core

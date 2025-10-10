@@ -45,4 +45,18 @@ public class GameBroadcaster : IGameBroadcaster{
         };
         return _hubContext.Clients.Groups(GroupName(gameId)).SendAsync("RegisterRevealed", payload, ct);
     }
+
+    public Task BroadcastRobotMovedAsync(Guid gameId, string username, int positionX, int positionY, string direction, string executedCard, CancellationToken ct)
+    {
+        var payload = new
+        {
+            gameId,
+            username,
+            positionX,
+            positionY,
+            direction,
+            executedCard
+        };
+        return _hubContext.Clients.Groups(GroupName(gameId)).SendAsync("RobotMoved", payload, ct);
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using Roborally.core.domain.Bases;
+using Roborally.core.domain.Deck;
 
 namespace Roborally.core.domain.Game.Actions;
 
@@ -8,22 +9,25 @@ public class AgainAction : IAction
     {
         if (player == null) throw new CustomException("Player cannot be null.", 400);
         
-        // Retrieve the last executed action for this player
-        if (player.LastExecutedAction == null)
+        // Check if there's a last executed card name
+        if (string.IsNullOrEmpty(player.LastExecutedCardName))
         {
             throw new CustomException($"Cannot execute Again card for {player.Username}: No previous action to repeat.", 400);
         }
         
         // Check if the last action was also an Again action to prevent infinite loops
-        if (player.LastExecutedAction is AgainAction)
+        if (player.LastExecutedCardName == "Again")
         {
             throw new CustomException($"Cannot execute Again card for {player.Username}: Cannot repeat an Again action.", 400);
         }
         
+        // Reconstruct the action from the card name
+        var lastCard = ProgrammingCard.FromString(player.LastExecutedCardName);
+        var actionToRepeat = ActionFactory.CreateAction(lastCard);
+        
         // Execute the last action again
-        player.LastExecutedAction.Execute(player, game, players);
+        actionToRepeat.Execute(player, game, players);
 
-        // Note: We don't update LastExecutedAction here because Again should not replace the last action
-        // The repeated action will update it if needed
+        // Note: We don't update LastExecutedCardName here because Again should not replace the last action
     }
 }

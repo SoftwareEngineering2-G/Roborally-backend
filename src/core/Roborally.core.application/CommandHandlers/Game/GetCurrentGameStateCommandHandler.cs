@@ -44,7 +44,10 @@ public class
                     return new GetCurrentGameStateCommandResponse.Player(
                         p.Username, 
                         p.Robot.DisplayName,
-                        programmedCards
+                        programmedCards,
+                        p.CurrentPosition.X,
+                        p.CurrentPosition.Y,
+                        p.CurrentFacingDirection.DisplayName
                     );
                 }).ToList()
         };

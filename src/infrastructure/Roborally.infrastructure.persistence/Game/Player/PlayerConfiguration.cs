@@ -13,6 +13,14 @@ public class PlayerConfiguration : IEntityTypeConfiguration<core.domain.Game.Pla
         
         builder.ToTable("Players");
 
+        // Ignore the LastExecutedAction property as it's an interface and not persisted
+        builder.Ignore(p => p.LastExecutedAction);
+        
+        // Configure LastExecutedCardName for persistence (used by Again card)
+        builder.Property(p => p.LastExecutedCardName)
+            .HasMaxLength(50)
+            .IsRequired(false);
+
         // Configure foreign key relationships
         // Username references Users table
         builder.HasOne<core.domain.User.User>()
