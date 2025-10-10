@@ -72,4 +72,16 @@ public class Direction : Enumeration
             _ => throw new CustomException($"Invalid direction: {DisplayName}", 500)
         };
     }
+
+    public static Direction FromDisplayName(string displayName)
+    {
+        return displayName.ToLower() switch
+        {
+            "north" => North,
+            "south" => South,
+            "east" => East,
+            "west" => West,
+            _ => throw new ArgumentException($"Invalid direction display name: {displayName}")
+        };
+    }
 }

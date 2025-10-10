@@ -4,10 +4,15 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Text.Json;
 using Roborally.core.domain.Game.Gameboard;
 using Roborally.core.domain.Game.Gameboard.Space;
+using Roborally.core.domain.Game.Player;
 
 namespace Roborally.infrastructure.persistence.Game;
 
 public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
+    private class SpaceDto {
+        public string Name { get; set; } = string.Empty;
+        public string[] Walls { get; set; } = Array.Empty<string>();
+    }
 
     public void Configure(EntityTypeBuilder<GameBoard> builder) {
         builder.HasKey(x => x.Name);
@@ -24,12 +29,20 @@ public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
             .HasConversion(
                 // Convert Space[][] to JSON string
                 v => JsonSerializer.Serialize(
-                    v.Select(row => row.Select(space => space.Name()).ToArray()).ToArray(),
+                    v.Select(row => row.Select(space => new SpaceDto {
+                        Name = space.Name(),
+                        Walls = space.Walls().Select(w => w.DisplayName).ToArray()
+                    }).ToArray()).ToArray(),
                     compactJsonOptions),
                 
                 // Convert JSON string back to Space[][]
-                v => JsonSerializer.Deserialize<string[][]>(v, compactJsonOptions)!
-                    .Select(row => row.Select(SpaceFactory.FromName).ToArray()).ToArray(),
+                v => JsonSerializer.Deserialize<SpaceDto[][]>(v, compactJsonOptions)!
+                    .Select(row => row.Select(dto => 
+                         SpaceFactory.FromNameAndWalls(
+                             dto.Name, 
+                             dto.Walls.Select(wallName => Direction.FromDisplayName(wallName)).ToArray()
+                         )
+                    ).ToArray()).ToArray(),
                 
                 // Value comparer for proper change detection
                 new ValueComparer<Space[][]>(
@@ -55,6 +68,12 @@ public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
             for (int j = 0; j < array1[i].Length; j++)
             {
                 if (array1[i][j].Name() != array2[i][j].Name()) return false;
+                
+                var walls1 = array1[i][j].Walls();
+                var walls2 = array2[i][j].Walls();
+                
+                if (walls1.Length != walls2.Length) return false;
+                if (!walls1.All(w => walls2.Contains(w))) return false;
             }
         }
         return true;
