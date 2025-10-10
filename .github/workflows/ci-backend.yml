@@ -1,0 +1,136 @@
+name: RoboRally Backend CI
+
+on:
+  push:
+    branches: [ main ]      # for code pused to main
+  pull_request:
+    branches: [ main ]      # for pr tagrting main
+
+
+permissions:
+  contents: read            # Read repo file
+  pull-requests: write      # Update PR
+  checks: write             # Shw check
+
+jobs:
+
+  backend-checks:
+    name: Backend Quality Checks
+    runs-on: ubuntu-latest  # ubunty vm 
+    
+    # Psql test
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpass
+          POSTGRES_DB: testdb
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    
+    steps:
+      
+      - name: Get repository code
+        uses: actions/checkout@v4
+
+      
+      - name: Setup .NET 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      
+      - name: Download dependencies
+        run: dotnet restore Roborally-backend.sln
+
+      
+      - name: 🔍 Build entire solution
+        run: dotnet build Roborally-backend.sln --configuration Release --no-restore
+
+      
+      - name: 🧪 Run unit tests
+        run: |
+          if [ -d "tests/Roborally.unitTests" ]; then
+            echo "Running unit tests..."
+            dotnet test tests/Roborally.unitTests/ --configuration Release --no-build
+          else
+            echo "No unit tests found - that's okay!"
+          fi
+
+      # Integration test
+      - name: 🔗 Run integration tests
+        run: |
+          if [ -d "tests/Roborally.integrationTests" ]; then
+            echo "Running integration tests..."
+            dotnet test tests/Roborally.integrationTests/ --configuration Release --no-build
+          else
+            echo "No integration tests found - that's okay!"
+          fi
+        env:
+          
+          ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Database=testdb;Username=testuser;Password=testpass"
+
+      # Security cehck
+      - name: 🔒 Security check
+        run: |
+          echo "Checking for vulnerable packages..."
+          dotnet list package --vulnerable --include-transitive > security-report.txt 2>&1
+          if grep -q "has the following vulnerable packages" security-report.txt; then
+            echo "❌ Found security vulnerabilities!"
+            cat security-report.txt
+            exit 1
+          else
+            echo "✅ No security vulnerabilities found"
+          fi
+
+      
+      - name: Setup Docker
+        uses: docker/setup-buildx-action@v3
+
+      
+      - name: 🐳 Build Docker image
+        run: |
+          if [ -f "Dockerfile" ]; then
+            echo "Building Docker image..."
+            docker build -t roborally-backend:test .
+            echo "✅ Docker build successful!"
+          else
+            echo "No Dockerfile found - skipping Docker build"
+          fi
+
+      
+      - name: 🐳 Test Docker container
+        run: |
+          if [ -f "Dockerfile" ]; then
+            echo "Testing if Docker container starts..."
+            # Try to start container and check if it responds
+            docker run -d --name test-container -p 8080:8080 roborally-backend:test
+            sleep 10
+            # Check if container is still running
+            if docker ps | grep -q test-container; then
+              echo "✅ Docker container started successfully!"
+              docker stop test-container
+              docker rm test-container
+            else
+              echo "❌ Docker container failed to start"
+              docker logs test-container
+              exit 1
+            fi
+          else
+            echo "Skipping Docker test - no Dockerfile"
+          fi
+
+      # Check complete ststus 
+      - name: ✅ All checks completed
+        run: |
+          echo "All checks passed successfully!"
+          echo "✅ Code builds without errors"
+          echo "✅ Tests pass (if any exist)"
+          echo "✅ No security vulnerabilities"
+          echo "✅ Docker builds and runs (if Dockerfile exists)"
