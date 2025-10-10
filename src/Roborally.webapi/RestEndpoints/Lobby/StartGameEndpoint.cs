@@ -12,7 +12,8 @@ public class StartGameEndpoint : Endpoint<StartGameRequest> {
     public override async Task HandleAsync(StartGameRequest req, CancellationToken ct) {
         StartGameCommand command = new StartGameCommand() {
             GameId = req.GameId,
-            Username = req.Username
+            Username = req.Username,
+            GameBoardName = req.GameBoardName
         };
 
         await command.ExecuteAsync(ct);
@@ -24,4 +25,5 @@ public class StartGameEndpoint : Endpoint<StartGameRequest> {
 public class StartGameRequest {
     public string Username { get; set; }
     public Guid GameId { get; set; }
+    public string GameBoardName { get; set; }
 }
