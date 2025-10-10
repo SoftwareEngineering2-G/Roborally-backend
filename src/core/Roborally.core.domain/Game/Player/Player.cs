@@ -91,4 +91,28 @@ public class Player {
 
         return dealt;
     }
+
+    internal void RotateRight()
+    {
+        if (CurrentFacingDirection.Equals(Direction.North))
+            CurrentFacingDirection = Direction.East;
+        else if (CurrentFacingDirection.Equals(Direction.East))
+            CurrentFacingDirection = Direction.South;
+        else if (CurrentFacingDirection.Equals(Direction.South))
+            CurrentFacingDirection = Direction.West;
+        else if (CurrentFacingDirection.Equals(Direction.West))
+            CurrentFacingDirection = Direction.North;
+    }
+
+    internal void RotateLeft()
+    {
+        if (CurrentFacingDirection.Equals(Direction.North))
+            CurrentFacingDirection = Direction.West;
+        else if (CurrentFacingDirection.Equals(Direction.West))
+            CurrentFacingDirection = Direction.South;
+        else if (CurrentFacingDirection.Equals(Direction.South))
+            CurrentFacingDirection = Direction.East;
+        else if (CurrentFacingDirection.Equals(Direction.East))
+            CurrentFacingDirection = Direction.North;
+    }
 }
