@@ -1,4 +1,5 @@
-﻿using Roborally.core.domain.Game.Player;
+using System.Text.Json.Serialization;
+using Roborally.core.domain.Game.Player;
 
 namespace Roborally.core.domain.Game.Gameboard.Space;
 

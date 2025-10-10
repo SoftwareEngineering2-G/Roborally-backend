@@ -46,15 +46,25 @@ public class StartGameCommandHandler : ICommandHandler<StartGameCommand> {
         }
 
         // Get existing GameBoard from database instead of creating a new one
-        GameBoard? gameBoard = await _gameBoardRepository.FindAsync(command.GameBoardName, ct);
+        GameBoard? gameBoard = await _gameBoardRepository.FindAsync("Empty Board", ct);
 
         // If the GameBoard doesn't exist in the database, create and save it
         if (gameBoard == null) {
-            gameBoard = BoardFactory.GetBoardWithWalls();
+            switch (command.GameBoardName)
+            {
+                case "Empty Board":
+                    gameBoard = BoardFactory.GetEmptyBoard();
+                    break;
+                case "Board With Walls":
+                    gameBoard = BoardFactory.GetBoardWithWalls();
+                    break;
+                default:
+                    throw new CustomException("Game board not found", 404);
+            }
             await _gameBoardRepository.AddAsync(gameBoard, ct);
         }
         
-        domain.Game.Game game = lobby.StartGame(command.Username, _systemTime, gameBoard);
+        domain.Game.Game game = lobby.StartGame(command.Username, _systemTime, gameBoard!);
         await _gameRepository.AddAsync(game, ct);
         await _unitOfWork.SaveChangesAsync(ct);
         await _gameLobbyBroadcaster.BroadcastGameStartedAsync(command.GameId, ct);

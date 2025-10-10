@@ -29,10 +29,7 @@ public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
             .HasConversion(
                 // Convert Space[][] to JSON string
                 v => JsonSerializer.Serialize(
-                    v.Select(row => row.Select(space => new SpaceDto {
-                        Name = space.Name(),
-                        Walls = space.Walls().Select(w => w.DisplayName).ToArray()
-                    }).ToArray()).ToArray(),
+                    v.Select(row => row.Select(space => space.Name()).ToArray()).ToArray(),
                     compactJsonOptions),
                 
                 // Convert JSON string back to Space[][]
