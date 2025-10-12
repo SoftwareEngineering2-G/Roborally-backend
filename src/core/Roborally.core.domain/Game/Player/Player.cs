@@ -1,7 +1,7 @@
-﻿using Roborally.core.application;
-using Roborally.core.domain.Bases;
+﻿using Roborally.core.domain.Bases;
 using Roborally.core.domain.Deck;
 using Roborally.core.domain.Game.Player.Events;
+using Roborally.core.domain.Game.Actions;
 
 namespace Roborally.core.domain.Game.Player;
 
@@ -17,6 +17,11 @@ public class Player {
 
     public ProgrammingDeck ProgrammingDeck { get; init; }
     public List<PlayerEvent> PlayerEvents { get; init; } = [];
+    
+    public IAction? LastExecutedAction { get; set; }
+    
+    // Store the last executed card name for persistence (used by Again card)
+    public string? LastExecutedCardName { get; set; }
 
     private Player() {
         // For EF Core
@@ -92,27 +97,27 @@ public class Player {
         return dealt;
     }
 
-    internal void RotateRight()
-    {
-        if (CurrentFacingDirection.Equals(Direction.North))
-            CurrentFacingDirection = Direction.East;
-        else if (CurrentFacingDirection.Equals(Direction.East))
-            CurrentFacingDirection = Direction.South;
-        else if (CurrentFacingDirection.Equals(Direction.South))
-            CurrentFacingDirection = Direction.West;
-        else if (CurrentFacingDirection.Equals(Direction.West))
-            CurrentFacingDirection = Direction.North;
+    public void RotateLeft() {
+        CurrentFacingDirection = CurrentFacingDirection.RotateLeft();
     }
 
-    internal void RotateLeft()
-    {
-        if (CurrentFacingDirection.Equals(Direction.North))
-            CurrentFacingDirection = Direction.West;
-        else if (CurrentFacingDirection.Equals(Direction.West))
-            CurrentFacingDirection = Direction.South;
-        else if (CurrentFacingDirection.Equals(Direction.South))
-            CurrentFacingDirection = Direction.East;
-        else if (CurrentFacingDirection.Equals(Direction.East))
-            CurrentFacingDirection = Direction.North;
+    public void RotateRight() {
+        CurrentFacingDirection = CurrentFacingDirection.RotateRight();
+    }
+
+    public void UTurn() {
+        CurrentFacingDirection = CurrentFacingDirection.Opposite();
+    }
+
+    public Position GetNextPosition(Direction direction) {
+        return direction.GetNextPosition(CurrentPosition);
+    }
+
+    public Position GetPositionBehind() {
+        return CurrentFacingDirection.GetPositionBehind(CurrentPosition);
+    }
+
+    public void MoveTo(Position newPosition) {
+        CurrentPosition = newPosition;
     }
 }

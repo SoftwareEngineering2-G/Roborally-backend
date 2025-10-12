@@ -1,5 +1,6 @@
 ﻿using FastEndpoints;
 using Roborally.core.application.CommandContracts;
+using Roborally.core.domain;
 using Roborally.core.domain.User;
 
 namespace Roborally.core.application.CommandHandlers;

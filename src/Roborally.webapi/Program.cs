@@ -1,6 +1,8 @@
+using System.Text.Json;
 using FastEndpoints;
 using FastEndpoints.Swagger;
 using Roborally.core.application;
+using Roborally.core.domain.Game.Gameboard.Space;
 using Roborally.infrastructure.persistence;
 using Roborally.infrastructure.broadcaster;
 using Roborally.infrastructure.persistence.Migrations;
@@ -11,6 +13,14 @@ var builder = WebApplication.CreateBuilder(args);
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (string.IsNullOrEmpty(connectionString))
     throw new InvalidOperationException("Connection string 'DefaultConnection' is not found.");
+
+builder.Services.AddControllers().AddJsonOptions(opts =>
+{
+    opts.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    opts.JsonSerializerOptions.Converters.Add(new SpaceObjectJsonConverter());
+});
+
+
 
 
 builder.Services.AddCors(options =>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Roborally.core.application;
+using Roborally.core.domain;
 
 namespace Roborally.webapi.Middleware;
 

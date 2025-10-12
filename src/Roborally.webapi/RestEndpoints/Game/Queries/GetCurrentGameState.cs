@@ -19,8 +19,16 @@ public class GetCurrentGameState : Endpoint<GetCurrentGameStateRequest, GetCurre
             HostUsername = response.HostUsername,
             Name = response.Name,
             CurrentPhase = response.CurrentPhase,
+            GameBoard = new GetCurrentGameStateResponse.GameBoardSpaces(response.GameBoard.Name,
+                response.GameBoard.Spaces.Select(row => row.Select(space => new GetCurrentGameStateResponse.Space(space.Name)).ToArray()).ToArray()),
             Players =
-                response.Players.Select(p => new GetCurrentGameStateResponse.Player(p.Username, p.Robot)).ToList(),
+                response.Players.Select(p => new GetCurrentGameStateResponse.Player(
+                    p.Username, 
+                    p.Robot,
+                    p.ProgrammedCards,
+                    p.PositionX,
+                    p.PositionY,
+                    p.Direction)).ToList(),
         }, ct);
     }
 }
@@ -39,6 +47,18 @@ public class GetCurrentGameStateResponse {
     public required string Name { get; set; }
 
     // TODO:  We probably need information about gameboards, current positions and stuff
+    public required GameBoardSpaces GameBoard { get; set; }
+    
+    public record GameBoardSpaces(string Name, Space[][] Spaces);
 
-    public record Player(string Username, string Robot);
+    public record Space(string Name);
+
+    public record Player(
+        string Username, 
+        string Robot, 
+        List<string>? ProgrammedCards,
+        int PositionX,
+        int PositionY,
+        string Direction
+    );
 }
