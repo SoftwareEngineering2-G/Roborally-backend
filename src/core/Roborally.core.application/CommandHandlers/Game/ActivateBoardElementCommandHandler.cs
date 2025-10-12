@@ -1,5 +1,7 @@
 ﻿using FastEndpoints;
 using Roborally.core.application.CommandContracts.Game;
+using Roborally.core.domain;
+using Roborally.core.domain.Bases;
 using Roborally.core.domain.Game;
 using Roborally.core.domain.Game.Gameboard.BoardElement;
 
@@ -7,10 +9,12 @@ namespace Roborally.core.application.CommandHandlers.Game;
 
 public class ActivateBoardElementCommandHandler : ICommandHandler<ActivateBoardElementCommand>
 {
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IGameRepository _gameRepository;
 
-    public ActivateBoardElementCommandHandler(IGameRepository gameRepository)
+    public ActivateBoardElementCommandHandler(IUnitOfWork unitOfWork, IGameRepository gameRepository)
     {
+        _unitOfWork = unitOfWork;
         _gameRepository = gameRepository;
     }
 
@@ -26,13 +30,12 @@ public class ActivateBoardElementCommandHandler : ICommandHandler<ActivateBoardE
         if (player is null)
             throw new CustomException("Player does not exist", 404);
         
-        var space = game.GameBoard.GetSpaceAt(player.CurrentPosition.X, player.CurrentPosition.Y);
+        var space = game.GameBoard.GetSpaceAt(player.CurrentPosition);
 
         if (space is BoardElement boardElement)
         {
             boardElement.Activate(player);
-            
-            // TODO: Update the game state in the repository
+            await _unitOfWork.SaveChangesAsync(ct);
         }
     }
 }
