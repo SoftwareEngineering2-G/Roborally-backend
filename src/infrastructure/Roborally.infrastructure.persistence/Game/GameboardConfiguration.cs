@@ -11,7 +11,7 @@ namespace Roborally.infrastructure.persistence.Game;
 public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
     private class SpaceDto {
         public string Name { get; set; } = string.Empty;
-        public string[] Walls { get; set; } = Array.Empty<string>();
+        public string[] Walls { get; set; } = [];
     }
 
     public void Configure(EntityTypeBuilder<GameBoard> builder) {
@@ -40,7 +40,7 @@ public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
                     .Select(row => row.Select(dto => 
                          SpaceFactory.FromNameAndWalls(
                              dto.Name, 
-                             dto.Walls.Select(wallName => Direction.FromDisplayName(wallName)).ToArray()
+                             dto.Walls.Select(Direction.FromDisplayName).ToArray()
                          )
                     ).ToArray()).ToArray(),
                 

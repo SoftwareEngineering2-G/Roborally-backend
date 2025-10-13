@@ -7,20 +7,29 @@ public class GameBoard {
     public required string Name { get; set; }
     public required Space.Space[][] Space { get; init; }
 
-    internal GameBoard() {
-
-    }
+    internal GameBoard() { }
 
     public bool IsWithinBounds(Position position) {
-        if (position.Y < 0 || position.Y >= Space.Length) 
+        if (position.Y < 0 || position.Y >= Space.Length)
             return false;
-        if (position.X < 0 || position.X >= Space[position.Y].Length) 
+        if (position.X < 0 || position.X >= Space[position.Y].Length)
             return false;
         return true;
     }
 
     public bool HasWallBetween(Position from, Position to, Direction direction) {
+        // Check adjacency in the specified direction
+        Position expectedTo = direction.GetNextPosition(from);
+        if (!expectedTo.Equals(to))
+            return false;
+
         Space.Space fromSpace = Space[from.Y][from.X];
-        return fromSpace.Walls().Contains(direction);
+        Space.Space toSpace = Space[to.Y][to.X];
+        // Check for wall in the given direction from 'from', or in the opposite direction from 'to'
+        if (fromSpace.Walls().Contains(direction))
+            return true;
+        if (toSpace.Walls().Contains(direction.Opposite()))
+            return true;
+        return false;
     }
 }
