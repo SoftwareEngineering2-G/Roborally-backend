@@ -13,17 +13,19 @@ public class GetCurrentGameState : Endpoint<GetCurrentGameStateRequest, GetCurre
             GameId = req.GameId
         };
 
-        var response = await command.ExecuteAsync(ct);
+        GetCurrentGameStateCommandResponse response = await command.ExecuteAsync(ct);
         await Send.OkAsync(new GetCurrentGameStateResponse() {
             GameId = response.GameId,
             HostUsername = response.HostUsername,
             Name = response.Name,
             CurrentPhase = response.CurrentPhase,
             GameBoard = new GetCurrentGameStateResponse.GameBoardSpaces(response.GameBoard.Name,
-                response.GameBoard.Spaces.Select(row => row.Select(space => new GetCurrentGameStateResponse.Space(space.Name)).ToArray()).ToArray()),
+                response.GameBoard.Spaces.Select(row =>
+                        row.Select(space => new GetCurrentGameStateResponse.Space(space.Name, space.walls)).ToArray())
+                    .ToArray()),
             Players =
                 response.Players.Select(p => new GetCurrentGameStateResponse.Player(
-                    p.Username, 
+                    p.Username,
                     p.Robot,
                     p.ProgrammedCards,
                     p.PositionX,
@@ -46,16 +48,15 @@ public class GetCurrentGameStateResponse {
 
     public required string Name { get; set; }
 
-    // TODO:  We probably need information about gameboards, current positions and stuff
     public required GameBoardSpaces GameBoard { get; set; }
-    
+
     public record GameBoardSpaces(string Name, Space[][] Spaces);
 
-    public record Space(string Name);
+    public record Space(string Name, List<string> Walls);
 
     public record Player(
-        string Username, 
-        string Robot, 
+        string Username,
+        string Robot,
         List<string>? ProgrammedCards,
         int PositionX,
         int PositionY,

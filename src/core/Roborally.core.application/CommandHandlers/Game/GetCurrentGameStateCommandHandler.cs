@@ -32,7 +32,8 @@ public class
             CurrentPhase = game.CurrentPhase.DisplayName,
             GameBoard = new GetCurrentGameStateCommandResponse.GameBoardSpaces(game.GameBoard.Name,
                 game.GameBoard.Space.Select(row =>
-                        row.Select(space => new GetCurrentGameStateCommandResponse.Space(space.Name())).ToArray())
+                        row.Select(space => new GetCurrentGameStateCommandResponse.Space(space.Name(),
+                            space.Walls().Select(wall => wall.DisplayName).ToList())).ToArray())
                     .ToArray()),
             Players = game.Players
                 .Select(p => {
@@ -40,13 +41,13 @@ public class
                         .OfType<RegistersProgrammedEvent>()
                         .OrderByDescending(e => e.HappenedAt)
                         .FirstOrDefault();
-                    
+
                     var programmedCards = lastLockedEvent?.ProgrammedCardsInOrder
                         .Select(card => card.DisplayName)
                         .ToList();
-                    
+
                     return new GetCurrentGameStateCommandResponse.Player(
-                        p.Username, 
+                        p.Username,
                         p.Robot.DisplayName,
                         programmedCards,
                         p.CurrentPosition.X,
