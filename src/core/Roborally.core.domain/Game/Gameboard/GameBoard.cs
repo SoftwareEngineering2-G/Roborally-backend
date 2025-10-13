@@ -7,12 +7,14 @@ public class GameBoard {
     public required string Name { get; set; }
     public required Space.Space[][] Space { get; init; }
 
-    internal GameBoard() { }
+    internal GameBoard() {
 
+    }
+    
     public bool IsWithinBounds(Position position) {
-        if (position.Y < 0 || position.Y >= Space.Length)
+        if (position.Y < 0 || position.Y >= Space.Length) 
             return false;
-        if (position.X < 0 || position.X >= Space[position.Y].Length)
+        if (position.X < 0 || position.X >= Space[position.Y].Length) 
             return false;
         return true;
     }
