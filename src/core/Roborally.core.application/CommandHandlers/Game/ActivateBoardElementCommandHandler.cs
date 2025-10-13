@@ -30,7 +30,7 @@ public class ActivateBoardElementCommandHandler : ICommandHandler<ActivateBoardE
         if (player is null)
             throw new CustomException("Player does not exist", 404);
         
-        var space = game.GameBoard.GetSpaceAt(player.CurrentPosition);
+        var space = game.GameBoard.GetSpaceAt(player.CurrentPosition.X, player.CurrentPosition.Y);
 
         if (space is BoardElement boardElement)
         {

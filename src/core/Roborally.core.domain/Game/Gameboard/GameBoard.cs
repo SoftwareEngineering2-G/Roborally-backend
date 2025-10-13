@@ -1,5 +1,4 @@
-﻿using Roborally.core.domain.Bases;
-using Roborally.core.domain.Game.Player;
+﻿using Roborally.core.domain.Game.Player;
 
 namespace Roborally.core.domain.Game.Gameboard;
 
