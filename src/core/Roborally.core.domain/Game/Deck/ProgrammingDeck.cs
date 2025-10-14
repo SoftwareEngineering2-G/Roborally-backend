@@ -1,4 +1,4 @@
-﻿namespace Roborally.core.domain.Deck;
+﻿namespace Roborally.core.domain.Game.Deck;
 
 public class ProgrammingDeck {
     public List<ProgrammingCard> PickPiles { get; set; }
@@ -56,6 +56,6 @@ public class ProgrammingDeck {
     public void RefillFromDiscard() {
         ShuffleList(DiscardedPiles);
         PickPiles = DiscardedPiles;
-        DiscardedPiles = new List<ProgrammingCard>();
+        DiscardedPiles = [];
     }
 }

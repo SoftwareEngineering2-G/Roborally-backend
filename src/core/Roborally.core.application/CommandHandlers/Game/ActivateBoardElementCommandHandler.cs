@@ -34,7 +34,7 @@ public class ActivateBoardElementCommandHandler : ICommandHandler<ActivateBoardE
 
         if (space is BoardElement boardElement)
         {
-            boardElement.Activate(player);
+            // boardElement.Activate(player);
             await _unitOfWork.SaveChangesAsync(ct);
         }
     }

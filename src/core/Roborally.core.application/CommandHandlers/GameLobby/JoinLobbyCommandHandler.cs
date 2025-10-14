@@ -3,11 +3,10 @@ using Roborally.core.application.Broadcasters;
 using Roborally.core.application.CommandContracts;
 using Roborally.core.domain;
 using Roborally.core.domain.Bases;
-using Roborally.core.domain.Game;
 using Roborally.core.domain.Lobby;
 using Roborally.core.domain.User;
 
-namespace Roborally.core.application.CommandHandlers;
+namespace Roborally.core.application.CommandHandlers.GameLobby;
 
 public class JoinLobbyCommandHandler : ICommandHandler<JoinLobbyCommand> {
     private readonly IGameLobbyRepository _gameLobbyRepository;

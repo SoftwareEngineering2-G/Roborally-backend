@@ -4,7 +4,7 @@ using Roborally.core.domain;
 using Roborally.core.domain.Bases;
 using Roborally.core.domain.User;
 
-namespace Roborally.core.application.CommandHandlers;
+namespace Roborally.core.application.CommandHandlers.UserManagement;
 
 public class SignupCommandHandler : ICommandHandler<SignupCommand, string> {
     private readonly IUserRepository _userRepository;

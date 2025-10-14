@@ -86,7 +86,7 @@ namespace Roborally.infrastructure.persistence.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<string>("Space")
+                    b.Property<string>("Spaces")
                         .IsRequired()
                         .HasColumnType("json")
                         .HasColumnName("SpaceMatrix");

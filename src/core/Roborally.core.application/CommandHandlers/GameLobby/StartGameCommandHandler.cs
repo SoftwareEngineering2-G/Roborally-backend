@@ -8,7 +8,7 @@ using Roborally.core.domain.Game.Gameboard;
 using Roborally.core.domain.Lobby;
 using Roborally.core.domain.User;
 
-namespace Roborally.core.application.CommandHandlers;
+namespace Roborally.core.application.CommandHandlers.GameLobby;
 
 public class StartGameCommandHandler : ICommandHandler<StartGameCommand> {
     private readonly IUserRepository _userRepository;
@@ -39,7 +39,7 @@ public class StartGameCommandHandler : ICommandHandler<StartGameCommand> {
             throw new CustomException("User does not exist", 404);
         }
 
-        GameLobby? lobby = await _gameLobbyRepository.FindAsync(command.GameId);
+        domain.Lobby.GameLobby? lobby = await _gameLobbyRepository.FindAsync(command.GameId);
 
         if (lobby is null) {
             throw new CustomException("Game lobby does not exist", 404);

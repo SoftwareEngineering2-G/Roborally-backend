@@ -1,7 +1,8 @@
-﻿using Roborally.core.domain.Bases;
-using Roborally.core.domain.Deck;
+﻿using System.Runtime.InteropServices;
+using Roborally.core.domain.Bases;
+using Roborally.core.domain.Game.CardActions;
+using Roborally.core.domain.Game.Deck;
 using Roborally.core.domain.Game.Player.Events;
-using Roborally.core.domain.Game.Actions;
 
 namespace Roborally.core.domain.Game.Player;
 
@@ -18,7 +19,7 @@ public class Player {
     public ProgrammingDeck ProgrammingDeck { get; init; }
     public List<PlayerEvent> PlayerEvents { get; init; } = [];
     
-    public IAction? LastExecutedAction { get; set; }
+    public ICardAction? LastExecutedAction { get; set; }
     
     // Store the last executed card name for persistence (used by Again card)
     public string? LastExecutedCardName { get; set; }
@@ -109,12 +110,13 @@ public class Player {
         CurrentFacingDirection = CurrentFacingDirection.Opposite();
     }
 
-    public Position GetNextPosition(Direction direction) {
-        return direction.GetNextPosition(CurrentPosition);
+    public Position GetNextPosition([Optional] Direction? direction) {
+
+        return CurrentPosition.GetNext(direction ?? CurrentFacingDirection);
     }
 
     public Position GetPositionBehind() {
-        return CurrentFacingDirection.GetPositionBehind(CurrentPosition);
+        return CurrentPosition.GetNext(CurrentFacingDirection.Opposite());
     }
 
     public void MoveTo(Position newPosition) {

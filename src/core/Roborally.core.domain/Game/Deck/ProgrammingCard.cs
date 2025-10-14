@@ -1,7 +1,7 @@
-﻿using Roborally.core.domain.Bases;
-using System.Reflection;
+﻿using System.Reflection;
+using Roborally.core.domain.Bases;
 
-namespace Roborally.core.domain.Deck;
+namespace Roborally.core.domain.Game.Deck;
 
 public class ProgrammingCard : Enumeration
 {

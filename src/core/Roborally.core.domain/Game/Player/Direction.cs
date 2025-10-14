@@ -24,7 +24,7 @@ public class Direction : Enumeration
             _ => throw new CustomException($"Invalid direction: {DisplayName}", 500)
         };
     }
-    
+
     public Position GetPositionBehind(Position currentPosition)
     {
         return DisplayName switch
@@ -36,7 +36,7 @@ public class Direction : Enumeration
             _ => throw new CustomException($"Invalid direction: {DisplayName}", 500)
         };
     }
-    
+
     public Direction RotateLeft()
     {
         return DisplayName switch

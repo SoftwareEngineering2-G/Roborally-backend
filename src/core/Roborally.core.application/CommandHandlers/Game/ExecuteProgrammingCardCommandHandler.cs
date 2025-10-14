@@ -3,9 +3,9 @@ using Roborally.core.application.Broadcasters;
 using Roborally.core.application.CommandContracts.Game;
 using Roborally.core.domain;
 using Roborally.core.domain.Bases;
-using Roborally.core.domain.Deck;
 using Roborally.core.domain.Game;
-using Roborally.core.domain.Game.Actions;
+using Roborally.core.domain.Game.CardActions;
+using Roborally.core.domain.Game.Deck;
 
 namespace Roborally.core.application.CommandHandlers.Game;
 
@@ -56,7 +56,7 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
         action.Execute(player, game, allPlayers);
         
         // Update the last executed card name for persistence (unless it's an Again action)
-        if (action is not AgainAction)
+        if (action is not AgainCardAction)
         {
             player.LastExecutedCardName = card.DisplayName;
             player.LastExecutedAction = action; // Also set in-memory for consistency

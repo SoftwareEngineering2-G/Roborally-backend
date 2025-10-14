@@ -1,13 +1,13 @@
-﻿using Roborally.core.domain.Bases;
-using Roborally.core.domain.Game.Player;
+﻿using Roborally.core.domain.Game.Player;
 
-namespace Roborally.core.domain.Game.Actions;
+namespace Roborally.core.domain.Game.CardActions;
 
-public class MoveBackwardAction : IAction
+
+public class MoveBackwardCardAction : ICardAction
 {
     private readonly int Spaces;
     
-    public MoveBackwardAction(int spaces)
+    public MoveBackwardCardAction(int spaces)
     {
         Spaces = spaces;
     }

@@ -3,7 +3,7 @@ using FastEndpoints;
 using Roborally.core.application.CommandContracts;
 using Roborally.core.domain.Lobby;
 
-namespace Roborally.core.application.CommandHandlers;
+namespace Roborally.core.application.CommandHandlers.GameLobby;
 
 public class FindPublicGameLobbyCommandHandler : ICommandHandler<GetActiveGameLobbiesCommand, IList<GetActiveGameLobbyCommandResponse>> {
     private readonly IGameLobbyRepository _gameLobbyRepository;

@@ -1,16 +1,15 @@
-﻿using Roborally.core.domain.Bases;
-using Roborally.core.domain.Game.Player;
+﻿using Roborally.core.domain.Game.Player;
 
-namespace Roborally.core.domain.Game.Actions;
+namespace Roborally.core.domain.Game.CardActions;
 
-public class Move1Action : IAction
+public class Move3CardAction : ICardAction
 {
     public void Execute(Player.Player player, Game game, List<Player.Player> players)
     {
         if (player == null) throw new CustomException("Player cannot be null.", 400);
         if (game == null) throw new CustomException("Game cannot be null.", 400);
 
-        MovePlayerForward(player, game, players, 1);
+        MovePlayerForward(player, game, players, 3);
         
         // Save this action as the last executed action for this player
         player.LastExecutedAction = this;
@@ -22,28 +21,23 @@ public class Move1Action : IAction
         {
             Position nextPosition = player.GetNextPosition(player.CurrentFacingDirection);
 
-            // Check if next position is within board bounds
             if (!game.GameBoard.IsWithinBounds(nextPosition))
             {
                 throw new CustomException($"Cannot move {player.Username}: Robot would fall off the board.", 400);
             }
 
-            // Check for walls blocking the movement
             if (game.GameBoard.HasWallBetween(player.CurrentPosition, nextPosition, player.CurrentFacingDirection))
             {
                 throw new CustomException($"Cannot move {player.Username}: Wall is blocking the path.", 400);
             }
 
-            // Check if the space is occupied by another player
             var occupyingPlayer = allPlayers.FirstOrDefault(p => p.CurrentPosition == nextPosition && p.Username != player.Username);
 
             if (occupyingPlayer != null)
             {
-                // Try to push the occupying player in the same direction
                 PushPlayer(occupyingPlayer, player.CurrentFacingDirection, game, allPlayers);
             }
 
-            // Move the player to the next position
             player.MoveTo(nextPosition);
         }
     }
@@ -52,28 +46,23 @@ public class Move1Action : IAction
     {
         Position pushedPosition = GetNextPositionInDirection(playerToPush.CurrentPosition, pushDirection);
 
-        // Check if pushed position is within bounds
         if (!game.GameBoard.IsWithinBounds(pushedPosition))
         {
             throw new CustomException($"Cannot push {playerToPush.Username}: Robot would be pushed off the board.", 400);
         }
 
-        // Check for walls blocking the push
         if (game.GameBoard.HasWallBetween(playerToPush.CurrentPosition, pushedPosition, pushDirection))
         {
             throw new CustomException($"Cannot push {playerToPush.Username}: Wall is blocking the push.", 400);
         }
 
-        // Check if there's another player in the pushed position (chain pushing)
         var nextOccupyingPlayer = allPlayers.FirstOrDefault(p => p.CurrentPosition == pushedPosition && p.Username != playerToPush.Username);
 
         if (nextOccupyingPlayer != null)
         {
-            // Recursively push the next player
             PushPlayer(nextOccupyingPlayer, pushDirection, game, allPlayers);
         }
 
-        // Push the player to the new position
         playerToPush.MoveTo(pushedPosition);
     }
 
@@ -89,3 +78,4 @@ public class Move1Action : IAction
         };
     }
 }
+

@@ -3,7 +3,7 @@ using Roborally.core.application.CommandContracts;
 using Roborally.core.domain;
 using Roborally.core.domain.User;
 
-namespace Roborally.core.application.CommandHandlers;
+namespace Roborally.core.application.CommandHandlers.UserManagement;
 
 public class SigninCommandHandler : ICommandHandler<SignInCommand, string> {
     private readonly IUserRepository _userRepository;

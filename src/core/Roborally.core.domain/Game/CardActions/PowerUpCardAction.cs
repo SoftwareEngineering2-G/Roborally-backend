@@ -1,6 +1,6 @@
-﻿namespace Roborally.core.domain.Game.Actions;
+﻿namespace Roborally.core.domain.Game.CardActions;
 
-public class PowerUpAction : IAction
+public class PowerUpCardAction : ICardAction
 {
     public void Execute(Player.Player player, Game game, List<Player.Player> players)
     {

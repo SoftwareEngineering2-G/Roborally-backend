@@ -1,8 +1,7 @@
-﻿using Roborally.core.domain.Bases;
+﻿
+namespace Roborally.core.domain.Game.CardActions;
 
-namespace Roborally.core.domain.Game.Actions;
-
-public class UTurnAction : IAction
+public class UTurnCardAction : ICardAction
 {
     public void Execute(Player.Player player, Game game, List<Player.Player> players)
     {

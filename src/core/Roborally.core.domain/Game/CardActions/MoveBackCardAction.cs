@@ -1,9 +1,8 @@
-﻿using Roborally.core.domain.Bases;
-using Roborally.core.domain.Game.Player;
+﻿using Roborally.core.domain.Game.Player;
 
-namespace Roborally.core.domain.Game.Actions;
+namespace Roborally.core.domain.Game.CardActions;
 
-public class MoveBackAction : IAction
+public class MoveBackCardAction : ICardAction
 {
     public void Execute(Player.Player player, Game game, List<Player.Player> players)
     {

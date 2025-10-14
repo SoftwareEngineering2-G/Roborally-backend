@@ -4,16 +4,16 @@ namespace Roborally.core.domain.Game.Gameboard;
 
 public class GameBoard {
     public required string Name { get; set; }
-    public required Space.Space[][] Space { get; init; }
+    public required Space.Space[][] Spaces { get; init; }
 
     internal GameBoard() {
 
     }
     
     public bool IsWithinBounds(Position position) {
-        if (position.Y < 0 || position.Y >= Space.Length) 
+        if (position.Y < 0 || position.Y >= Spaces.Length) 
             return false;
-        if (position.X < 0 || position.X >= Space[position.Y].Length) 
+        if (position.X < 0 || position.X >= Spaces[position.Y].Length) 
             return false;
         return true;
     }
@@ -24,8 +24,8 @@ public class GameBoard {
         if (!expectedTo.Equals(to))
             return false;
 
-        Space.Space fromSpace = Space[from.Y][from.X];
-        Space.Space toSpace = Space[to.Y][to.X];
+        Space.Space fromSpace = Spaces[from.Y][from.X];
+        Space.Space toSpace = Spaces[to.Y][to.X];
         // Check for wall in the given direction from 'from', or in the opposite direction from 'to'
         if (fromSpace.Walls().Contains(direction))
             return true;
@@ -33,10 +33,36 @@ public class GameBoard {
             return true;
         return false;
     }
+
     
     public Space.Space GetSpaceAt(int x, int y) {
-        if (y < 0 || y >= Space.Length || x < 0 || x >= Space[0].Length)
+        if (y < 0 || y >= Spaces.Length || x < 0 || x >= Spaces[0].Length)
             throw new ArgumentOutOfRangeException();
-        return Space[y][x];
+        return Spaces[y][x];
+    }
+
+
+    public List<T> GetAllSpacesOfType<T>() where T : Space.Space {
+        var result = new List<T>();
+        foreach (var row in Spaces) {
+            foreach (var space in row) {
+                if (space is T typedSpace) {
+                    result.Add(typedSpace);
+                }
+            }
+        }
+        return result;
+    }
+
+    public IList<BoardElement.BoardElement> GetElementsForActivationOfType(string nextBoardElement) {
+        var result = new List<BoardElement.BoardElement>();
+        foreach (var row in Spaces) {
+            foreach (var space in row) {
+                if (space is BoardElement.BoardElement boardElement && boardElement.Name().Equals(nextBoardElement)) {
+                    result.Add(boardElement);
+                }
+            }
+        }
+        return result;
     }
 }

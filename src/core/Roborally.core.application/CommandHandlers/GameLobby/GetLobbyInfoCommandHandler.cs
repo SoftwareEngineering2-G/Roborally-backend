@@ -3,7 +3,7 @@ using Roborally.core.application.CommandContracts;
 using Roborally.core.domain;
 using Roborally.core.domain.Lobby;
 
-namespace Roborally.core.application.CommandHandlers;
+namespace Roborally.core.application.CommandHandlers.GameLobby;
 
 public class GetLobbyInfoCommandHandler : ICommandHandler<GetLobbyInfoCommand, GetLobbyInfoCommandResponse> {
     private readonly IGameLobbyRepository _gameLobbyRepository;
@@ -14,7 +14,7 @@ public class GetLobbyInfoCommandHandler : ICommandHandler<GetLobbyInfoCommand, G
 
 
     public async Task<GetLobbyInfoCommandResponse> ExecuteAsync(GetLobbyInfoCommand command, CancellationToken ct) {
-        GameLobby? lobby = await _gameLobbyRepository.FindAsync(command.GameId);
+        domain.Lobby.GameLobby? lobby = await _gameLobbyRepository.FindAsync(command.GameId);
 
         if (lobby is null) {
             throw new CustomException("Lobby not found", 404);

@@ -1,4 +1,4 @@
-﻿using Roborally.core.domain.Deck;
+﻿using Roborally.core.domain.Game.Deck;
 
 namespace Roborally.core.domain.Game.Player.Events;
 

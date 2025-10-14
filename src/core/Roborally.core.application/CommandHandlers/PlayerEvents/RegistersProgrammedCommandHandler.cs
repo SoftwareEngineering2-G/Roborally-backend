@@ -3,8 +3,8 @@ using Roborally.core.application.Broadcasters;
 using Roborally.core.application.CommandContracts.PlayerEvents;
 using Roborally.core.domain;
 using Roborally.core.domain.Bases;
-using Roborally.core.domain.Deck;
 using Roborally.core.domain.Game;
+using Roborally.core.domain.Game.Deck;
 
 namespace Roborally.core.application.CommandHandlers.PlayerEvents;
 

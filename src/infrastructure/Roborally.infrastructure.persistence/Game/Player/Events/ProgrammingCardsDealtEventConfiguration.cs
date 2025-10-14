@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Roborally.core.domain.Game.Player.Events;
 using System.Text.Json;
-using Roborally.core.domain.Deck;
 using System.Linq;
+using Roborally.core.domain.Game.Deck;
 
 namespace Roborally.infrastructure.persistence.Game.Player.Events;
 

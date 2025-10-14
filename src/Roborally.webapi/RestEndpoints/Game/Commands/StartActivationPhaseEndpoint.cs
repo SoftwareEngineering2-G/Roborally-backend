@@ -12,7 +12,7 @@ public class StartActivationPhaseEndpoint : Endpoint<StartActivationPhaseRequest
 
     public override async Task HandleAsync(StartActivationPhaseRequest req, CancellationToken ct)
     {
-        StartActivationPhaseCommand command = new StartActivationPhaseCommand()
+        StartActivationPhaseCommand command = new StartActivationPhaseCommand
         {
             GameId = req.GameId,
             Username = req.Username

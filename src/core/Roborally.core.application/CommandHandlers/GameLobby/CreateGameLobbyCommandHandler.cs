@@ -5,7 +5,7 @@ using Roborally.core.domain.Bases;
 using Roborally.core.domain.Lobby;
 using Roborally.core.domain.User;
 
-namespace Roborally.core.application.CommandHandlers;
+namespace Roborally.core.application.CommandHandlers.GameLobby;
 
 public class CreateGameLobbyCommandHandler : ICommandHandler<CreateGameLobbyCommand, Guid>
 {
@@ -34,7 +34,7 @@ public class CreateGameLobbyCommandHandler : ICommandHandler<CreateGameLobbyComm
             throw new CustomException("User is already hosting an active lobby", 409);
         }
 
-        var lobby = new GameLobby(hostUser, command.IsPrivate, command.GameRoomName, _systemTime);
+        var lobby = new domain.Lobby.GameLobby(hostUser, command.IsPrivate, command.GameRoomName, _systemTime);
         
         await _gameLobbyRepository.AddAsync(lobby, ct);
         await _unitOfWork.SaveChangesAsync(ct);
