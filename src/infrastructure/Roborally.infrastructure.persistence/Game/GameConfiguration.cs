@@ -45,5 +45,10 @@ public class GameConfiguration : IEntityTypeConfiguration<core.domain.Game.Game>
 
         builder.ComplexProperty(game => game.CurrentPhase,
             propBuilder => { propBuilder.Property(cp => cp.DisplayName).HasColumnName("CurrentPhase"); });
+
+        builder.HasMany(g => g.GameEvents)
+            .WithOne()
+            .HasForeignKey(g => g.GameId)
+            .IsRequired();
     }
 }

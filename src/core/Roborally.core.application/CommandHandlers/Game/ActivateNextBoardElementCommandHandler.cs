@@ -28,7 +28,7 @@ public class ActivateNextBoardElementCommandHandler : ICommandHandler<ActivateNe
         if (game is null) {
             throw new CustomException("Game not found", 404);
         }
-
         game.ActivateNextBoardElement(_systemTime);
+        await _unitOfWork.SaveChangesAsync(ct);
     }
 }
