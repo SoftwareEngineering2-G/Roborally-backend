@@ -19,15 +19,15 @@ public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
         
         builder.ToTable("Gameboards");
 
-        // Configure Space matrix to be stored as JSON
+        // Configure Spaces matrix to be stored as JSON
         var compactJsonOptions = new JsonSerializerOptions
         {
             WriteIndented = false // Compact JSON without spaces/indentation
         };
 
-        builder.Property(g => g.Space)
+        builder.Property(g => g.Spaces)
             .HasConversion(
-                // Convert Space[][] to JSON string
+                // Convert Spaces[][] to JSON string
                 v => JsonSerializer.Serialize(
                     v.Select(row => row.Select(space => new SpaceDto {
                         Name = space.Name(),
@@ -35,7 +35,7 @@ public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
                     }).ToArray()).ToArray(),
                     compactJsonOptions),
                 
-                // Convert JSON string back to Space[][]
+                // Convert JSON string back to Spaces[][]
                 v => JsonSerializer.Deserialize<SpaceDto[][]>(v, compactJsonOptions)!
                     .Select(row => row.Select(dto => 
                          SpaceFactory.FromNameAndWalls(

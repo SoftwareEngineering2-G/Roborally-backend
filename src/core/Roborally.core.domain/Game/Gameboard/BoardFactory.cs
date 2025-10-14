@@ -31,7 +31,7 @@ public static class BoardFactory {
 
             _emptyBoard = new GameBoard() {
                 Name = "Empty Board",
-                Space = spaces
+                Spaces = spaces
             };
         }
 
@@ -95,7 +95,7 @@ public static class BoardFactory {
     
             _boardWithWalls = new GameBoard() {
                 Name = "Board With Walls",
-                Space = spaces
+                Spaces = spaces
             };
             
         }

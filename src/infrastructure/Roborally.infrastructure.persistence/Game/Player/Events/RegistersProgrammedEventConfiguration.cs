@@ -2,12 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Roborally.core.domain.Deck;
+using Roborally.core.domain.Game.Deck;
 using Roborally.core.domain.Game.Player.Events;
 
 namespace Roborally.infrastructure.persistence.Game.Player.Events;
 
-public class RegistersProgrammedEventConfiguration : IEntityTypeConfiguration<RegistersProgrammedEvent>
+public class  RegistersProgrammedEventConfiguration : IEntityTypeConfiguration<RegistersProgrammedEvent>
 {
     public void Configure(EntityTypeBuilder<RegistersProgrammedEvent> builder)
     {

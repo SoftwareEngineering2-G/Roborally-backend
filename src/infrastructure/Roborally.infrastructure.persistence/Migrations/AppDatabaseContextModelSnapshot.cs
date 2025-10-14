@@ -81,12 +81,35 @@ namespace Roborally.infrastructure.persistence.Migrations
                     b.ToTable("Games");
                 });
 
+            modelBuilder.Entity("Roborally.core.domain.Game.GameEvents.GameEvent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<Guid>("GameId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("HappenedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameId");
+
+                    b.ToTable("GameEvents", (string)null);
+
+                    b.UseTptMappingStrategy();
+                });
+
             modelBuilder.Entity("Roborally.core.domain.Game.Gameboard.GameBoard", b =>
                 {
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<string>("Space")
+                    b.Property<string>("Spaces")
                         .IsRequired()
                         .HasColumnType("json")
                         .HasColumnName("SpaceMatrix");
@@ -251,6 +274,17 @@ namespace Roborally.infrastructure.persistence.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Roborally.core.domain.Game.GameEvents.BoardElementActivatedEvent", b =>
+                {
+                    b.HasBaseType("Roborally.core.domain.Game.GameEvents.GameEvent");
+
+                    b.Property<string>("BoardElementName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.ToTable("BoardElementActivatedEvents", (string)null);
+                });
+
             modelBuilder.Entity("Roborally.core.domain.Game.Player.Events.ProgrammingCardsDealtEvent", b =>
                 {
                     b.HasBaseType("Roborally.core.domain.Game.Player.Events.PlayerEvent");
@@ -306,6 +340,15 @@ namespace Roborally.infrastructure.persistence.Migrations
                     b.Navigation("GameBoard");
                 });
 
+            modelBuilder.Entity("Roborally.core.domain.Game.GameEvents.GameEvent", b =>
+                {
+                    b.HasOne("Roborally.core.domain.Game.Game", null)
+                        .WithMany("GameEvents")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Roborally.core.domain.Game.Player.Events.PlayerEvent", b =>
                 {
                     b.HasOne("Roborally.core.domain.Game.Player.Player", null)
@@ -339,6 +382,15 @@ namespace Roborally.infrastructure.persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Roborally.core.domain.Game.GameEvents.BoardElementActivatedEvent", b =>
+                {
+                    b.HasOne("Roborally.core.domain.Game.GameEvents.GameEvent", null)
+                        .WithOne()
+                        .HasForeignKey("Roborally.core.domain.Game.GameEvents.BoardElementActivatedEvent", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Roborally.core.domain.Game.Player.Events.ProgrammingCardsDealtEvent", b =>
                 {
                     b.HasOne("Roborally.core.domain.Game.Player.Events.PlayerEvent", null)
@@ -359,6 +411,8 @@ namespace Roborally.infrastructure.persistence.Migrations
 
             modelBuilder.Entity("Roborally.core.domain.Game.Game", b =>
                 {
+                    b.Navigation("GameEvents");
+
                     b.Navigation("Players");
                 });
 
