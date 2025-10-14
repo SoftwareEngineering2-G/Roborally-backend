@@ -12,12 +12,15 @@ public class ActivateNextBoardElementCommandHandler : ICommandHandler<ActivateNe
     private readonly IGameBroadcaster _gameBroadcaster;
     private readonly IUnitOfWork _unitOfWork;
 
+    private readonly ISystemTime _systemTime;
+
 
     public ActivateNextBoardElementCommandHandler(IGameRepository gameRepository, IGameBroadcaster gameBroadcaster,
-        IUnitOfWork unitOfWork) {
+        IUnitOfWork unitOfWork, ISystemTime systemTime) {
         _gameRepository = gameRepository;
         _gameBroadcaster = gameBroadcaster;
         _unitOfWork = unitOfWork;
+        _systemTime = systemTime;
     }
 
     public async Task ExecuteAsync(ActivateNextBoardElementCommand command, CancellationToken ct) {
@@ -26,6 +29,6 @@ public class ActivateNextBoardElementCommandHandler : ICommandHandler<ActivateNe
             throw new CustomException("Game not found", 404);
         }
 
-        game.ActivateNextBoardElement();
+        game.ActivateNextBoardElement(_systemTime);
     }
 }
