@@ -8,7 +8,8 @@ namespace Roborally.core.application.CommandHandlers.Game;
 
 public class
     GetCurrentGameStateCommandHandler : ICommandHandler<GetCurrentGameStateCommand,
-    GetCurrentGameStateCommandResponse> {
+    GetCurrentGameStateCommandResponse>
+{
     private readonly IGameRepository _gameRepository;
 
 
@@ -41,13 +42,13 @@ public class
                         .OfType<RegistersProgrammedEvent>()
                         .OrderByDescending(e => e.HappenedAt)
                         .FirstOrDefault();
-
+                    
                     var programmedCards = lastLockedEvent?.ProgrammedCardsInOrder
                         .Select(card => card.DisplayName)
                         .ToList();
-
+                    
                     return new GetCurrentGameStateCommandResponse.Player(
-                        p.Username,
+                        p.Username, 
                         p.Robot.DisplayName,
                         programmedCards,
                         p.CurrentPosition.X,
