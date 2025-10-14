@@ -35,10 +35,10 @@ public class GameBoard {
     }
 
     
-    public Space.Space GetSpaceAt(int x, int y) {
-        if (y < 0 || y >= Spaces.Length || x < 0 || x >= Spaces[0].Length)
+    public Space.Space GetSpaceAt(Position position) {
+        if (position.Y < 0 || position.Y>= Spaces.Length || position.X < 0 || position.X >= Spaces[0].Length)
             throw new ArgumentOutOfRangeException();
-        return Spaces[y][x];
+        return Spaces[position.Y][position.X];
     }
 
 
@@ -54,15 +54,14 @@ public class GameBoard {
         return result;
     }
 
-    public IList<BoardElement.BoardElement> GetElementsForActivationOfType(string nextBoardElement) {
-        var result = new List<BoardElement.BoardElement>();
-        foreach (var row in Spaces) {
-            foreach (var space in row) {
-                if (space is BoardElement.BoardElement boardElement && boardElement.Name().Equals(nextBoardElement)) {
-                    result.Add(boardElement);
-                }
+    public Dictionary<Player.Player, BoardElement.BoardElement> FilterPlayersOnBoardElements(List<Player.Player> players, string boardElementName) {
+        var filtered = new Dictionary<Player.Player, BoardElement.BoardElement>();
+        foreach (var player in players) {
+            var space = GetSpaceAt(player.CurrentPosition);
+            if (space is BoardElement.BoardElement element && element.Name().Equals(boardElementName)) {
+                filtered[player] = element;
             }
         }
-        return result;
+        return filtered;
     }
 }

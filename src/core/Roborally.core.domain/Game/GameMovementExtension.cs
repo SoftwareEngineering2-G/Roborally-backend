@@ -6,7 +6,8 @@ namespace Roborally.core.domain.Game;
 // I made this class so that the game class does not become too bloated.   - Nilanjana
 public static class GameMovementExtension {
     // bool returns if the move was successful
-    public static bool MovePlayerInDirection(this Game game, Player.Player player, Direction direction) {
+    public static bool MovePlayerInDirection(this Game game, Player.Player player, Direction direction,
+        bool shouldPush = true) {
         Position nextPosition = player.GetNextPosition(direction);
 
         if (!game.GameBoard.IsWithinBounds(nextPosition)) {
@@ -25,6 +26,10 @@ public static class GameMovementExtension {
 
         // If someone exists, push them
         if (existingPlayer is not null) {
+            if (!shouldPush) {
+                return false;      // If push is disabled, we dont push the other robot and cannot move either...                  
+            }
+
             // Recursion to push the existing player
             bool wasPushed = game.MovePlayerInDirection(existingPlayer, direction);
             if (!wasPushed) return false;

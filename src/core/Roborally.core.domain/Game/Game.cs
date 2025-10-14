@@ -2,6 +2,7 @@
 using Roborally.core.domain.Game.Deck;
 using Roborally.core.domain.Game.Gameboard;
 using Roborally.core.domain.Game.Gameboard.BoardElement;
+using Roborally.core.domain.Game.Gameboard.BoardElement.BoardElementActivationStrategies;
 using Roborally.core.domain.Game.GameEvents;
 
 namespace Roborally.core.domain.Game;
@@ -111,11 +112,20 @@ public class Game {
         string nextBoardElementName =
             BoardElementFactory.GetNextForActivation(lastActivatedElement?.BoardElementName ?? null);
 
-        var allRelevantBoardElements = GameBoard.GetElementsForActivationOfType(nextBoardElementName, _players);
+        // We get all players that are on the nextBoardElementName mapped to the board element they are on
+        var allRelevantPlayersMappedWithRelevantBoardElement =
+            GameBoard.FilterPlayersOnBoardElements(_players, nextBoardElementName);
 
-        foreach (BoardElement element in allRelevantBoardElements) {
-            element.Activate(this);
+        var activationStrategy =
+            BoardElementActicationStrategyFactory.GetActivationStrategy(nextBoardElementName);
+
+        // Activate them all
+        foreach (var (player, boardElement) in allRelevantPlayersMappedWithRelevantBoardElement) {
+
+            // TODO: current implementation activates players in arbitrary order, should it be by turn order?
+            activationStrategy.Activate(this, player, boardElement);
         }
+
 
         BoardElementActivatedEvent boardElementActivatedEvent = new BoardElementActivatedEvent() {
             HappenedAt = systemTime.CurrentTime,
@@ -123,7 +133,6 @@ public class Game {
             BoardElementName = nextBoardElementName
         };
         GameEvents.Add(boardElementActivatedEvent);
-
     }
 
 
