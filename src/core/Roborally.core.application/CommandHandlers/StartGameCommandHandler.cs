@@ -46,7 +46,7 @@ public class StartGameCommandHandler : ICommandHandler<StartGameCommand> {
         }
 
         // Get existing GameBoard from database instead of creating a new one
-        GameBoard? gameBoard = await _gameBoardRepository.FindAsync("Empty Board", ct);
+        GameBoard? gameBoard = await _gameBoardRepository.FindAsync(command.GameBoardName, ct);
 
         // If the GameBoard doesn't exist in the database, create and save it
         if (gameBoard == null) {
