@@ -1,6 +1,5 @@
 ﻿using System.Runtime.InteropServices;
 using Roborally.core.domain.Bases;
-using Roborally.core.domain.Game.CardActions;
 using Roborally.core.domain.Game.Deck;
 using Roborally.core.domain.Game.Player.Events;
 
@@ -18,11 +17,6 @@ public class Player {
 
     public ProgrammingDeck ProgrammingDeck { get; init; }
     public List<PlayerEvent> PlayerEvents { get; init; } = [];
-    
-    public ICardAction? LastExecutedAction { get; set; }
-    
-    // Store the last executed card name for persistence (used by Again card)
-    public string? LastExecutedCardName { get; set; }
 
     private Player() {
         // For EF Core
@@ -121,5 +115,22 @@ public class Player {
 
     public void MoveTo(Position newPosition) {
         CurrentPosition = newPosition;
+    }
+
+    public void RecordCardExecution(ProgrammingCard card, ISystemTime systemTime) {
+        CardExecutedEvent executedEvent = new CardExecutedEvent() {
+            HappenedAt = systemTime.CurrentTime,
+            GameId = this.GameId,
+            Username = this.Username,
+            Card = card
+        };
+        this.PlayerEvents.Add(executedEvent);
+    }
+
+    public ProgrammingCard? GetLastExecutedCard() {
+        return this.PlayerEvents
+            .OfType<CardExecutedEvent>()
+            .OrderByDescending(e => e.HappenedAt)
+            .FirstOrDefault()?.Card;
     }
 }
