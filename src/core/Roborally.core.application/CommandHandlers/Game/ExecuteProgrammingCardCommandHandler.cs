@@ -14,12 +14,14 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
     private readonly IGameRepository _gameRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IGameBroadcaster _gameBroadcaster;
+    private readonly ISystemTime _systemTime;
 
-    public ExecuteProgrammingCardCommandHandler(IGameRepository gameRepository, IUnitOfWork unitOfWork, IGameBroadcaster gameBroadcaster)
+    public ExecuteProgrammingCardCommandHandler(IGameRepository gameRepository, IUnitOfWork unitOfWork, IGameBroadcaster gameBroadcaster, ISystemTime systemTime)
     {
         _gameRepository = gameRepository;
         _unitOfWork = unitOfWork;
         _gameBroadcaster = gameBroadcaster;
+        _systemTime = systemTime;
     }
 
     public async Task<ExecuteProgrammingCardCommandResponse> ExecuteAsync(ExecuteProgrammingCardCommand command, CancellationToken ct)
@@ -51,16 +53,8 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
 
         // Create and execute the action
         var action = ActionFactory.CreateAction(card);
-        var allPlayers = game.Players.ToList();
         
-        action.Execute(player, game, allPlayers);
-        
-        // Update the last executed card name for persistence (unless it's an Again action)
-        if (action is not AgainCardAction)
-        {
-            player.LastExecutedCardName = card.DisplayName;
-            player.LastExecutedAction = action; // Also set in-memory for consistency
-        }
+        action.Execute(player, game, _systemTime);
 
         // Save changes
         await _unitOfWork.SaveChangesAsync(ct);

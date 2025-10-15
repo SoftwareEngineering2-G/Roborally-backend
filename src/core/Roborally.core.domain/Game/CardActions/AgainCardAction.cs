@@ -4,29 +4,28 @@ namespace Roborally.core.domain.Game.CardActions;
 
 public class AgainCardAction : ICardAction
 {
-    public void Execute(Player.Player player, Game game, List<Player.Player> players)
+    public void Execute(Player.Player player, Game game, Bases.ISystemTime systemTime)
     {
-        if (player == null) throw new CustomException("Player cannot be null.", 400);
+        // Check if there's a last executed card
+        var lastExecutedCard = player.GetLastExecutedCard();
         
-        // Check if there's a last executed card name
-        if (string.IsNullOrEmpty(player.LastExecutedCardName))
+        if (lastExecutedCard is null)
         {
             throw new CustomException($"Cannot execute Again card for {player.Username}: No previous action to repeat.", 400);
         }
         
         // Check if the last action was also an Again action to prevent infinite loops
-        if (player.LastExecutedCardName == "Again")
+        if (lastExecutedCard == ProgrammingCard.Again)
         {
             throw new CustomException($"Cannot execute Again card for {player.Username}: Cannot repeat an Again action.", 400);
         }
         
-        // Reconstruct the action from the card name
-        var lastCard = ProgrammingCard.FromString(player.LastExecutedCardName);
-        var actionToRepeat = ActionFactory.CreateAction(lastCard);
+        // Reconstruct the action from the card
+        var actionToRepeat = ActionFactory.CreateAction(lastExecutedCard);
         
         // Execute the last action again
-        actionToRepeat.Execute(player, game, players);
+        actionToRepeat.Execute(player, game, systemTime);
 
-        // Note: We don't update LastExecutedCardName here because Again should not replace the last action
+        // Note: We don't record the Again action itself, only the repeated action
     }
 }

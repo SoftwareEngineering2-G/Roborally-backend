@@ -1,15 +1,12 @@
-﻿
+﻿using Roborally.core.domain.Game.Deck;
+
 namespace Roborally.core.domain.Game.CardActions;
 
 public class RotateRightCardAction : ICardAction
 {
-    public void Execute(Player.Player player, Game game, List<Player.Player> players)
+    public void Execute(Player.Player player, Game game, Bases.ISystemTime systemTime)
     {
-        if (player == null) throw new CustomException("Player cannot be null.", 400);
-        
         player.RotateRight();
-        
-        // Save this action as the last executed action for this player
-        player.LastExecutedAction = this;
+        player.RecordCardExecution(ProgrammingCard.RotateRight, systemTime);
     }
 }
