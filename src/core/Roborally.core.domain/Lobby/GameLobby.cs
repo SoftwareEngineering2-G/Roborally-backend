@@ -16,7 +16,7 @@ public class GameLobby {
     public bool IsPrivate { get; init; }
 
     // Foreign key property - no need for navigation property
-    public string HostUsername { get; init; }
+    public string HostUsername { get; set; }
 
     public DateTime? StartedAt { get; set; }
     public DateTime CreatedAt { get; init; }
@@ -72,6 +72,10 @@ public class GameLobby {
             return;
 
         _joinedUsers.Remove(user);
+        // If the host leaves, assign a new host if there are still users in the lobby
+        if (user.Username == HostUsername && _joinedUsers.Count > 0) {
+            HostUsername = _joinedUsers[0].Username;
+        }
 
         // Add the domain event
         var userLeftLobbyEvent = new UserLeftLobbyEvent() {

@@ -48,5 +48,7 @@ public class GameLobbyRepository : IGameLobbyRepository {
         return Task.CompletedTask;
     }
 
-
+    public void Remove(GameLobby gameLobby) {
+        _context.GameLobby.Remove(gameLobby);
+    }
 }
