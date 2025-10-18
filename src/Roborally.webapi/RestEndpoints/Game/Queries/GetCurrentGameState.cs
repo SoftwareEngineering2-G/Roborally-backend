@@ -21,7 +21,7 @@ public class GetCurrentGameState : Endpoint<GetCurrentGameStateRequest, GetCurre
             CurrentPhase = response.CurrentPhase,
             GameBoard = new GetCurrentGameStateResponse.GameBoardSpaces(response.GameBoard.Name,
                 response.GameBoard.Spaces.Select(row =>
-                        row.Select(space => new GetCurrentGameStateResponse.Space(space.Name, space.walls)).ToArray())
+                        row.Select(space => new GetCurrentGameStateResponse.Space(space.Name, space.Walls, space.Direction)).ToArray())
                     .ToArray()),
             Players =
                 response.Players.Select(p => new GetCurrentGameStateResponse.Player(
@@ -52,7 +52,7 @@ public class GetCurrentGameStateResponse {
 
     public record GameBoardSpaces(string Name, Space[][] Spaces);
 
-    public record Space(string Name, List<string> Walls);
+    public record Space(string Name, List<string> Walls, string? Direction = null);
 
     public record Player(
         string Username,

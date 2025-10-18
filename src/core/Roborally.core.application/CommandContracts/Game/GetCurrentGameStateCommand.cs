@@ -20,7 +20,7 @@ public class GetCurrentGameStateCommandResponse {
     
     public record GameBoardSpaces(string Name, Space[][] Spaces);
 
-    public record Space(string Name, List<string> walls);
+    public record Space(string Name, List<string> Walls, string? Direction = null);
 
     public record Player(
         string Username, 

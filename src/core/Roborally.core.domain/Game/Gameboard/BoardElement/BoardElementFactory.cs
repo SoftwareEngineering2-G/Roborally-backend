@@ -20,15 +20,33 @@ public static class BoardElementFactory {
             Direction = direction
         };
     }
+    
+    public static BoardElement BlueConveyorBelt(Direction direction, Direction[] walls) {
+        return new BlueConveyorBelt(walls) {
+            Direction = direction
+        };
+    }
 
     public static BoardElement GreenConveyorBelt(Direction direction) {
         return new GreenConveyorBelt {
             Direction = direction
         };
     }
+    
+    public static BoardElement GreenConveyorBelt(Direction direction, Direction[] walls) {
+        return new GreenConveyorBelt(walls) {
+            Direction = direction
+        };
+    }
 
     public static BoardElement Gear(GearDirection direction) {
         return new Gear {
+            Direction = direction
+        };
+    }
+    
+    public static BoardElement Gear(GearDirection direction, Direction[] walls) {
+        return new Gear(walls) {
             Direction = direction
         };
     }
