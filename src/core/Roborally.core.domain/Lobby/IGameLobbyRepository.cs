@@ -7,4 +7,6 @@ public interface IGameLobbyRepository
     
     Task<GameLobby?> FindAsync(Guid gameId);
     Task<List<GameLobby>> FindPublicLobbiesAsync(CancellationToken cancellationToken = default);
+    
+    void Remove(GameLobby gameLobby);
 }

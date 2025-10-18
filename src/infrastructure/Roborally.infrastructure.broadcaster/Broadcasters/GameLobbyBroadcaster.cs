@@ -27,6 +27,13 @@ public class GameLobbyBroadcaster : IGameLobbyBroadcaster
         var payload = new { GameId = gameId, Username = username };
         await _hubContext.Clients.Group(groupId).SendAsync("UserLeftLobby", payload, cancellationToken);
     }
+    
+    public async Task BroadcastHostChangedAsync(Guid gameId, string newHost, CancellationToken cancellationToken = default)
+    {
+        string groupId = GetGroupId(gameId);
+        var payload = new { GameId = gameId, NewHost = newHost };
+        await _hubContext.Clients.Group(groupId).SendAsync("HostChanged", payload, cancellationToken);
+    }
 
     public Task BroadcastGameStartedAsync(Guid gameId, CancellationToken cancellationToken = default) {
         string groupId = GetGroupId(gameId);
