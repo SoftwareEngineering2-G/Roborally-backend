@@ -32,8 +32,7 @@ public class
             CurrentPhase = game.CurrentPhase.DisplayName,
             GameBoard = new GetCurrentGameStateCommandResponse.GameBoardSpaces(game.GameBoard.Name,
                 game.GameBoard.Spaces.Select(row =>
-                        row.Select(space => new GetCurrentGameStateCommandResponse.Space(space.Name(),
-                            space.Walls().Select(wall => wall.DisplayName).ToList())).ToArray())
+                        row.Select(space => new GetCurrentGameStateCommandResponse.ResponseSpace(space)).ToArray())
                     .ToArray()),
             Players = game.Players
                 .Select(p => {

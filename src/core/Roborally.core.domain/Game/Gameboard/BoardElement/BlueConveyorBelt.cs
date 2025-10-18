@@ -5,12 +5,10 @@ namespace Roborally.core.domain.Game.Gameboard.BoardElement;
 public class BlueConveyorBelt : BoardElement {
     public required Direction Direction { get; set; }
 
-
     public override string Name() {
         return BoardElementFactory.BlueConveyorBeltName;
     }
-
-
-    internal BlueConveyorBelt() {
+    
+    public BlueConveyorBelt(Direction[]? walls = null) : base(walls){
     }
 }

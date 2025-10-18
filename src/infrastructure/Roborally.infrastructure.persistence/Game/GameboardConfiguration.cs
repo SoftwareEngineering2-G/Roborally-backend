@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Text.Json;
 using Roborally.core.domain.Game.Gameboard;
+using Roborally.core.domain.Game.Gameboard.BoardElement;
 using Roborally.core.domain.Game.Gameboard.Space;
 using Roborally.core.domain.Game.Player;
 
@@ -12,6 +13,7 @@ public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
     private class SpaceDto {
         public string Name { get; set; } = string.Empty;
         public string[] Walls { get; set; } = [];
+        public Dictionary<string, string> ElementProperties { get; set; } = new();
     }
 
     public void Configure(EntityTypeBuilder<GameBoard> builder) {
@@ -29,19 +31,12 @@ public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
             .HasConversion(
                 // Convert Spaces[][] to JSON string
                 v => JsonSerializer.Serialize(
-                    v.Select(row => row.Select(space => new SpaceDto {
-                        Name = space.Name(),
-                        Walls = space.Walls().Select(w => w.DisplayName).ToArray()
-                    }).ToArray()).ToArray(),
+                    v.Select(row => row.Select(ToDto).ToArray()).ToArray(),
                     compactJsonOptions),
                 
                 // Convert JSON string back to Spaces[][]
                 v => JsonSerializer.Deserialize<SpaceDto[][]>(v, compactJsonOptions)!
-                    .Select(row => row.Select(dto => 
-                         SpaceFactory.FromNameAndWalls(
-                             dto.Name, 
-                             dto.Walls.Select(Direction.FromDisplayName).ToArray()
-                         )
+                    .Select(row => row.Select(FromDto
                     ).ToArray()).ToArray(),
                 
                 // Value comparer for proper change detection
@@ -50,11 +45,63 @@ public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
                     c => c.Aggregate(0, (a, row) => 
                         HashCode.Combine(a, row.Aggregate(0, (b, space) => 
                             HashCode.Combine(b, space.Name().GetHashCode())))),
-                    c => c.Select(row => row.Select(space => SpaceFactory.FromName(space.Name())).ToArray()).ToArray()))
+                    c => DeepCloneSpaces(c))
+                )
             .HasColumnName("SpaceMatrix")
             .HasColumnType("json");
     }
 
+    private static SpaceDto ToDto(Space space)
+    {
+        var dto = new SpaceDto()
+        {
+            Name = space.Name(),
+            Walls = space.Walls().Select(w => w.DisplayName).ToArray()
+        };
+
+        if (space is BlueConveyorBelt blueBelt)
+        {
+            dto.ElementProperties["Direction"] = blueBelt.Direction.DisplayName;
+        }
+        if (space is GreenConveyorBelt greenBelt)
+        {
+            dto.ElementProperties["Direction"] = greenBelt.Direction.DisplayName;
+        }
+        else if (space is Gear gear)
+        {
+            dto.ElementProperties["GearDirection"] = gear.Direction.DisplayName;
+        }
+
+        return dto;
+    }
+
+    private static Space FromDto(SpaceDto dto)
+    {
+        var walls = dto.Walls.Select(Direction.FromDisplayName).ToArray();
+
+        return dto.Name switch
+        {
+            BoardElementFactory.BlueConveyorBeltName => new BlueConveyorBelt(walls)
+            {
+                Direction = dto.ElementProperties.TryGetValue("Direction", out var dir) 
+                    ? Direction.FromDisplayName(dir) 
+                    : throw new InvalidOperationException("Missing Direction for BlueConveyorBelt")
+            },
+            BoardElementFactory.GreenConveyorBeltName => new GreenConveyorBelt(walls)
+            {
+                Direction = dto.ElementProperties.TryGetValue("Direction", out var dir) 
+                    ? Direction.FromDisplayName(dir) 
+                    : throw new InvalidOperationException("Missing Direction for GreenConveyorBelt")
+            },
+            BoardElementFactory.GearName => new Gear(walls)
+            {
+                Direction = dto.ElementProperties.TryGetValue("GearDirection", out var gearDir) 
+                    ? GearDirection.FromDisplayName(gearDir) 
+                    : throw new InvalidOperationException("Missing GearDirection for Gear")
+            },
+            _ => SpaceFactory.FromNameAndWalls(dto.Name, walls)
+        };
+    }
 
     private static bool CompareSpaceArrays(Space[][]? array1, Space[][]? array2)
     {
@@ -77,5 +124,11 @@ public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
             }
         }
         return true;
+    }
+    
+    private static Space[][] DeepCloneSpaces(Space[][] spaces)
+    {
+        var json = JsonSerializer.Serialize(spaces.Select(row => row.Select(ToDto).ToArray()).ToArray());
+        return JsonSerializer.Deserialize<SpaceDto[][]>(json)!.Select(row => row.Select(FromDto).ToArray()).ToArray();
     }
 }

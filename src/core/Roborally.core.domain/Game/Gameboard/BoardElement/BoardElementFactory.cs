@@ -4,9 +4,9 @@ using Roborally.core.domain.Game.Player;
 namespace Roborally.core.domain.Game.Gameboard.BoardElement;
 
 public static class BoardElementFactory {
-    internal const string BlueConveyorBeltName = "BlueConveyorBelt";
-    internal const string GreenConveyorBeltName = "GreenConveyorBelt";
-    internal const string GearName = "Gear";
+    public const string BlueConveyorBeltName = "BlueConveyorBelt";
+    public const string GreenConveyorBeltName = "GreenConveyorBelt";
+    public const string GearName = "Gear";
 
     // Use Type objects for activation order
     private static readonly string[] ActivationOrder = new string[] {
@@ -15,20 +15,20 @@ public static class BoardElementFactory {
         GearName
     };
 
-    public static BoardElement BlueConveyorBelt(Direction direction) {
-        return new BlueConveyorBelt {
+    public static BoardElement BlueConveyorBelt(Direction direction, Direction[]? walls = null) {
+        return new BlueConveyorBelt(walls) {
             Direction = direction
         };
     }
 
-    public static BoardElement GreenConveyorBelt(Direction direction) {
-        return new GreenConveyorBelt {
+    public static BoardElement GreenConveyorBelt(Direction direction, Direction[]? walls = null) {
+        return new GreenConveyorBelt(walls) {
             Direction = direction
         };
     }
 
-    public static BoardElement Gear(GearDirection direction) {
-        return new Gear {
+    public static BoardElement Gear(GearDirection direction, Direction[]? walls = null) {
+        return new Gear(walls) {
             Direction = direction
         };
     }

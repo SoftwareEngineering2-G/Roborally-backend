@@ -1,4 +1,6 @@
 using FastEndpoints;
+using Roborally.core.domain.Game.Gameboard.BoardElement;
+using Roborally.core.domain.Game.Gameboard.Space;
 
 namespace Roborally.core.application.CommandContracts.Game;
 
@@ -18,9 +20,34 @@ public class GetCurrentGameStateCommandResponse {
     // TODO:  We probably need information about gameboards, current positions and stuff
     public required GameBoardSpaces GameBoard { get; init; }
     
-    public record GameBoardSpaces(string Name, Space[][] Spaces);
+    public record ResponseSpace
+    {
+        public string Name { get; init; }
+        public List<string> Walls { get; init; }
+        public string? Direction { get; init; }
 
-    public record Space(string Name, List<string> walls);
+        public ResponseSpace(Space space)
+        {
+            Name = space.Name();
+            Walls = space.Walls().Select(d => d.DisplayName).ToList();
+            Direction = null;
+            
+            if (space is GreenConveyorBelt greenConveyorBelt)
+            {
+                Direction = greenConveyorBelt.Direction.DisplayName;
+            }
+            else if (space is BlueConveyorBelt blueConveyorBelt)
+            {
+                Direction = blueConveyorBelt.Direction.DisplayName;
+            }
+            else if (space is Gear gear)
+            {
+                Direction = gear.Direction.DisplayName;
+            }
+        }
+    }
+    
+    public record GameBoardSpaces(string Name, ResponseSpace[][] Spaces);
 
     public record Player(
         string Username, 

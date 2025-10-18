@@ -8,8 +8,7 @@ public class GreenConveyorBelt : BoardElement {
     public override string Name() {
         return BoardElementFactory.GreenConveyorBeltName;
     }
-
-
-    internal GreenConveyorBelt() {
+    
+    public GreenConveyorBelt(Direction[]? walls = null) : base(walls){
     }
 }

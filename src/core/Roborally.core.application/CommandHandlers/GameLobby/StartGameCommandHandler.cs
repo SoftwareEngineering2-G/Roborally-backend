@@ -50,7 +50,20 @@ public class StartGameCommandHandler : ICommandHandler<StartGameCommand> {
 
         // If the GameBoard doesn't exist in the database, create and save it
         if (gameBoard == null) {
-            gameBoard = BoardFactory.GetBoardWithWalls();
+            switch (command.GameBoardName)
+            {
+                case BoardFactory.EmptyBoardName:
+                    gameBoard = BoardFactory.GetEmptyBoard();
+                    break;
+                case BoardFactory.BoardWithWallsName:
+                    gameBoard = BoardFactory.GetBoardWithWalls();
+                    break;
+                case BoardFactory.BoardWithWallsAndElementsName:
+                    gameBoard = BoardFactory.GetBoardWithWallsAndElements();
+                    break;
+                default:
+                    throw new CustomException("Game board not found", 404);
+            }
             await _gameBoardRepository.AddAsync(gameBoard, ct);
         }
         
