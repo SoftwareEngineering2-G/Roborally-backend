@@ -1,5 +1,8 @@
 using FastEndpoints;
 using Roborally.core.application.CommandContracts.Game;
+using Roborally.core.domain.Game.Gameboard.BoardElement;
+using Roborally.core.domain.Game.Gameboard.Space;
+
 
 namespace Roborally.webapi.RestEndpoints.Game.Queries;
 
@@ -21,7 +24,9 @@ public class GetCurrentGameState : Endpoint<GetCurrentGameStateRequest, GetCurre
             CurrentPhase = response.CurrentPhase,
             GameBoard = new GetCurrentGameStateResponse.GameBoardSpaces(response.GameBoard.Name,
                 response.GameBoard.Spaces.Select(row =>
-                        row.Select(space => new GetCurrentGameStateResponse.Space(space.Name, space.walls)).ToArray())
+                        row.Select(space => new GetCurrentGameStateResponse.Space(
+                            space.Name, space.Walls, space.Direction  
+                        )).ToArray())
                     .ToArray()),
             Players =
                 response.Players.Select(p => new GetCurrentGameStateResponse.Player(
@@ -50,9 +55,8 @@ public class GetCurrentGameStateResponse {
 
     public required GameBoardSpaces GameBoard { get; set; }
 
+    public record Space(string Name, List<string> Walls, string? Direction);
     public record GameBoardSpaces(string Name, Space[][] Spaces);
-
-    public record Space(string Name, List<string> Walls);
 
     public record Player(
         string Username,
