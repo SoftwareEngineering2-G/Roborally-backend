@@ -2,6 +2,7 @@ using FastEndpoints;
 using Roborally.core.application.CommandContracts.Game;
 using Roborally.core.domain;
 using Roborally.core.domain.Game;
+using Roborally.core.domain.Game.Gameboard.BoardElement;
 using Roborally.core.domain.Game.Player.Events;
 
 namespace Roborally.core.application.CommandHandlers.Game;
@@ -32,8 +33,20 @@ public class
             CurrentPhase = game.CurrentPhase.DisplayName,
             GameBoard = new GetCurrentGameStateCommandResponse.GameBoardSpaces(game.GameBoard.Name,
                 game.GameBoard.Spaces.Select(row =>
-                        row.Select(space => new GetCurrentGameStateCommandResponse.Space(space.Name(),
-                            space.Walls().Select(wall => wall.DisplayName).ToList())).ToArray())
+                        row.Select(space => {
+                            // Get direction for board elements
+                            string? direction = space switch {
+                                BlueConveyorBelt blueBelt => blueBelt.Direction.DisplayName,
+                                GreenConveyorBelt greenBelt => greenBelt.Direction.DisplayName,
+                                Gear gear => gear.Direction.DisplayName,
+                                _ => null
+                            };
+                            
+                            return new GetCurrentGameStateCommandResponse.Space(
+                                space.Name(),
+                                space.Walls().Select(wall => wall.DisplayName).ToList(),
+                                direction);
+                        }).ToArray())
                     .ToArray()),
             Players = game.Players
                 .Select(p => {

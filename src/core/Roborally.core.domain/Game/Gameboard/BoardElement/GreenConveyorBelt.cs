@@ -12,4 +12,7 @@ public class GreenConveyorBelt : BoardElement {
 
     internal GreenConveyorBelt() {
     }
+    
+    internal GreenConveyorBelt(Direction[] walls) : base(walls) {
+    }
 }

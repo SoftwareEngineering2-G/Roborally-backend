@@ -25,10 +25,10 @@ public class CreateGameLobbyCommandHandler : ICommandHandler<CreateGameLobbyComm
     public async Task<Guid> ExecuteAsync(CreateGameLobbyCommand command, CancellationToken ct)
     {
         var hostUser = await _userRepository.FindAsync(command.HostUsername, ct);
-        if (hostUser == null)
+        if (hostUser is null)
             throw new CustomException("Host user not found", 409);
         
-        var isCurrentlyHosting = await _gameLobbyRepository.IsUserCurrentlyHostingActiveLobbyAsync(command.HostUsername);
+        bool isCurrentlyHosting = await _gameLobbyRepository.IsUserCurrentlyHostingActiveLobbyAsync(command.HostUsername);
         if (isCurrentlyHosting)
         {
             throw new CustomException("User is already hosting an active lobby", 409);

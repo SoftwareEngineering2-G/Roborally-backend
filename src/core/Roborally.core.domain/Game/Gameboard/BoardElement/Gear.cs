@@ -6,4 +6,10 @@ public class Gear : BoardElement {
     public override string Name() {
         return BoardElementFactory.GearName;
     }
+    
+    internal Gear() {
+    }
+    
+    internal Gear(Player.Direction[] walls) : base(walls) {
+    }
 }
