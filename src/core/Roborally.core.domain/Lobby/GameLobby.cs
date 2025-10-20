@@ -1,5 +1,6 @@
 ﻿using Roborally.core.domain.Bases;
 using Roborally.core.domain.Game.Gameboard;
+using Roborally.core.domain.Game.Gameboard.Space;
 using Roborally.core.domain.Game.Player;
 using Roborally.core.domain.Lobby.DomainEvents;
 
@@ -86,8 +87,9 @@ public class GameLobby {
 
     public Game.Game StartGame(string username, ISystemTime systemTime, GameBoard gameBoard) {
         if (!username.ToLower().Equals(HostUsername.ToLower())) {
-             throw new CustomException("Only the host can start the game", 403);
+            throw new CustomException("Only the host can start the game", 403);
         }
+
         if (this.StartedAt is not null) {
             throw new CustomException("Cannot start game - game has already started", 400);
         }
@@ -95,11 +97,11 @@ public class GameLobby {
         Robot[] robots = Robot.All();
 
 
-        // Convert joined users to players with assigned robots and spawn positions
+        List<Position> spawnPositions = gameBoard.GetPositionsForSpaceType(SpaceFactory.SpawnPointName);
 
-        // For now, we assign spawn positions in a simple manner
+
         List<Player> players = this._joinedUsers.Select((user, index) =>
-            new Player(user.Username, this.GameId, new Position(0, index), robots[index])).ToList();
+            new Player(user.Username, this.GameId, spawnPositions[index], robots[index])).ToList();
 
         Game.Game game = new Game.Game(this.GameId, HostUsername, Name,players, gameBoard);
 

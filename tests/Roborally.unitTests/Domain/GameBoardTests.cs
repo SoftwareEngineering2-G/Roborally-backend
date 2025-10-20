@@ -10,7 +10,7 @@ public class GameBoardTests
     
     public GameBoardTests()
     {
-        _gameBoard = BoardFactory.GetEmptyBoard();
+        _gameBoard = GameBoardFactory.GetEmptyBoard();
     }
 
     [Fact]

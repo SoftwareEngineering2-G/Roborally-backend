@@ -5,7 +5,7 @@ namespace Roborally.core.domain.Game.Gameboard;
 using Space;
 using BoardElement; // allow referring to BoardElementFactory and types
 
-public static class BoardFactory {
+public static class GameBoardFactory {
     private static readonly Lock Lock = new ();
     private static GameBoard? _emptyBoard;
     private static GameBoard? _boardWithWalls;
@@ -133,7 +133,7 @@ public static class BoardFactory {
         
         return _boardWithWalls;
     }
-    public static GameBoard GetMilkRunBoard()
+    public static GameBoard GetStarterCourse()
     {
         // Create a 15x12 board initialized with empty spaces
         Space.Space[][] spaces = new Space.Space[BoardHeight][];
@@ -152,6 +152,9 @@ public static class BoardFactory {
 
         void PlaceGreenConveyor(int row, int col, Direction direction) =>
             spaces[row][col] = BoardElementFactory.GreenConveyorBelt(direction, Array.Empty<Direction>());
+        
+        void PlaceSpawnPoint(int row, int col) =>
+            spaces[row][col] = SpaceFactory.SpawnPoint();
 
         // ========== Blue Conveyor Belt Circuits ==========
         
@@ -176,7 +179,9 @@ public static class BoardFactory {
             PlaceBlueConveyor(1, col, Direction.West);
         }
         // Vertical connector (row 2, col 6)
-        PlaceBlueConveyor(2, 6, Direction.North);
+        PlaceBlueConveyor(1, 6, Direction.South);
+
+        PlaceBlueConveyor(2, 6, Direction.South);
         // Horizontal line right (row 3, col 6-11)
         for (int col = 6; col <= 11; col++)
         {
@@ -187,7 +192,7 @@ public static class BoardFactory {
         // Vertical line down (row 8, col 0-5)
         for (int col = 0; col <= 5; col++)
         {
-            PlaceBlueConveyor(8, col, Direction.East);
+            PlaceBlueConveyor(8, col, Direction.West);
         }
         // Corner pieces (row 9-10, col 5)
         PlaceBlueConveyor(9, 5, Direction.North);
@@ -250,12 +255,33 @@ public static class BoardFactory {
         PlaceGreenConveyor(10, 6, Direction.South);
         PlaceGreenConveyor(11, 6, Direction.West);
         PlaceGreenConveyor(11, 5, Direction.West);
-
-        return new GameBoard
+        
+        PlaceBlueConveyor(5, 1, Direction.East);
+        PlaceBlueConveyor(8, 5, Direction.West);
+        PlaceBlueConveyor(10, 5, Direction.North);
+        PlaceBlueConveyor(6, 9, Direction.West);
+        
+        PlaceGreenConveyor(5, 4, Direction.South);
+        PlaceGreenConveyor(6,3, Direction.South);
+        PlaceGreenConveyor(5,0, Direction.West);
+        PlaceGreenConveyor(5,11, Direction.North);
+        PlaceGreenConveyor(5,8, Direction.West);
+        PlaceGreenConveyor(4,9, Direction.West);
+        PlaceGreenConveyor(11,5, Direction.South);
+        
+        PlaceSpawnPoint(1,12);
+        PlaceSpawnPoint(4,13);
+        PlaceSpawnPoint(6,13);
+        PlaceSpawnPoint(8,12);
+        
+        var board = new GameBoard
         {
-            Name = "Milk Run",
+            Name = "Starter Course",
             Spaces = spaces
         };
+
+        return board;
+        
     }
 
     

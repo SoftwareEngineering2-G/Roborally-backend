@@ -13,7 +13,7 @@ public class GameFactory
             players[0].Username,
             "Test Game",
             players,
-            BoardFactory.GetEmptyBoard()
+            GameBoardFactory.GetEmptyBoard()
         );
     }
 }
