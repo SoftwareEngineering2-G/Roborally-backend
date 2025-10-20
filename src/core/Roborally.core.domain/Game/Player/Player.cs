@@ -29,7 +29,7 @@ public class Player {
         // When a player is created, they start at their spawn position
         CurrentPosition = spawnPosition;
         Robot = robot;
-        CurrentFacingDirection = Direction.North;
+        CurrentFacingDirection = Direction.West;
         ProgrammingDeck = ProgrammingDeck.NewShuffled();
     }
 

@@ -6,6 +6,6 @@ public class EmptySpace : Space {
     public EmptySpace(Direction[]? walls = null) : base(walls) {}
     
     public override string Name() {
-        return "EmptySpace";
+        return SpaceFactory.EmptySpaceName;
     }
 }

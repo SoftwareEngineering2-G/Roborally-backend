@@ -6,7 +6,7 @@ public abstract class BoardElement : Space.Space
     {
     }
     
-    protected BoardElement(Player.Direction[] walls) : base(walls)
+    protected BoardElement(Player.Direction[]? walls) : base(walls)
     {
     }
 }

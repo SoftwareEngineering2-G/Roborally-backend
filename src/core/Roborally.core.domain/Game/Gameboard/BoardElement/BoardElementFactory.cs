@@ -21,7 +21,7 @@ public static class BoardElementFactory {
         };
     }
     
-    public static BoardElement BlueConveyorBelt(Direction direction, Direction[] walls) {
+    public static BoardElement BlueConveyorBelt(Direction direction, Direction[]? walls) {
         return new BlueConveyorBelt(walls) {
             Direction = direction
         };
@@ -33,7 +33,7 @@ public static class BoardElementFactory {
         };
     }
     
-    public static BoardElement GreenConveyorBelt(Direction direction, Direction[] walls) {
+    public static BoardElement GreenConveyorBelt(Direction direction, Direction[]? walls) {
         return new GreenConveyorBelt(walls) {
             Direction = direction
         };
@@ -61,4 +61,5 @@ public static class BoardElementFactory {
         }
         return ActivationOrder[(idx + 1) % ActivationOrder.Length];
     }
+    
 }
