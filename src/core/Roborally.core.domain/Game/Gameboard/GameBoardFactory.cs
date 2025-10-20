@@ -147,14 +147,14 @@ public static class GameBoardFactory {
         }
 
         // Helper methods for placing conveyor belts
-        void PlaceBlueConveyor(int row, int col, Direction direction) =>
-            spaces[row][col] = BoardElementFactory.BlueConveyorBelt(direction, Array.Empty<Direction>());
+        void PlaceBlueConveyor(int row, int col, Direction direction, Direction[]? walls = null) =>
+            spaces[row][col] = BoardElementFactory.BlueConveyorBelt(direction, walls);
 
-        void PlaceGreenConveyor(int row, int col, Direction direction) =>
-            spaces[row][col] = BoardElementFactory.GreenConveyorBelt(direction, Array.Empty<Direction>());
+        void PlaceGreenConveyor(int row, int col, Direction direction, Direction[]? walls = null) =>
+            spaces[row][col] = BoardElementFactory.GreenConveyorBelt(direction, walls);
         
-        void PlaceSpawnPoint(int row, int col) =>
-            spaces[row][col] = SpaceFactory.SpawnPoint();
+        void PlaceSpawnPoint(int row, int col, Direction[]? walls = null) =>
+            spaces[row][col] = SpaceFactory.SpawnPoint(walls);
 
         // ========== Blue Conveyor Belt Circuits ==========
         
@@ -245,9 +245,8 @@ public static class GameBoardFactory {
         PlaceGreenConveyor(4, 10, Direction.West);
         PlaceGreenConveyor(4, 9, Direction.South);
         PlaceGreenConveyor(4, 8, Direction.South);
-        PlaceGreenConveyor(5, 8, Direction.East);
         PlaceGreenConveyor(5, 7, Direction.South);
-        PlaceGreenConveyor(6, 7, Direction.South);
+        PlaceGreenConveyor(6, 7, Direction.South, [Direction.East]);
         PlaceGreenConveyor(7, 7, Direction.South);
         PlaceGreenConveyor(8, 7, Direction.West);
         PlaceGreenConveyor(8, 6, Direction.South);
@@ -257,22 +256,41 @@ public static class GameBoardFactory {
         PlaceGreenConveyor(11, 5, Direction.West);
         
         PlaceBlueConveyor(5, 1, Direction.East);
-        PlaceBlueConveyor(8, 5, Direction.West);
+        PlaceBlueConveyor(8, 5, Direction.West, [Direction.East]);
         PlaceBlueConveyor(10, 5, Direction.North);
         PlaceBlueConveyor(6, 9, Direction.West);
+        PlaceBlueConveyor(5, 3, Direction.North, [Direction.East, Direction.South]);
         
         PlaceGreenConveyor(5, 4, Direction.South);
         PlaceGreenConveyor(6,3, Direction.South);
         PlaceGreenConveyor(5,0, Direction.West);
         PlaceGreenConveyor(5,11, Direction.North);
-        PlaceGreenConveyor(5,8, Direction.West);
+        PlaceGreenConveyor(5, 8, Direction.West, [Direction.South]);
         PlaceGreenConveyor(4,9, Direction.West);
         PlaceGreenConveyor(11,5, Direction.South);
         
         PlaceSpawnPoint(1,12);
         PlaceSpawnPoint(4,13);
         PlaceSpawnPoint(6,13);
-        PlaceSpawnPoint(8,12);
+        PlaceSpawnPoint(8,12, [Direction.South]);
+        
+        spaces[2][12] = SpaceFactory.EmptySpace([Direction.South]);
+        spaces[2][13] = SpaceFactory.EmptySpace([Direction.South]);
+        spaces[2][14] = SpaceFactory.EmptySpace([Direction.South]);
+        
+        
+        spaces[5][12] = SpaceFactory.EmptySpace([Direction.South]);
+        spaces[5][13] = SpaceFactory.EmptySpace([Direction.South]);
+        spaces[5][14] = SpaceFactory.EmptySpace([Direction.South]);
+        
+        
+        spaces[8][13] = SpaceFactory.EmptySpace([Direction.South]);
+        spaces[8][14] = SpaceFactory.EmptySpace([Direction.South]);
+        spaces[7][5] = SpaceFactory.EmptySpace([Direction.South]);
+        
+        PlaceGreenConveyor(3,5 , Direction.South, [Direction.East]);
+        PlaceBlueConveyor(3,6 , Direction.South, [Direction.South]);
+
         
         var board = new GameBoard
         {

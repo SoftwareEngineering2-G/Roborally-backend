@@ -30,11 +30,11 @@ public static class SpaceFactory {
         }
     }
     
-    public static SpawnPoint SpawnPoint() {
-        return new SpawnPoint();
+    public static SpawnPoint SpawnPoint(Direction[]? walls = null) {
+        return new SpawnPoint(walls);
     }
 
-    public static EmptySpace EmptySpace() {
-        return new EmptySpace();
+    public static EmptySpace EmptySpace(Direction[]? walls = null) {
+        return new EmptySpace(walls);
     }
 }
