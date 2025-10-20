@@ -12,4 +12,19 @@ public class Position {
     public Position GetNext(Direction direction) {
         return direction.GetNextPosition(this);
     }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is not Position otherValue)
+        {
+            return false;
+        }
+        
+        return X == otherValue.X && Y == otherValue.Y;
+    }
+    
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(X, Y);
+    }
 };
