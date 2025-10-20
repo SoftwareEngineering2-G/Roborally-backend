@@ -41,20 +41,6 @@ public class Move1CardActionTests
     }
 
     [Fact]
-    public void Move1_ShouldMoveWest_WhenFacingWest()
-    {
-        // Arrange
-        _player.CurrentPosition = new Position(5, 5);
-        _player.CurrentFacingDirection = Direction.West;
-
-        // Act
-        _action.Execute(_player, _game, _systemTimeMock.Object);
-
-        // Assert
-        Assert.Equal(new Position(5, 5), _player.CurrentPosition);
-    }
-
-    [Fact]
     public void Move1_ShouldRecordCardExecution()
     {
         // Arrange

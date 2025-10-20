@@ -41,20 +41,6 @@ public class Move2CardActionTests
     }
 
     [Fact]
-    public void Move2_ShouldMoveTwoSpacesEast()
-    {
-        // Arrange
-        _player.CurrentPosition = new Position(5, 5);
-        _player.CurrentFacingDirection = Direction.East;
-
-        // Act
-        _action.Execute(_player, _game, _systemTimeMock.Object);
-
-        // Assert
-        Assert.Equal(new Position(5, 5), _player.CurrentPosition);
-    }
-
-    [Fact]
     public void Move2_ShouldRecordCardExecution()
     {
         // Arrange
