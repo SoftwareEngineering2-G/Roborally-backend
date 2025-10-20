@@ -65,11 +65,11 @@ public class GameBoard {
         return filtered;
     }
 
-    public List<Position> GetPositionsForSpaceType(string spawnPointName) {
+    public List<Position> GetPositionsForSpaceType(string spaceType) {
         var positions = new List<Position>();
         for (int y = 0; y < Spaces.Length; y++) {
             for (int x = 0; x < Spaces[y].Length; x++) {
-                if (Spaces[y][x].Name().Equals(spawnPointName)) {
+                if (Spaces[y][x].Name().Equals(spaceType)) {
                     positions.Add(new Position(x, y));
                 }
             }
