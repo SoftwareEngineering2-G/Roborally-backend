@@ -133,5 +133,130 @@ public static class BoardFactory {
         
         return _boardWithWalls;
     }
+    public static GameBoard GetMilkRunBoard()
+    {
+        // Create a 15x12 board initialized with empty spaces
+        Space.Space[][] spaces = new Space.Space[BoardHeight][];
+        for (int row = 0; row < BoardHeight; row++)
+        {
+            spaces[row] = new Space.Space[BoardWidth];
+            for (int col = 0; col < BoardWidth; col++)
+            {
+                spaces[row][col] = new EmptySpace(Array.Empty<Direction>());
+            }
+        }
+
+        // Helper methods for placing conveyor belts
+        void PlaceBlueConveyor(int row, int col, Direction direction) =>
+            spaces[row][col] = BoardElementFactory.BlueConveyorBelt(direction, Array.Empty<Direction>());
+
+        void PlaceGreenConveyor(int row, int col, Direction direction) =>
+            spaces[row][col] = BoardElementFactory.GreenConveyorBelt(direction, Array.Empty<Direction>());
+
+        // ========== Blue Conveyor Belt Circuits ==========
+        
+        // Blue Circuit 1: Left side vertical loop
+        // Vertical line down (row 0-5, col 1)
+        for (int row = 0; row <= 5; row++)
+        {
+            PlaceBlueConveyor(row, 1, Direction.South);
+        }
+        // Horizontal connector (row 5, col 2)
+        PlaceBlueConveyor(5, 2, Direction.East);
+        // Vertical line up (row 5-0, col 3)
+        for (int row = 5; row >= 0; row--)
+        {
+            PlaceBlueConveyor(row, 3, Direction.North);
+        }
+
+        // Blue Circuit 2: Right side vertical loop
+        // Horizontal line left (row 1, col 11-6)
+        for (int col = 11; col >= 6; col--)
+        {
+            PlaceBlueConveyor(1, col, Direction.West);
+        }
+        // Vertical connector (row 2, col 6)
+        PlaceBlueConveyor(2, 6, Direction.North);
+        // Horizontal line right (row 3, col 6-11)
+        for (int col = 6; col <= 11; col++)
+        {
+            PlaceBlueConveyor(3, col, Direction.East);
+        }
+
+        // Blue Circuit 3: Bottom left L-shape
+        // Vertical line down (row 8, col 0-5)
+        for (int col = 0; col <= 5; col++)
+        {
+            PlaceBlueConveyor(8, col, Direction.East);
+        }
+        // Corner pieces (row 9-10, col 5)
+        PlaceBlueConveyor(9, 5, Direction.North);
+        PlaceBlueConveyor(10, 5, Direction.West);
+        // Horizontal line right (row 10, col 0-4)
+        for (int col = 0; col <= 4; col++)
+        {
+            PlaceBlueConveyor(10, col, Direction.East);
+        }
+
+        // Blue Circuit 4: Bottom right U-shape
+        // Vertical line down (row 6-11, col 8)
+        for (int row = 6; row <= 11; row++)
+        {
+            PlaceBlueConveyor(row, 8, Direction.South);
+        }
+        // Horizontal connectors (row 6, col 9-10)
+        PlaceBlueConveyor(6, 9, Direction.East);
+        PlaceBlueConveyor(6, 10, Direction.North);
+        // Vertical line up (row 7-11, col 10)
+        for (int row = 7; row <= 11; row++)
+        {
+            PlaceBlueConveyor(row, 10, Direction.North);
+        }
+
+        // ========== Green Conveyor Belt Circuits ==========
+        
+        // Green Circuit 1: Complex left spiral
+        // Vertical down (row 0-4, col 5)
+        for (int row = 0; row <= 4; row++)
+        {
+            PlaceGreenConveyor(row, 5, Direction.South);
+        }
+        
+        // Spiral pattern
+        PlaceGreenConveyor(5, 5, Direction.West);
+        PlaceGreenConveyor(5, 4, Direction.West);
+        PlaceGreenConveyor(6, 4, Direction.West);
+        PlaceGreenConveyor(6, 3, Direction.West);
+        PlaceGreenConveyor(7, 3, Direction.West);
+        PlaceGreenConveyor(7, 2, Direction.North);
+        PlaceGreenConveyor(6, 2, Direction.West);
+        PlaceGreenConveyor(6, 1, Direction.West);
+        PlaceGreenConveyor(6, 0, Direction.North);
+        PlaceGreenConveyor(5, 0, Direction.North);
+
+        // Green Circuit 2: Complex right circuit
+        PlaceGreenConveyor(5, 11, Direction.West);
+        PlaceGreenConveyor(4, 11, Direction.West);
+        PlaceGreenConveyor(4, 10, Direction.West);
+        PlaceGreenConveyor(4, 9, Direction.South);
+        PlaceGreenConveyor(4, 8, Direction.South);
+        PlaceGreenConveyor(5, 8, Direction.East);
+        PlaceGreenConveyor(5, 7, Direction.South);
+        PlaceGreenConveyor(6, 7, Direction.South);
+        PlaceGreenConveyor(7, 7, Direction.South);
+        PlaceGreenConveyor(8, 7, Direction.West);
+        PlaceGreenConveyor(8, 6, Direction.South);
+        PlaceGreenConveyor(9, 6, Direction.South);
+        PlaceGreenConveyor(10, 6, Direction.South);
+        PlaceGreenConveyor(11, 6, Direction.West);
+        PlaceGreenConveyor(11, 5, Direction.West);
+
+        return new GameBoard
+        {
+            Name = "Milk Run",
+            Spaces = spaces
+        };
+    }
+
     
 }
