@@ -12,15 +12,17 @@ string? connectionString = builder.Configuration.GetConnectionString("DefaultCon
 if (string.IsNullOrEmpty(connectionString))
     throw new InvalidOperationException("Connection string 'DefaultConnection' is not found.");
 
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(policy => {
-        policy.AllowAnyOrigin()
+builder.Services.AddCors(options => {
+    options.AddPolicy("FrontendCorsPolicy", policy => {
+        policy.WithOrigins(
+                "http://130.225.71.179:3000", // VM
+                "http://localhost:3000" // Local dev
+            )
+            .AllowAnyHeader()
             .AllowAnyMethod()
-            .AllowAnyHeader();
+            .AllowCredentials(); // ✅ required for SignalR
     });
 });
-
 builder.Services.InstallPersistenceModule(connectionString);
 builder.Services.InstallBroadcasterModule(); // Register SignalR services
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -38,7 +40,7 @@ if (app.Environment.IsDevelopment()) {
 }
 
 app.UseHttpsRedirection();
-app.UseCors();
+app.UseCors("FrontendCorsPolicy");
 app.UseFastEndpoints(c => {
     c.Endpoints.RoutePrefix = "api";
     c.Endpoints.Configurator = ep => {
@@ -47,7 +49,7 @@ app.UseFastEndpoints(c => {
     };
 }).UseSwaggerGen();
 
-app.InstallBroadcasterModule(); 
+app.InstallBroadcasterModule();
 app.UseExceptionHandler();
 
 app.Run();
