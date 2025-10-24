@@ -2,7 +2,7 @@
 
 services:
   roborall:
-    image: docker.io/library/roborally_app
+    image: roborally_app
     build:
       context: ./src
       dockerfile: Dockerfile
