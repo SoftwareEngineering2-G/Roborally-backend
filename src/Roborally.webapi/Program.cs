@@ -15,7 +15,7 @@ if (string.IsNullOrEmpty(connectionString))
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy => {
-        policy.WithOrigins("http://localhost:3000", "https://localhost:3000") // Add your frontend URLs
+        policy.AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials(); 
