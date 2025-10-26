@@ -2,7 +2,6 @@
 using Roborally.core.domain.Game.Gameboard;
 using Roborally.core.domain.Game.Gameboard.Space;
 using Roborally.core.domain.Game.Player;
-using Roborally.core.domain.Lobby.DomainEvents;
 
 namespace Roborally.core.domain.Lobby;
 
@@ -78,11 +77,6 @@ public class GameLobby {
             HostUsername = _joinedUsers[0].Username;
         }
 
-        // Add the domain event
-        var userLeftLobbyEvent = new UserLeftLobbyEvent() {
-            GameId = this.GameId,
-            UserUsername = user.Username
-        };
     }
 
     public Game.Game StartGame(string username, ISystemTime systemTime, GameBoard gameBoard) {
