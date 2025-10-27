@@ -1,4 +1,5 @@
 ﻿using Roborally.core.domain.Bases;
+using Roborally.core.domain.Game.CardActions;
 using Roborally.core.domain.Game.Deck;
 using Roborally.core.domain.Game.Gameboard;
 using Roborally.core.domain.Game.Gameboard.BoardElement;
@@ -38,7 +39,8 @@ public class Game {
     public DateTime? CompletedAt { get; set; }
 
 
-    public Game(Guid gameId, string hostUsername, string name, List<Player.Player> players, GameBoard gameBoard, bool isPrivate, DateTime createdAt) {
+    public Game(Guid gameId, string hostUsername, string name, List<Player.Player> players, GameBoard gameBoard,
+        bool isPrivate, DateTime createdAt) {
         GameId = gameId;
         _players = players;
         GameBoardName = gameBoard.Name;
@@ -129,7 +131,6 @@ public class Game {
 
         // Activate them all
         foreach (var (player, boardElement) in allRelevantPlayersMappedWithRelevantBoardElement) {
-
             // TODO: current implementation activates players in arbitrary order, should it be by turn order?
             activationStrategy.Activate(this, player, boardElement);
         }
@@ -141,6 +142,21 @@ public class Game {
             BoardElementName = nextBoardElementName
         };
         GameEvents.Add(boardElementActivatedEvent);
+    }
+
+    public Player.Player ExecuteProgrammingCard(string username, ProgrammingCard card, ISystemTime systemTime) {
+        if (!IsInActivationPhase()) {
+            throw new CustomException("The game needs to be in activation phase", 400);
+        }
+
+        Player.Player? player = _players.Find(p => p.Username.Equals(username));
+        if (player is null)
+            throw new CustomException("Player does not exist", 404);
+
+        var action = ActionFactory.CreateAction(card);
+        action.Execute(player, this, systemTime);
+
+        return player;
     }
 
 
