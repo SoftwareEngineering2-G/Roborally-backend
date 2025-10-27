@@ -1,4 +1,6 @@
-﻿namespace Roborally.core.domain.User;
+﻿using Roborally.core.domain.User;
+
+namespace Roborally.core.application.ApplicationContracts.Persistence;
 
 public interface IUserRepository {
 

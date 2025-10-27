@@ -1,4 +1,5 @@
 ﻿using FastEndpoints;
+using Roborally.core.application.ApplicationContracts.Persistence;
 using Roborally.core.application.CommandContracts;
 using Roborally.core.domain;
 using Roborally.core.domain.Bases;

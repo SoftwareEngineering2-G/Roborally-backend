@@ -1,5 +1,4 @@
-﻿using Roborally.core.domain.Bases;
-
+﻿
 namespace Roborally.core.domain.User;
 
 public class User{

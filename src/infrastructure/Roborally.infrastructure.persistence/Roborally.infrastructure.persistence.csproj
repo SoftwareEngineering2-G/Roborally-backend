@@ -17,6 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\core\Roborally.core.application\Roborally.core.application.csproj" />
       <ProjectReference Include="..\..\core\Roborally.core.domain\Roborally.core.domain.csproj" />
     </ItemGroup>
 

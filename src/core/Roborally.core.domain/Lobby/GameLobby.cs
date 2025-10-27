@@ -97,10 +97,11 @@ public class GameLobby {
         List<Player> players = this._joinedUsers.Select((user, index) =>
             new Player(user.Username, this.GameId, spawnPositions[index], robots[index])).ToList();
 
-        Game.Game game = new Game.Game(this.GameId, HostUsername, Name,players, gameBoard);
+        DateTime currentTime = systemTime.CurrentTime;
 
-        this.StartedAt = systemTime.CurrentTime;
+        Game.Game game = new Game.Game(this.GameId, HostUsername, Name,players, gameBoard, IsPrivate, currentTime);
 
+        this.StartedAt = currentTime;
         return game;
     }
 }

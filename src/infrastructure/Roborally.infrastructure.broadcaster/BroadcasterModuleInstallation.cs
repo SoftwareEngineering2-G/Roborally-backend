@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Roborally.core.application;
-using Roborally.core.application.Broadcasters;
+using Roborally.core.application.ApplicationContracts.Broadcasters;
 using Roborally.infrastructure.broadcaster.Broadcasters;
 using Roborally.infrastructure.broadcaster.Game;
 using Roborally.infrastructure.broadcaster.GameLobby;

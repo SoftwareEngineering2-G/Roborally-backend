@@ -31,8 +31,14 @@ public class Game {
 
     public List<GameEvent> GameEvents { get; set; } = [];
 
+    public bool IsPrivate { get; set; }
 
-    public Game(Guid gameId, string hostUsername, string name, List<Player.Player> players, GameBoard gameBoard) {
+    public DateTime CreatedAt { get; set; }
+
+    public DateTime? CompletedAt { get; set; }
+
+
+    public Game(Guid gameId, string hostUsername, string name, List<Player.Player> players, GameBoard gameBoard, bool isPrivate, DateTime createdAt) {
         GameId = gameId;
         _players = players;
         GameBoardName = gameBoard.Name;
@@ -40,6 +46,8 @@ public class Game {
         CurrentPhase = GamePhase.ProgrammingPhase;
         HostUsername = hostUsername;
         Name = name;
+        IsPrivate = isPrivate;
+        CreatedAt = createdAt;
     }
 
     public Dictionary<Player.Player, List<ProgrammingCard>> DealDecksToAllPlayers(ISystemTime systemTime) {

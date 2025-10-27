@@ -1,4 +1,6 @@
-﻿namespace Roborally.core.domain.Game.Gameboard;
+﻿using Roborally.core.domain.Game.Gameboard;
+
+namespace Roborally.core.application.ApplicationContracts.Persistence;
 
 public interface IGameBoardRepository {
     Task<GameBoard?> FindAsync(string name, CancellationToken ct = default);
