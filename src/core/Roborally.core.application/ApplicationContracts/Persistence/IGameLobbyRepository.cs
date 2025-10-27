@@ -1,4 +1,6 @@
-﻿namespace Roborally.core.domain.Lobby;
+﻿using Roborally.core.domain.Lobby;
+
+namespace Roborally.core.application.ApplicationContracts.Persistence;
 
 public interface IGameLobbyRepository
 {

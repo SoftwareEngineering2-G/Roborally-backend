@@ -1,5 +1,7 @@
 ﻿using Moq;
-using Roborally.core.application.Broadcasters;
+using Roborally.core.application;
+using Roborally.core.application.ApplicationContracts.Broadcasters;
+using Roborally.core.application.ApplicationContracts.Persistence;
 using Roborally.core.application.CommandContracts.Game;
 using Roborally.core.application.CommandHandlers.Game;
 using Roborally.core.domain;

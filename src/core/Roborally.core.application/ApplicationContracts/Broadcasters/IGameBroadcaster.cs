@@ -1,6 +1,6 @@
 ﻿using Roborally.core.domain.Game.Deck;
 
-namespace Roborally.core.application.Broadcasters;
+namespace Roborally.core.application.ApplicationContracts.Broadcasters;
 
 public interface IGameBroadcaster {
     Task BroadcastPlayerLockedInRegisterAsync(string username, Guid gameId, CancellationToken ct);

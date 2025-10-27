@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Roborally.core.application;
+using Roborally.core.application.ApplicationContracts.Persistence;
 using Roborally.core.domain.User;
 
 namespace Roborally.infrastructure.persistence.User;

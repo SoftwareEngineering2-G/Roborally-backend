@@ -1,10 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Roborally.core.application.ApplicationContracts.Persistence;
 using Roborally.core.domain.Bases;
-using Roborally.core.domain.Game;
-using Roborally.core.domain.Game.Gameboard;
-using Roborally.core.domain.Lobby;
-using Roborally.core.domain.User;
 using Roborally.infrastructure.persistence.Contracts;
 using Roborally.infrastructure.persistence.Game;
 using Roborally.infrastructure.persistence.Lobby;

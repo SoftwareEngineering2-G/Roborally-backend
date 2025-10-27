@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Roborally.core.application.Broadcasters;
+using Roborally.core.application.ApplicationContracts.Broadcasters;
 using Roborally.core.domain.Game.Deck;
 using Roborally.infrastructure.broadcaster.Game;
 
