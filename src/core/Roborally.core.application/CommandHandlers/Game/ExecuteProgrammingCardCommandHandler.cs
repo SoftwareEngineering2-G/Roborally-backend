@@ -7,6 +7,7 @@ using Roborally.core.domain.Bases;
 using Roborally.core.domain.Game;
 using Roborally.core.domain.Game.CardActions;
 using Roborally.core.domain.Game.Deck;
+using Roborally.core.domain.Game.Player;
 
 namespace Roborally.core.application.CommandHandlers.Game;
 
@@ -34,12 +35,6 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
             throw new CustomException("Game not found", 404);
         }
 
-        // Find the player
-        var player = game.Players.FirstOrDefault(p => p.Username == command.Username);
-        if (player is null)
-        {
-            throw new CustomException("Player not found in this game", 404);
-        }
 
         // Parse the card
         ProgrammingCard card;
@@ -52,21 +47,15 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
             throw new CustomException($"Invalid card name: {command.CardName}", 400);
         }
 
-        // Create and execute the action
-        var action = ActionFactory.CreateAction(card);
-        
-        action.Execute(player, game, _systemTime);
-
-        // Save changes
-        await _unitOfWork.SaveChangesAsync(ct);
+        Player affectedPlayer = game.ExecuteProgrammingCard(command.Username, card, _systemTime);
         
         // Broadcast the robot movement to all players in the game
         await _gameBroadcaster.BroadcastRobotMovedAsync(
             command.GameId, 
             command.Username, 
-            player.CurrentPosition.X, 
-            player.CurrentPosition.Y, 
-            player.CurrentFacingDirection.DisplayName,
+            affectedPlayer.CurrentPosition.X,
+            affectedPlayer.CurrentPosition.Y,
+            affectedPlayer.CurrentFacingDirection.DisplayName,
             card.DisplayName,
             ct);
 
@@ -75,9 +64,9 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
             Message = $"Successfully executed {card.DisplayName}",
             PlayerState = new PlayerState
             {
-                PositionX = player.CurrentPosition.X,
-                PositionY = player.CurrentPosition.Y,
-                Direction = player.CurrentFacingDirection.DisplayName
+                PositionX = affectedPlayer.CurrentPosition.X,
+                PositionY = affectedPlayer.CurrentPosition.Y,
+                Direction = affectedPlayer.CurrentFacingDirection.DisplayName
             }
         };
     }

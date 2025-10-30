@@ -18,6 +18,7 @@ public class GameLobbyRepository : IGameLobbyRepository {
 
     public async Task<bool> IsUserCurrentlyHostingActiveLobbyAsync(string hostUsername) {
         return await _context.GameLobby
+            .AsNoTracking()
             .AnyAsync(x => x.HostUsername.ToLower().Equals(hostUsername.ToLower()) && x.StartedAt == null);
     }
 
@@ -35,20 +36,6 @@ public class GameLobbyRepository : IGameLobbyRepository {
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<GameLobby?> GetLobbyByIdAsync(Guid gameLobbyId, CancellationToken cancellationToken = default)
-    {
-        return await _context.GameLobby
-            .Include(x => x.JoinedUsers)
-            .FirstOrDefaultAsync(x => x.GameId == gameLobbyId, cancellationToken);
-    }
-
-    public Task JoinLobbyAsync(GameLobby lobby, core.domain.User.User user,
-        CancellationToken cancellationToken = default)
-    {
-        lobby.JoinLobby(user);
-        _context.GameLobby.Update(lobby);
-        return Task.CompletedTask;
-    }
 
     public void Remove(GameLobby gameLobby) {
         _context.GameLobby.Remove(gameLobby);
