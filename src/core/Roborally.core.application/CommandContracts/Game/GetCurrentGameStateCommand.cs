@@ -30,4 +30,7 @@ public class GetCurrentGameStateCommandResponse {
         int PositionY = 0,
         string Direction = "North"
     );
+
+    public string? CurrentTurn { get; set; }
+    public string[] ExecutedPlayers { get; set; } = [];
 }

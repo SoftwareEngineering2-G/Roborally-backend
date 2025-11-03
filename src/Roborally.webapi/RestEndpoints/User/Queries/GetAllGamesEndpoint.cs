@@ -15,6 +15,7 @@ public class GetAllGamesEndpoint : Endpoint<GetAllGamesRequest, List<GetAllGames
             To = req.To,
             IsFinished = req.IsFinished,
             IsPrivate = req.IsPrivate,
+            SearchTag = req.SearchTag,
         };
 
         var response = await query.ExecuteAsync(ct);
@@ -22,7 +23,9 @@ public class GetAllGamesEndpoint : Endpoint<GetAllGamesRequest, List<GetAllGames
             GameId = game.GameId,
             GameRoomName = game.GameRoomName,
             HostUsername = game.HostUsername,
-            StartDate = game.StartDate
+            StartDate = game.StartDate,
+            IsFinished = game.IsFinished,
+            IsPrivate = game.IsPrivate,
         }).ToList();
 
         await Send.OkAsync(responsePacker, ct);
@@ -35,6 +38,7 @@ public class GetAllGamesRequest {
     public bool? IsFinished { get; set; }
     public DateOnly? From { get; set; }
     public DateOnly? To { get; set; }
+    public string? SearchTag { get; set; }
 }
 
 public class GetAllGamesResponse {
@@ -42,4 +46,6 @@ public class GetAllGamesResponse {
     public required string GameRoomName { get; set; }
     public required string HostUsername { get; set; }
     public required DateOnly StartDate { get; set; }
+    public required bool IsFinished { get; set; }
+    public required bool IsPrivate { get; set; }
 }

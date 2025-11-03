@@ -48,6 +48,8 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
         }
 
         Player affectedPlayer = game.ExecuteProgrammingCard(command.Username, card, _systemTime);
+
+        await _unitOfWork.SaveChangesAsync(ct);
         
         // Broadcast the robot movement to all players in the game
         await _gameBroadcaster.BroadcastRobotMovedAsync(

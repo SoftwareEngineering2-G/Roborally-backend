@@ -29,6 +29,11 @@ public class GameRepository : IGameRepository {
             _context.Games.Where(game => game.Players.Select(player => player.Username).Contains(query.Username))
                 .AsNoTracking();
 
+        if (!string.IsNullOrWhiteSpace(query.SearchTag)) {
+            query.SearchTag = query.SearchTag.Trim().ToLower();
+            queryable = queryable.Where(game => game.Name.ToLower().Contains(query.SearchTag) ||
+                                                game.HostUsername.ToLower().Contains(query.SearchTag));
+        }
 
         if (query.IsFinished.HasValue && query.IsFinished.Value) {
             queryable = queryable.Where(game => game.CompletedAt != null);
@@ -51,7 +56,9 @@ public class GameRepository : IGameRepository {
                 GameId = game.GameId,
                 GameRoomName = game.Name,
                 HostUsername = game.HostUsername,
-                StartDate = DateOnly.FromDateTime(game.CreatedAt)
+                StartDate = DateOnly.FromDateTime(game.CreatedAt),
+                IsFinished = game.CompletedAt != null,
+                IsPrivate = game.IsPrivate,
             })
             .ToListAsync(ct); // Only one database call because we only call ToListAsync once
     }

@@ -9,6 +9,8 @@ public class GetGamesForUserQuery : ICommand<List<GetGamesForUserResponse>> {
     public bool? IsFinished { get; set; }
     public DateOnly? From { get; set; }
     public DateOnly? To { get; set; }
+    public string? SearchTag { get; set; }
+
 
 }
 
@@ -17,4 +19,6 @@ public class GetGamesForUserResponse {
     public required string GameRoomName { get; set; }
     public required string HostUsername { get; set; }
     public required DateOnly StartDate { get; set; }
+    public required bool IsFinished { get; set; }
+    public required bool IsPrivate { get; set; }
 }
