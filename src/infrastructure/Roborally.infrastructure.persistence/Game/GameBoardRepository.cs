@@ -1,4 +1,5 @@
-﻿using Roborally.core.application;
+﻿using Microsoft.EntityFrameworkCore;
+using Roborally.core.application;
 using Roborally.core.application.ApplicationContracts.Persistence;
 using Roborally.core.domain.Game.Gameboard;
 
@@ -13,6 +14,10 @@ public class GameBoardRepository : IGameBoardRepository {
 
     public Task<GameBoard?> FindAsync(string name, CancellationToken ct = default) {
         return _context.GameBoards.FindAsync([name], ct).AsTask();
+    }
+
+    public async Task<List<GameBoard>> GetAllAsync(CancellationToken ct = default) {
+        return await _context.GameBoards.ToListAsync(ct);
     }
 
     public Task AddAsync(GameBoard board, CancellationToken ct = default) {

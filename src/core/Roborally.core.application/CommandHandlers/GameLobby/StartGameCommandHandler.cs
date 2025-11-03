@@ -46,13 +46,11 @@ public class StartGameCommandHandler : ICommandHandler<StartGameCommand> {
             throw new CustomException("Game lobby does not exist", 404);
         }
 
-        // Get existing GameBoard from database instead of creating a new one
+        // Get existing GameBoard from database
         GameBoard? gameBoard = await _gameBoardRepository.FindAsync(command.GameBoardName, ct);
 
-        // If the GameBoard doesn't exist in the database, create and save it
         if (gameBoard == null) {
-            gameBoard = GameBoardFactory.GetBoard2();
-            await _gameBoardRepository.AddAsync(gameBoard, ct);
+            throw new CustomException($"Game board '{command.GameBoardName}' does not exist", 404);
         }
         
         domain.Game.Game game = lobby.StartGame(command.Username, _systemTime, gameBoard);

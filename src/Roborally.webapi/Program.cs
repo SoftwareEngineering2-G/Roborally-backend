@@ -4,6 +4,7 @@ using Roborally.core.application;
 using Roborally.infrastructure.persistence;
 using Roborally.infrastructure.broadcaster;
 using Roborally.infrastructure.persistence.Migrations;
+using Roborally.infrastructure.persistence.Game;
 using Roborally.webapi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,6 +38,11 @@ app.Services.RegisterApplicationModule();
 
 if (app.Environment.IsDevelopment()) {
     await app.ApplyMigrations();
+    
+    // Seed game boards from JSON files
+    using var scope = app.Services.CreateScope();
+    var seeder = scope.ServiceProvider.GetRequiredService<GameBoardSeeder>();
+    await seeder.SeedBoardsAsync();
 }
 
 app.UseHttpsRedirection();
