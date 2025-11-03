@@ -18,5 +18,7 @@ RUN dotnet publish "Roborally.webapi.csproj" -c Release -o /app/publish /p:UseAp
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+# Copy game board JSON files
+COPY ["core/Roborally.core.domain/Game/Gameboard/maps/", "/app/maps/"]
 
 ENTRYPOINT ["dotnet", "Roborally.webapi.dll"]

@@ -301,6 +301,9 @@ public static class GameBoardFactory {
         return board;
         
     }
-
     
+    // NOTE: GetStarterCourse() is kept for reference and testing purposes.
+    // In production, boards are loaded from JSON files in the maps/ folder
+    // and seeded into the database on application startup.
+    // See: GameBoardJsonLoader.cs and GameBoardSeeder.cs
 }

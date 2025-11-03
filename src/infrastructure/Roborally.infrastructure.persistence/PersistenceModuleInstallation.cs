@@ -27,6 +27,7 @@ public static class PersistenceModuleInstallation
         services.AddScoped<IGameRepository, GameRepository>();
         services.AddScoped<IGameBoardRepository, GameBoardRepository>();
         services.AddScoped<ISystemTime, SystemTime>();
+        services.AddScoped<GameBoardSeeder>();
         return services;
     }
 }
