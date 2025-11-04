@@ -61,6 +61,11 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
             card.DisplayName,
             ct);
 
+        Player? nextPlayer = game.GetNextExecutingPlayer();
+        if (nextPlayer is not null) {
+            await _gameBroadcaster.BroadcastNextPlayerInTurn(command.GameId, nextPlayer.Username, ct);
+        }
+
         return new ExecuteProgrammingCardCommandResponse
         {
             Message = $"Successfully executed {card.DisplayName}",
@@ -71,5 +76,6 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
                 Direction = affectedPlayer.CurrentFacingDirection.DisplayName
             }
         };
+
     }
 }

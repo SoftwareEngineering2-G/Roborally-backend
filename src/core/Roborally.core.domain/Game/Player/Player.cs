@@ -18,6 +18,11 @@ public class Player {
     public ProgrammingDeck ProgrammingDeck { get; init; }
     public List<PlayerEvent> PlayerEvents { get; init; } = [];
 
+    public int RoundCount { get; set; }
+
+    // Navigation property to User for accessing age/birthday
+    public User.User? User { get; init; }
+
     private Player() {
         // For EF Core
     }
@@ -31,20 +36,24 @@ public class Player {
         Robot = robot;
         CurrentFacingDirection = Direction.West;
         ProgrammingDeck = ProgrammingDeck.NewShuffled();
+        RoundCount = 1;
     }
 
 
     internal void LockInRegisters(List<ProgrammingCard> lockedInCards, ISystemTime systemTime) {
+
+        var lastLockedInEvent = this.GetRegistersProgrammedEvent(RoundCount);
+
+        if (lastLockedInEvent is not null) {
+            throw new Exception("You can only lock in cards once per round.");
+        }
         
         if (lockedInCards.Count != 5) {
             throw new CustomException("You must lock in exactly 5 cards.", 400);
         }
         
-        var lastProgrammingCardsDealtEvent = this.PlayerEvents
-            .OfType<ProgrammingCardsDealtEvent>()
-            .OrderByDescending(e => e.HappenedAt)
-            .FirstOrDefault();
-        
+        var lastProgrammingCardsDealtEvent = this.GetCardsDealtEvent(RoundCount);
+
         if (lastProgrammingCardsDealtEvent is null) {
             throw new CustomException("No cards have been dealt to the player yet.", 400);
         }
@@ -54,18 +63,27 @@ public class Player {
         {
             throw new CustomException("You can only lock in cards that were dealt to you.", 400);
         }
-        
+
+
         RegistersProgrammedEvent lockedInEvent = new RegistersProgrammedEvent() {
             HappenedAt = systemTime.CurrentTime,
             GameId = this.GameId,
             Username = this.Username,
-            ProgrammedCardsInOrder = lockedInCards
+            ProgrammedCardsInOrder = lockedInCards,
+            Round = RoundCount
         };
         
         this.PlayerEvents.Add(lockedInEvent);
     }
 
     internal List<ProgrammingCard> DealProgrammingCards(int count, ISystemTime systemTime) {
+
+        var lastDealtEvent = this.GetCardsDealtEvent(RoundCount);
+        if (lastDealtEvent is not null) {
+            throw new CustomException("You can only deal cards once per round", 400);
+        }
+
+
         var dealt = new List<ProgrammingCard>(count);
 
         // Draw as many as possible from PickPiles
@@ -84,7 +102,8 @@ public class Player {
             HappenedAt = systemTime.CurrentTime,
             GameId = this.GameId,
             Username = this.Username,
-            DealtCards = dealt
+            DealtCards = dealt,
+            Round = RoundCount
         };
         this.PlayerEvents.Add(dealtEvent);
 
@@ -122,7 +141,8 @@ public class Player {
             HappenedAt = systemTime.CurrentTime,
             GameId = this.GameId,
             Username = this.Username,
-            Card = card
+            Card = card,
+            Round = RoundCount
         };
         this.PlayerEvents.Add(executedEvent);
     }

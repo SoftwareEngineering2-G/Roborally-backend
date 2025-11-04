@@ -8,7 +8,7 @@ using Roborally.core.domain.Game;
 
 namespace Roborally.core.application.CommandHandlers.Game;
 
-public class RevealNextRegisterCommandHandler : ICommandHandler<RevealNextRegisterCommand, RevealNextRegisterResult>
+public class RevealNextRegisterCommandHandler : ICommandHandler<RevealNextRegisterCommand>
 {
     private readonly IGameRepository _gameRepository;
     private readonly IGameBroadcaster _gameBroadcaster;
@@ -24,7 +24,7 @@ public class RevealNextRegisterCommandHandler : ICommandHandler<RevealNextRegist
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<RevealNextRegisterResult> ExecuteAsync(RevealNextRegisterCommand command, CancellationToken ct)
+    public async Task ExecuteAsync(RevealNextRegisterCommand command, CancellationToken ct)
     {
         domain.Game.Game? game = await _gameRepository.FindAsync(command.GameId, ct);
         
@@ -51,15 +51,9 @@ public class RevealNextRegisterCommandHandler : ICommandHandler<RevealNextRegist
             revealedCards, 
             ct);
 
-        // Return the result to the HTTP response
-        return new RevealNextRegisterResult
-        {
-            RegisterNumber = game.CurrentRevealedRegister,
-            RevealedCards = revealedCards.Select(kvp => new PlayerRevealedCard
-            {
-                Username = kvp.Key,
-                Card = kvp.Value.DisplayName
-            }).ToList()
-        };
+        var nextPlayer = game.GetNextExecutingPlayer();
+        if (nextPlayer is not null) {
+            await _gameBroadcaster.BroadcastNextPlayerInTurn(command.GameId, nextPlayer.Username, ct);
+        }
     }
 }

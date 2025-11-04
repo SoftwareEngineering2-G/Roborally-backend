@@ -4,7 +4,6 @@ using Roborally.core.application.CommandContracts.Game;
 using Roborally.core.domain;
 using Roborally.core.domain.Game;
 using Roborally.core.domain.Game.Gameboard.BoardElement;
-using Roborally.core.domain.Game.Player.Events;
 
 namespace Roborally.core.application.CommandHandlers.Game;
 
@@ -27,11 +26,28 @@ public class
             throw new CustomException("Game does not exist", 404);
         }
 
+        GetCurrentGameStateCommandResponse.MyState personalState;
+        if (game.CurrentPhase.Equals(GamePhase.ActivationPhase)) {
+            personalState =
+                new GetCurrentGameStateCommandResponse.MyState(null, null);
+        }
+        else {
+            var player = game.Players.FirstOrDefault(p => p.Username.Equals(command.Username));
+
+            var cardsDealt = player?.GetDealtCardsDisplayNames(game.RoundCount);
+            var programmedRegisters = player?.GetProgrammedRegistersDisplayNames(game.RoundCount);
+
+            personalState = new GetCurrentGameStateCommandResponse.MyState(programmedRegisters, cardsDealt);
+        }
+
         return new GetCurrentGameStateCommandResponse() {
             GameId = game.GameId.ToString(),
             HostUsername = game.HostUsername,
             Name = game.Name,
             CurrentPhase = game.CurrentPhase.DisplayName,
+            CurrentRevealedRegister = game.CurrentRevealedRegister,
+            CurrentTurnUsername = game.GetNextExecutingPlayer()?.Username,
+            CurrentExecutingRegister = game.GetCurrentExecutingRegister(),
             GameBoard = new GetCurrentGameStateCommandResponse.GameBoardSpaces(game.GameBoard.Name,
                 game.GameBoard.Spaces.Select(row =>
                         row.Select(space => {
@@ -42,7 +58,7 @@ public class
                                 Gear gear => gear.Direction.DisplayName,
                                 _ => null
                             };
-                            
+
                             return new GetCurrentGameStateCommandResponse.Space(
                                 space.Name(),
                                 space.Walls().Select(wall => wall.DisplayName).ToList(),
@@ -51,24 +67,20 @@ public class
                     .ToArray()),
             Players = game.Players
                 .Select(p => {
-                    var lastLockedEvent = p.PlayerEvents
-                        .OfType<RegistersProgrammedEvent>()
-                        .OrderByDescending(e => e.HappenedAt)
-                        .FirstOrDefault();
-
-                    var programmedCards = lastLockedEvent?.ProgrammedCardsInOrder
-                        .Select(card => card.DisplayName)
-                        .ToList();
+                    var hasLockedRegisters = p.HasLockedRegisters(game.RoundCount);
+                    var revealedCardsInOrder = p.GetRevealedCardsDisplayNames(game.RoundCount, game.CurrentRevealedRegister);
 
                     return new GetCurrentGameStateCommandResponse.Player(
                         p.Username,
                         p.Robot.DisplayName,
-                        programmedCards,
                         p.CurrentPosition.X,
                         p.CurrentPosition.Y,
-                        p.CurrentFacingDirection.DisplayName
+                        p.CurrentFacingDirection.DisplayName,
+                        hasLockedRegisters,
+                        revealedCardsInOrder
                     );
-                }).ToList()
+                }).ToList(),
+            PersonalState = personalState
         };
     }
 }
