@@ -59,4 +59,13 @@ public class GameBroadcaster : IGameBroadcaster{
         };
         return _hubContext.Clients.Groups(GroupName(gameId)).SendAsync("RobotMoved", payload, ct);
     }
+
+    public Task BroadcastNextPlayerInTurn(Guid gameId, string nextPlayerUsername, CancellationToken ct) {
+        var payload = new
+        {
+            gameId,
+            nextPlayerUsername
+        };
+        return _hubContext.Clients.Groups(GroupName(gameId)).SendAsync("NextPlayerInTurn", payload, ct);
+    }
 }

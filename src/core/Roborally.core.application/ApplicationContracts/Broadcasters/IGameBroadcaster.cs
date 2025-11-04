@@ -7,4 +7,5 @@ public interface IGameBroadcaster {
     Task BroadcastActivationPhaseStartedAsync(Guid gameId, CancellationToken ct);
     Task BroadcastRegisterRevealedAsync(Guid gameId, int registerNumber, Dictionary<string, ProgrammingCard> revealedCards, CancellationToken ct);
     Task BroadcastRobotMovedAsync(Guid gameId, string username, int positionX, int positionY, string direction, string executedCard, CancellationToken ct);
+    Task BroadcastNextPlayerInTurn(Guid gameId, string nextPlayerUsername, CancellationToken ct);
 }

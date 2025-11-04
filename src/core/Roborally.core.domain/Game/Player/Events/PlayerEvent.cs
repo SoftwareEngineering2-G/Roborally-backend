@@ -5,4 +5,5 @@ namespace Roborally.core.domain.Game.Player.Events;
 public class PlayerEvent : Event{
     public required Guid GameId { get; init; }
     public required string Username  { get;init; }
+    public required int Round { get; init; } // In which round the event happened
 }

@@ -15,8 +15,8 @@ public class PlayerConfiguration : IEntityTypeConfiguration<core.domain.Game.Pla
 
 
         // Configure foreign key relationships
-        // Username references Users table
-        builder.HasOne<core.domain.User.User>()
+        // Username references Users table with navigation property for accessing User.Birthday
+        builder.HasOne(p => p.User)
             .WithMany() // User doesn't have navigation property to Players
             .HasForeignKey(p => p.Username)
             .HasPrincipalKey(u => u.Username)

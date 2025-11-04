@@ -39,6 +39,9 @@ public class Game {
     public DateTime? CompletedAt { get; set; }
 
 
+    public int RoundCount { get; set; }
+
+
     public Game(Guid gameId, string hostUsername, string name, List<Player.Player> players, GameBoard gameBoard,
         bool isPrivate, DateTime createdAt) {
         GameId = gameId;
@@ -50,6 +53,7 @@ public class Game {
         Name = name;
         IsPrivate = isPrivate;
         CreatedAt = createdAt;
+        RoundCount = 1;
     }
 
     public Dictionary<Player.Player, List<ProgrammingCard>> DealDecksToAllPlayers(ISystemTime systemTime) {
@@ -80,6 +84,7 @@ public class Game {
         player.LockInRegisters(lockedInCards, systemTime);
     }
 
+    // Returns username mapped to the revealed card for that register
     public Dictionary<string, ProgrammingCard> RevealNextRegister() {
         if (!IsInActivationPhase()) {
             throw new CustomException("The game needs to be in activation phase", 400);
@@ -96,12 +101,9 @@ public class Game {
         Dictionary<string, ProgrammingCard> revealedCards = new();
 
         foreach (var player in _players) {
-            var lastLockedEvent = player.PlayerEvents
-                .OfType<Player.Events.RegistersProgrammedEvent>()
-                .OrderByDescending(e => e.HappenedAt)
-                .FirstOrDefault();
+            var lastLockedEvent = player.GetRegistersProgrammedEvent(RoundCount);
 
-            if (lastLockedEvent != null && lastLockedEvent.ProgrammedCardsInOrder.Count > registerIndex) {
+            if (lastLockedEvent is not null && lastLockedEvent.ProgrammedCardsInOrder.Count > registerIndex) {
                 revealedCards[player.Username] = lastLockedEvent.ProgrammedCardsInOrder[registerIndex];
             }
         }
@@ -159,6 +161,35 @@ public class Game {
         return player;
     }
 
+    public Player.Player? GetNextExecutingPlayer() {
+        if (!IsInActivationPhase()) {
+            return null;
+        }
+
+        // Skip if no registers have been revealed yet
+        if (CurrentRevealedRegister ==0) {
+            return null;
+        }
+
+        // Get players ordered by age (turn order)
+        var playersByTurnOrder = this.GetPlayersByTurnOrder();
+
+        // Get the last player who executed a card in this round
+        var lastPlayerToExecute = this.GetLastPlayerToExecuteCard(RoundCount, CurrentRevealedRegister);
+
+        // If no one has executed yet, return the first player in turn order (oldest)
+        if (lastPlayerToExecute == null) {
+            return playersByTurnOrder.First();
+        }
+
+        // Find the index of the last player who executed
+        int lastPlayerIndex = playersByTurnOrder.FindIndex(p => p.Username == lastPlayerToExecute.Username);
+
+        // Get the next player (wrap around to start if at the end)
+        int nextPlayerIndex = (lastPlayerIndex + 1) % playersByTurnOrder.Count;
+
+        return playersByTurnOrder[nextPlayerIndex];
+    }
 
     private bool IsInActivationPhase() {
         return CurrentPhase.Equals(GamePhase.ActivationPhase);
@@ -172,5 +203,13 @@ public class Game {
     private Game() {
         // EFC needs the empty constructor , i know IDE warns it but please dont delete it.
         _players = [];
+    }
+
+    public int? GetCurrentExecutingRegister() {
+        if (!IsInActivationPhase()) {
+            return null;
+        }
+
+        return CurrentRevealedRegister;
     }
 }
