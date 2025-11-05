@@ -46,9 +46,9 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
         {
             throw new CustomException($"Invalid card name: {command.CardName}", 400);
         }
-
+        
         Player affectedPlayer = game.ExecuteProgrammingCard(command.Username, card, _systemTime);
-
+        
         await _unitOfWork.SaveChangesAsync(ct);
         
         // Broadcast the robot movement to all players in the game

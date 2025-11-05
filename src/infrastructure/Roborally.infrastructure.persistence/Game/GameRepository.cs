@@ -21,6 +21,7 @@ public class GameRepository : IGameRepository {
             .Include(game => game.Players)
             .ThenInclude(player => player.User)
             .Include(game => game.GameBoard)
+            .Include(game => game.GameEvents)
             .FirstOrDefaultAsync(game => game.GameId.Equals(gameId), ct);
     }
 

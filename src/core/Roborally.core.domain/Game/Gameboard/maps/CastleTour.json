@@ -1,206 +1,950 @@
 [
   [
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "SpawnPoint", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "South"},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "North"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null}
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "North"
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "South"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    }
   ],
   [
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "SpawnPoint", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "West"},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "West"},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "West"},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "West"},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "West"},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "West"},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "West"},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "West"},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "West"},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "West"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null}
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "East"
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "East"
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "East"
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "East"
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "East"
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "East"
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "East"
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "East"
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "East"
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "East"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "SpawnPoint",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    }
   ],
   [
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "SpawnPoint", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "South"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": ["West"], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "North"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null}
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "North"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [
+        "West"
+      ],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "South"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "SpawnPoint",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    }
   ],
   [
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "SpawnPoint", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "South"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "BlueConveyorBelt", "Walls": [], "Direction": "East"},
-    {"Name": "BlueConveyorBelt", "Walls": [], "Direction": "East"},
-    {"Name": "BlueConveyorBelt", "Walls": [], "Direction": "East"},
-    {"Name": "BlueConveyorBelt", "Walls": [], "Direction": "East"},
-    {"Name": "BlueConveyorBelt", "Walls": [], "Direction": "East"},
-    {"Name": "BlueConveyorBelt", "Walls": [], "Direction": "East"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "North"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null}
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "North"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "BlueConveyorBelt",
+      "Walls": [],
+      "Direction": "West"
+    },
+    {
+      "Name": "BlueConveyorBelt",
+      "Walls": [],
+      "Direction": "West"
+    },
+    {
+      "Name": "BlueConveyorBelt",
+      "Walls": [],
+      "Direction": "West"
+    },
+    {
+      "Name": "BlueConveyorBelt",
+      "Walls": [],
+      "Direction": "West"
+    },
+    {
+      "Name": "BlueConveyorBelt",
+      "Walls": [],
+      "Direction": "West"
+    },
+    {
+      "Name": "BlueConveyorBelt",
+      "Walls": [],
+      "Direction": "West"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "South"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "SpawnPoint",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    }
   ],
   [
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "SpawnPoint", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "South"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "BlueConveyorBelt", "Walls": [], "Direction": "North"},
-    {"Name": "Gear", "Walls": [], "Direction": "ClockWise"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "Gear", "Walls": [], "Direction": "AntiClockWise"},
-    {"Name": "BlueConveyorBelt", "Walls": ["North"], "Direction": "South"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "North"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null}
+    {
+      "Name": "EmptySpace",
+      "Walls": [
+        "North"
+      ],
+      "Direction": null
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "North"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "BlueConveyorBelt",
+      "Walls": [],
+      "Direction": "South"
+    },
+    {
+      "Name": "Gear",
+      "Walls": [],
+      "Direction": "ClockWise"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "Gear",
+      "Walls": [],
+      "Direction": "ClockWise"
+    },
+    {
+      "Name": "BlueConveyorBelt",
+      "Walls": [],
+      "Direction": "North"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "South"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [
+        "North"
+      ],
+      "Direction": null
+    },
+    {
+      "Name": "SpawnPoint",
+      "Walls": [
+        "North"
+      ],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [
+        "North"
+      ],
+      "Direction": null
+    }
   ],
   [
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "SpawnPoint", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "South"},
-    {"Name": "EmptySpace", "Walls": ["North"], "Direction": null},
-    {"Name": "BlueConveyorBelt", "Walls": [], "Direction": "North"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "BlueConveyorBelt", "Walls": [], "Direction": "South"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "North"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null}
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [
+        "North"
+      ],
+      "Direction": "North"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "BlueConveyorBelt",
+      "Walls": [],
+      "Direction": "South"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "BlueConveyorBelt",
+      "Walls": [],
+      "Direction": "North"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [
+        "North"
+      ],
+      "Direction": null
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "South"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "SpawnPoint",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    }
   ],
   [
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "SpawnPoint", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": ["North"], "Direction": null},
-    {"Name": "GreenConveyorBelt", "Walls": ["North"], "Direction": "South"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "BlueConveyorBelt", "Walls": [], "Direction": "North"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "BlueConveyorBelt", "Walls": [], "Direction": "South"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "North"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null}
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "North"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "BlueConveyorBelt",
+      "Walls": [],
+      "Direction": "South"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "BlueConveyorBelt",
+      "Walls": [],
+      "Direction": "North"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "South"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "SpawnPoint",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    }
   ],
   [
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "SpawnPoint", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "South"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "BlueConveyorBelt", "Walls": [], "Direction": "North"},
-    {"Name": "Gear", "Walls": [], "Direction": "AntiClockWise"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "Gear", "Walls": [], "Direction": "ClockWise"},
-    {"Name": "BlueConveyorBelt", "Walls": [], "Direction": "South"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "North"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null}
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "North"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "BlueConveyorBelt",
+      "Walls": [],
+      "Direction": "South"
+    },
+    {
+      "Name": "Gear",
+      "Walls": [],
+      "Direction": "ClockWise"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "Gear",
+      "Walls": [],
+      "Direction": "AntiClockWise"
+    },
+    {
+      "Name": "BlueConveyorBelt",
+      "Walls": [],
+      "Direction": "North"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "South"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [
+        "North"
+      ],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "SpawnPoint",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    }
   ],
   [
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "SpawnPoint", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "South"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "BlueConveyorBelt", "Walls": [], "Direction": "West"},
-    {"Name": "BlueConveyorBelt", "Walls": [], "Direction": "West"},
-    {"Name": "BlueConveyorBelt", "Walls": [], "Direction": "West"},
-    {"Name": "BlueConveyorBelt", "Walls": [], "Direction": "West"},
-    {"Name": "BlueConveyorBelt", "Walls": [], "Direction": "West"},
-    {"Name": "BlueConveyorBelt", "Walls": [], "Direction": "South"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "North"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null}
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "North"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "BlueConveyorBelt",
+      "Walls": [],
+      "Direction": "East"
+    },
+    {
+      "Name": "BlueConveyorBelt",
+      "Walls": [],
+      "Direction": "East"
+    },
+    {
+      "Name": "BlueConveyorBelt",
+      "Walls": [],
+      "Direction": "East"
+    },
+    {
+      "Name": "BlueConveyorBelt",
+      "Walls": [],
+      "Direction": "East"
+    },
+    {
+      "Name": "BlueConveyorBelt",
+      "Walls": [],
+      "Direction": "East"
+    },
+    {
+      "Name": "BlueConveyorBelt",
+      "Walls": [],
+      "Direction": "East"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "South"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "SpawnPoint",
+      "Walls": [
+        "North"
+      ],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [
+        "North"
+      ],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [
+        "North"
+      ],
+      "Direction": null
+    }
   ],
   [
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "SpawnPoint", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "South"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": ["West"], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "North"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null}
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "North"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [
+        "West"
+      ],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "South"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "SpawnPoint",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    }
   ],
   [
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "SpawnPoint", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "East"},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "East"},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "East"},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "East"},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "East"},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "East"},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "East"},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "East"},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "East"},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "North"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null}
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "North"
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "West"
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "West"
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "West"
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "West"
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "West"
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "West"
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "West"
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "West"
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "West"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "SpawnPoint",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    }
   ],
   [
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "SpawnPoint", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "North"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "South"},
-    {"Name": "GreenConveyorBelt", "Walls": [], "Direction": "North"},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null},
-    {"Name": "EmptySpace", "Walls": [], "Direction": null}
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "North"
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "South"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "GreenConveyorBelt",
+      "Walls": [],
+      "Direction": "North"
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    },
+    {
+      "Name": "EmptySpace",
+      "Walls": [],
+      "Direction": null
+    }
   ]
 ]
