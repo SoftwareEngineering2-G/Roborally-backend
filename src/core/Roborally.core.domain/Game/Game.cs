@@ -71,8 +71,7 @@ public class Game {
 
         return playerDealtCards;
     }
-
-
+    
     public void LockInRegisters(string playerUsername, List<ProgrammingCard> lockedInCards, ISystemTime systemTime) {
         if (IsInActivationPhase()) {
             throw new CustomException("The game needs to be in programming phase", 400);
@@ -191,6 +190,68 @@ public class Game {
         return playersByTurnOrder[nextPlayerIndex];
     }
 
+    
+    public void RequestPauseGame(string requestedByUsername, ISystemTime systemTime) {
+        Player.Player? requestingPlayer = _players.Find(p => p.Username.Equals(requestedByUsername));
+        if (requestingPlayer is null) {
+            throw new CustomException("Requesting player does not exist", 404);
+        }
+        
+        PauseGameEvent requestedPauseEvent = new PauseGameEvent {
+            GameId = this.GameId,
+            evokedByUsername = requestedByUsername,
+            isRequest = true,
+            isAnAcceptedResponse = null,
+            HappenedAt = systemTime.CurrentTime,
+        };
+        
+        GameEvents.Add(requestedPauseEvent);
+    }
+    
+    public void ResponsePauseGame(string responderUsername, bool approved, ISystemTime systemTime) {
+        Player.Player? respondingPlayer = _players.Find(p => p.Username.Equals(responderUsername));
+        if (respondingPlayer is null) {
+            throw new CustomException("Responding player does not exist", 404);
+        }
+        
+        PauseGameEvent responsePauseEvent = new PauseGameEvent {
+            GameId = this.GameId,
+            evokedByUsername = responderUsername,
+            isRequest = false,
+            isAnAcceptedResponse = approved,
+            HappenedAt = systemTime.CurrentTime,
+        };
+        
+        GameEvents.Add(responsePauseEvent);
+    }
+    
+    public GamePauseState? GetGamePauseState() {
+        var pauseRequestEvent = GameEvents.OfType<PauseGameEvent>()
+            .Where(e => e.isRequest)
+            .OrderByDescending(e => e.HappenedAt)
+            .FirstOrDefault();
+        
+        if (pauseRequestEvent is null) {
+            throw new CustomException("No pause request found", 400);
+        }
+        
+        var responses = GameEvents.OfType<PauseGameEvent>()
+            .Where(e => !e.isRequest && e.HappenedAt > pauseRequestEvent.HappenedAt)
+            .ToList();
+
+        if (responses.Count < _players.Count - 1) return null;
+        
+        bool allApproved = responses.All(r => r.isAnAcceptedResponse == true);
+
+        return new GamePauseState
+        {
+            result = allApproved,
+            RequestedBy = pauseRequestEvent.evokedByUsername,
+            PlayerResponses = responses.ToDictionary(r => r.evokedByUsername, r => r.isAnAcceptedResponse ?? false),
+            RequestedAt = pauseRequestEvent.HappenedAt
+        };
+    }
+    
     private bool IsInActivationPhase() {
         return CurrentPhase.Equals(GamePhase.ActivationPhase);
     }
@@ -198,13 +259,7 @@ public class Game {
     private bool IsInProgrammingPhase() {
         return CurrentPhase.Equals(GamePhase.ProgrammingPhase);
     }
-
-
-    private Game() {
-        // EFC needs the empty constructor , i know IDE warns it but please dont delete it.
-        _players = [];
-    }
-
+    
     public int? GetCurrentExecutingRegister() {
         if (!IsInActivationPhase()) {
             return null;
@@ -212,4 +267,11 @@ public class Game {
 
         return CurrentRevealedRegister;
     }
+    
+    private Game() {
+        // EFC needs the empty constructor , i know IDE warns it but please dont delete it.
+        _players = [];
+    }
+
+
 }

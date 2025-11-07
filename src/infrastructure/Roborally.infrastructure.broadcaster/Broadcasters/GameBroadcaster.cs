@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Roborally.core.application.ApplicationContracts.Broadcasters;
+using Roborally.core.domain.Game;
 using Roborally.core.domain.Game.Deck;
 using Roborally.infrastructure.broadcaster.Game;
 
@@ -58,6 +59,29 @@ public class GameBroadcaster : IGameBroadcaster{
             executedCard
         };
         return _hubContext.Clients.Groups(GroupName(gameId)).SendAsync("RobotMoved", payload, ct);
+    }
+    
+    public Task BroadcastPauseGameRequestedAsync(Guid gameId, string requesterUsername, CancellationToken ct)
+    {
+        var payload = new
+        {
+            gameId,
+            requesterUsername
+        };
+        return _hubContext.Clients.Groups(GroupName(gameId)).SendAsync("GamePauseRequested", payload, ct);
+    }
+    
+    public Task BroadcastPauseGameResultAsync(Guid gameId, GamePauseState state, CancellationToken ct)
+    {
+        var payload = new
+        {
+            gameId,
+            result = state.result,
+            requestedBy = state.RequestedBy,
+            playerResponses = state.PlayerResponses,
+            requestedAt = state.RequestedAt
+        };
+        return _hubContext.Clients.Groups(GroupName(gameId)).SendAsync("GamePauseResult", payload, ct);
     }
 
     public Task BroadcastNextPlayerInTurn(Guid gameId, string nextPlayerUsername, CancellationToken ct) {
