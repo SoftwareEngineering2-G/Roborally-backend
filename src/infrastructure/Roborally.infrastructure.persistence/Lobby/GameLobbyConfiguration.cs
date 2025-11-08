@@ -27,6 +27,12 @@ public class GameLobbyConfiguration : IEntityTypeConfiguration<GameLobby>  {
                .WithMany()
                .UsingEntity("GameLobbyJoinedUsers");
 
+        // Configure many-to-many relationship for required users (nullable)
+        builder.Navigation(e => e.RequiredUsers).HasField("_requiredUsers");
+        builder.HasMany(gl => gl.RequiredUsers)
+               .WithMany()
+               .UsingEntity("GameLobbyRequiredUsers");
+
         builder.ToTable("GameLobby");
     }
 }

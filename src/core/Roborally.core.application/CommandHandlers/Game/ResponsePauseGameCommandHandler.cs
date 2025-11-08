@@ -31,7 +31,6 @@ public class ResponsePauseGameCommandHandler : ICommandHandler<ResponsePauseGame
         }
         
         game.ResponsePauseGame(command.ResponderUsername, command.Approved, _systemTime);
-        await _unitOfWork.SaveChangesAsync(ct);
         await _gameBroadcaster.BroadcastPauseGameRequestedAsync(game.GameId, command.ResponderUsername, ct);
         
         var gamePauseState = game.GetGamePauseState();
@@ -39,5 +38,7 @@ public class ResponsePauseGameCommandHandler : ICommandHandler<ResponsePauseGame
         {
             await _gameBroadcaster.BroadcastPauseGameResultAsync(game.GameId, gamePauseState, ct);
         }
+        await _unitOfWork.SaveChangesAsync(ct);
+        
     }
 }

@@ -13,4 +13,5 @@ public class GetLobbyInfoCommandResponse {
     public string Lobbyname { get; init; }
     public List<string> JoinedUsernames { get; init; }
     public string HostUsername { get; init; }
+    public List<string> RequiredUsernames { get; init; }
 }

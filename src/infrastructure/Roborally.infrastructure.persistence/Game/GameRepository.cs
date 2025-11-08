@@ -24,6 +24,15 @@ public class GameRepository : IGameRepository {
             .Include(game => game.GameEvents)
             .FirstOrDefaultAsync(game => game.GameId.Equals(gameId), ct);
     }
+    
+    public Task<List<core.domain.Game.Game>> FindPausedGamesForUserAsync(string username, CancellationToken ct) {
+        return _context.Games
+            .Where(game => game.Players.Select(player => player.Username).Contains(username))
+            .Where(game => game.isPaused == true && game.CompletedAt == null)
+            .Include(game => game.Players)
+            .AsNoTracking()
+            .ToListAsync(ct);
+    }
 
     public async Task<List<GetGamesForUserResponse>>
         QueryGamesForUserAsync(GetGamesForUserQuery query, CancellationToken ct) {

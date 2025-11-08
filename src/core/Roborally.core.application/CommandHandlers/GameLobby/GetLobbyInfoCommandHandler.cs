@@ -26,12 +26,18 @@ public class GetLobbyInfoCommandHandler : ICommandHandler<GetLobbyInfoCommand, G
         if (!contains) {
             throw new CustomException("User does not have access to this lobby", 403);
         }
+        
+        List<string> requiredUserNames = lobby.RequiredUsers.Select(users => users.Username).ToList();
+        if (lobby.RequiredUsers.Count > 0 && !requiredUserNames.Contains(command.Username)) {
+            throw new CustomException("User does not have access to this lobby", 403);
+        }
 
         return new GetLobbyInfoCommandResponse() {
             GameId = lobby.GameId,
             Lobbyname = lobby.Name,
             HostUsername = lobby.HostUsername,
             JoinedUsernames = joinedUserNames,
+            RequiredUsernames = requiredUserNames
         };
     }
 }

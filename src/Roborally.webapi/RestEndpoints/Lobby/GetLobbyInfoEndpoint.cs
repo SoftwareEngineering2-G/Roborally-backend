@@ -21,6 +21,7 @@ public class GetLobbyInfoEndpoint : Endpoint<GetLobbyInfoRequest, GetLobbyInfoRe
             JoinedUsernames = response.JoinedUsernames,
             HostUsername = response.HostUsername,
             Lobbyname = response.Lobbyname,
+            RequiredUsernames = response.RequiredUsernames
         }, ct);
     }
 }
@@ -36,4 +37,5 @@ public class GetLobbyInfoResponse {
     public string Lobbyname { get; set; }
     public List<string> JoinedUsernames { get; set; }
     public string HostUsername { get; set; }
+    public List<string> RequiredUsernames { get; set; }
 }

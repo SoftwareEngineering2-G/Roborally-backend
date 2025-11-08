@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Roborally.infrastructure.persistence;
@@ -12,9 +13,11 @@ using Roborally.infrastructure.persistence;
 namespace Roborally.infrastructure.persistence.Migrations
 {
     [DbContext(typeof(AppDatabaseContext))]
-    partial class AppDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20251108100219_LobbyToContinueGame")]
+    partial class LobbyToContinueGame
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,9 +88,6 @@ namespace Roborally.infrastructure.persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
-
-                    b.Property<int>("RoundCount")
-                        .HasColumnType("integer");
 
                     b.Property<bool>("isPaused")
                         .HasColumnType("boolean");
@@ -163,9 +163,6 @@ namespace Roborally.infrastructure.persistence.Migrations
                     b.Property<DateTime>("HappenedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("Round")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("text");
@@ -185,12 +182,6 @@ namespace Roborally.infrastructure.persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Username")
-                        .HasColumnType("text");
-
-                    b.Property<int>("RoundCount")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Username1")
                         .HasColumnType("text");
 
                     b.ComplexProperty<Dictionary<string, object>>("CurrentFacingDirection", "Roborally.core.domain.Game.Player.Player.CurrentFacingDirection#Direction", b1 =>
@@ -257,8 +248,6 @@ namespace Roborally.infrastructure.persistence.Migrations
                     b.HasKey("GameId", "Username");
 
                     b.HasIndex("Username");
-
-                    b.HasIndex("Username1");
 
                     b.ToTable("Players", (string)null);
                 });
@@ -458,12 +447,6 @@ namespace Roborally.infrastructure.persistence.Migrations
                         .HasForeignKey("Username")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("Roborally.core.domain.User.User", "User")
-                        .WithMany()
-                        .HasForeignKey("Username1");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Roborally.core.domain.Lobby.GameLobby", b =>

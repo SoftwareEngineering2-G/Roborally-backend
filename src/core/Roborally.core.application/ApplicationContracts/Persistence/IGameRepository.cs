@@ -7,7 +7,7 @@ public interface IGameRepository {
 
     Task AddAsync(Game game, CancellationToken ct);
     Task<Game?> FindAsync(Guid gameId, CancellationToken ct);
-
+    Task<List<Game>> FindPausedGamesForUserAsync(string username, CancellationToken ct);
 
     Task<List<GetGamesForUserResponse>> QueryGamesForUserAsync(GetGamesForUserQuery query, CancellationToken ct);
     Task<GetCurrentUserPlayingStatusResponse> QueryUserCurrentPlayingStatusAsync(GetUserCurrentPlayingStatusQuery command, CancellationToken ct);

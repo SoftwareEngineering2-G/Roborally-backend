@@ -37,11 +37,11 @@ public class Game {
     public DateTime CreatedAt { get; set; }
 
     public DateTime? CompletedAt { get; set; }
-
-
+    
+    public bool isPaused { get; set; } = false;
+    
     public int RoundCount { get; set; }
-
-
+    
     public Game(Guid gameId, string hostUsername, string name, List<Player.Player> players, GameBoard gameBoard,
         bool isPrivate, DateTime createdAt) {
         GameId = gameId;
@@ -241,7 +241,9 @@ public class Game {
 
         if (responses.Count < _players.Count - 1) return null;
         
+        // Require all responses to be approved to pause the game
         bool allApproved = responses.All(r => r.isAnAcceptedResponse == true);
+        isPaused = allApproved;
 
         return new GamePauseState
         {
@@ -272,6 +274,4 @@ public class Game {
         // EFC needs the empty constructor , i know IDE warns it but please dont delete it.
         _players = [];
     }
-
-
 }

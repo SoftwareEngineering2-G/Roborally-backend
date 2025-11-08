@@ -45,6 +45,7 @@ public class
             HostUsername = game.HostUsername,
             Name = game.Name,
             CurrentPhase = game.CurrentPhase.DisplayName,
+            IsPrivate = game.IsPrivate,
             CurrentRevealedRegister = game.CurrentRevealedRegister,
             CurrentTurnUsername = game.GetNextExecutingPlayer()?.Username,
             CurrentExecutingRegister = game.GetCurrentExecutingRegister(),

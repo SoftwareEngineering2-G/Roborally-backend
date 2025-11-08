@@ -7,10 +7,13 @@ namespace Roborally.core.domain.Lobby;
 
 public class GameLobby {
     private const int MaxLobbySize = 6;
+    
     private readonly List<User.User> _joinedUsers;
     public IReadOnlyList<User.User> JoinedUsers => _joinedUsers.AsReadOnly();
+    private readonly List<User.User> _requiredUsers;
+    public IReadOnlyList<User.User> RequiredUsers => _requiredUsers.AsReadOnly();
+    
     private readonly string _name = string.Empty;
-
     public Guid GameId { get; init; }
 
     public bool IsPrivate { get; init; }
@@ -37,6 +40,7 @@ public class GameLobby {
 
     private GameLobby() {
         _joinedUsers = new List<User.User>();
+        _requiredUsers = new List<User.User>();
         HostUsername = string.Empty;
         _name = string.Empty;
     } // for EFC
@@ -47,6 +51,7 @@ public class GameLobby {
             // Host already enters the lobby
             hostUser
         };
+        _requiredUsers = new List<User.User>();
         Name = name;
         IsPrivate = isPrivate;
         GameId = Guid.CreateVersion7();
@@ -63,6 +68,9 @@ public class GameLobby {
 
         if (_joinedUsers.Find(u => u.Username == user.Username) != null)
             throw new CustomException("User already in lobby", 400);
+        
+        if (_requiredUsers.Count > 0 && _requiredUsers.Find(u => u.Username == user.Username) == null)
+            throw new CustomException("User not allowed to join this private lobby", 403);
 
         _joinedUsers.Add(user);
     }
@@ -72,8 +80,8 @@ public class GameLobby {
             return;
 
         _joinedUsers.Remove(user);
-        // If the host leaves, assign a new host if there are still users in the lobby
-        if (user.Username == HostUsername && _joinedUsers.Count > 0) {
+        // If the host leaves, assign a new host if there are still users in the lobby (not applicable if lobby for continuing a paused game)
+        if (user.Username == HostUsername && _joinedUsers.Count > 0 && _requiredUsers.Count == 0) {
             HostUsername = _joinedUsers[0].Username;
         }
 
@@ -102,6 +110,13 @@ public class GameLobby {
         Game.Game game = new Game.Game(this.GameId, HostUsername, Name,players, gameBoard, IsPrivate, currentTime);
 
         this.StartedAt = currentTime;
+        this._requiredUsers.Clear();
         return game;
+    }
+    
+    public void InitLobbyToContinue(List<User.User> gameUsers) {
+        StartedAt = null;
+        _requiredUsers.AddRange(gameUsers);
+        _joinedUsers.Clear();
     }
 }
