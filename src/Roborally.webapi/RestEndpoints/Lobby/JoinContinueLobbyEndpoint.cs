@@ -5,7 +5,7 @@ namespace Roborally.webapi.RestEndpoints.Lobby;
 
 public class JoinContinueLobbyEndpoint : Endpoint<JoinContinueLobbyRequest> {
     public override void Configure() {
-        Post("/game-lobbies/{gameId}/continue");
+        Post("/game-lobbies/{gameId}/join-continue");
         Summary(s => {
             s.Summary = "Join a paused game lobby";
             s.Description = "Allows a user to join a paused game lobby to continue playing";
