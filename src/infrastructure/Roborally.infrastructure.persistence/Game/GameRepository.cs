@@ -28,7 +28,7 @@ public class GameRepository : IGameRepository {
     public Task<List<core.domain.Game.Game>> FindPausedGamesForUserAsync(string username, CancellationToken ct) {
         return _context.Games
             .Where(game => game.Players.Select(player => player.Username).Contains(username))
-            .Where(game => game.isPaused == true && game.CompletedAt == null)
+            .Where(game => game.IsPaused == true && game.CompletedAt == null)
             .Include(game => game.Players)
             .AsNoTracking()
             .ToListAsync(ct);

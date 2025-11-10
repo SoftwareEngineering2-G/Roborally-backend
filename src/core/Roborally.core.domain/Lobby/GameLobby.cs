@@ -110,13 +110,24 @@ public class GameLobby {
         Game.Game game = new Game.Game(this.GameId, HostUsername, Name,players, gameBoard, IsPrivate, currentTime);
 
         this.StartedAt = currentTime;
-        this._requiredUsers.Clear();
+        this._joinedUsers.Clear();
         return game;
     }
     
-    public void InitLobbyToContinue(List<User.User> gameUsers) {
+    public void ContinueGame(string username, ISystemTime systemTime) {
+        if (!username.ToLower().Equals(HostUsername.ToLower())) 
+            throw new CustomException("Only the host can continue the game", 403);
+        
+        if (StartedAt is not null) 
+            throw new CustomException("Cannot continue game - game is already active", 400);
+        
+        this.StartedAt = systemTime.CurrentTime;
+        this._joinedUsers.Clear();
+    }
+    
+    public void InitLobbyToContinue(List<User.User> users) {
+        _requiredUsers.Clear();
+        _requiredUsers.AddRange(users);
         StartedAt = null;
-        _requiredUsers.AddRange(gameUsers);
-        _joinedUsers.Clear();
     }
 }

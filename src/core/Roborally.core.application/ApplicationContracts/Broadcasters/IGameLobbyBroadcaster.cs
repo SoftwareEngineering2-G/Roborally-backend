@@ -7,4 +7,6 @@ public interface IGameLobbyBroadcaster
     Task BroadcastHostChangedAsync(Guid gameId, string newHost, CancellationToken cancellationToken = default);
         
     Task BroadcastGameStartedAsync(Guid gameId, CancellationToken cancellationToken = default);
+    Task BroadcastGameContinuedAsync(Guid gameId, CancellationToken cancellationToken = default);
 }
+

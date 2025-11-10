@@ -11,7 +11,7 @@ using Roborally.core.domain.User;
 
 namespace Roborally.core.application.CommandHandlers.GameLobby;
 
-public class StartGameCommandHandler : ICommandHandler<StartGameCommand> {
+public class ContinueGameCommandHandler : ICommandHandler<ContinueGameCommand> {
     private readonly IUserRepository _userRepository;
     private readonly IGameLobbyRepository _gameLobbyRepository;
     private readonly IGameRepository _gameRepository;
@@ -21,7 +21,7 @@ public class StartGameCommandHandler : ICommandHandler<StartGameCommand> {
 
     private readonly IGameLobbyBroadcaster _gameLobbyBroadcaster;
 
-    public StartGameCommandHandler(IUserRepository userRepository, IGameLobbyRepository gameLobbyRepository,
+    public ContinueGameCommandHandler(IUserRepository userRepository, IGameLobbyRepository gameLobbyRepository,
         IUnitOfWork unitOfWork, ISystemTime systemTime, IGameLobbyBroadcaster gameLobbyBroadcaster,
         IGameRepository gameRepository, IGameBoardRepository gameBoardRepository) {
         _userRepository = userRepository;
@@ -34,28 +34,25 @@ public class StartGameCommandHandler : ICommandHandler<StartGameCommand> {
     }
 
 
-    public async Task ExecuteAsync(StartGameCommand command, CancellationToken ct) {
+    public async Task ExecuteAsync(ContinueGameCommand command, CancellationToken ct) {
         bool userExists = await _userRepository.ExistsByUsernameAsync(command.Username, ct);
         if (!userExists) {
             throw new CustomException("User does not exist", 404);
         }
 
         domain.Lobby.GameLobby? lobby = await _gameLobbyRepository.FindAsync(command.GameId);
-
         if (lobby is null) {
             throw new CustomException("Game lobby does not exist", 404);
         }
 
-        // Get existing GameBoard from database
-        GameBoard? gameBoard = await _gameBoardRepository.FindAsync(command.GameBoardName, ct);
-
-        if (gameBoard == null) {
-            throw new CustomException($"Game board '{command.GameBoardName}' does not exist", 404);
+        domain.Game.Game? game = await _gameRepository.FindAsync(command.GameId, ct);
+        if (game is null) {
+            throw new CustomException("Game does not exist", 404);
         }
-        
-        domain.Game.Game game = lobby.StartGame(command.Username, _systemTime, gameBoard);
-        await _gameRepository.AddAsync(game, ct);
+
+        lobby.ContinueGame(command.Username, _systemTime);
+        game.ContinueGame();
         await _unitOfWork.SaveChangesAsync(ct);
-        await _gameLobbyBroadcaster.BroadcastGameStartedAsync(command.GameId, ct);
+        await _gameLobbyBroadcaster.BroadcastGameContinuedAsync(command.GameId, ct);
     }
 }

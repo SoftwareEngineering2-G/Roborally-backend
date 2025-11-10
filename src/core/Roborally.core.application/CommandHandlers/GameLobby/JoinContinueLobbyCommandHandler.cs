@@ -38,10 +38,10 @@ public class JoinContinueLobbyCommandHandler : ICommandHandler<JoinContinueLobby
         var game = await _gameRepository.FindAsync(command.GameId, ct);
         if (game is null)
             throw new CustomException("Game is not existed", 404);
-        if (!game.isPaused) 
+        if (!game.IsPaused) 
             throw new CustomException("Game is not paused to continue", 400);
 
-        if (gameLobby.RequiredUsers.Count == 0)
+        if (gameLobby.JoinedUsers.Count == 0)
         {
             var playersInGame = game.Players.Select(p => p.Username).ToList();
             var gameUsers = new List<User>();

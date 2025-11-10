@@ -14,4 +14,5 @@ public class GetLobbyInfoCommandResponse {
     public List<string> JoinedUsernames { get; init; }
     public string HostUsername { get; init; }
     public List<string> RequiredUsernames { get; init; }
+    public string? PausedGameBoardName { get; init; }
 }

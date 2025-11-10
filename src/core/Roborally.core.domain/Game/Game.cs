@@ -38,7 +38,7 @@ public class Game {
 
     public DateTime? CompletedAt { get; set; }
     
-    public bool isPaused { get; set; } = false;
+    public bool IsPaused { get; set; } = false;
     
     public int RoundCount { get; set; }
     
@@ -76,6 +76,10 @@ public class Game {
         if (IsInActivationPhase()) {
             throw new CustomException("The game needs to be in programming phase", 400);
         }
+        
+        if (IsPaused) {
+            throw new CustomException("The game is currently paused", 400);
+        }
 
         Player.Player? player = _players.Find(p => p.Username.Equals(playerUsername));
         if (player is null)
@@ -87,6 +91,10 @@ public class Game {
     public Dictionary<string, ProgrammingCard> RevealNextRegister() {
         if (!IsInActivationPhase()) {
             throw new CustomException("The game needs to be in activation phase", 400);
+        }
+        
+        if (IsPaused) {
+            throw new CustomException("The game is currently paused", 400);
         }
 
         if (CurrentRevealedRegister >= 5) {
@@ -113,6 +121,10 @@ public class Game {
     public void ActivateNextBoardElement(ISystemTime systemTime) {
         if (!IsInActivationPhase()) {
             throw new CustomException("The game needs to be in activation phase", 400);
+        }
+        
+        if (IsPaused) {
+            throw new CustomException("The game is currently paused", 400);
         }
 
         var lastActivatedElement = GameEvents.OfType<BoardElementActivatedEvent>()
@@ -149,6 +161,10 @@ public class Game {
         if (!IsInActivationPhase()) {
             throw new CustomException("The game needs to be in activation phase", 400);
         }
+        
+        if (IsPaused) {
+            throw new CustomException("The game is currently paused", 400);
+        }
 
         Player.Player? player = _players.Find(p => p.Username.Equals(username));
         if (player is null)
@@ -166,7 +182,7 @@ public class Game {
         }
 
         // Skip if no registers have been revealed yet
-        if (CurrentRevealedRegister ==0) {
+        if (CurrentRevealedRegister == 0) {
             return null;
         }
 
@@ -189,9 +205,12 @@ public class Game {
 
         return playersByTurnOrder[nextPlayerIndex];
     }
-
     
     public void RequestPauseGame(string requestedByUsername, ISystemTime systemTime) {
+        if (IsPaused) {
+            throw new CustomException("Game is already paused", 400);
+        }
+        
         Player.Player? requestingPlayer = _players.Find(p => p.Username.Equals(requestedByUsername));
         if (requestingPlayer is null) {
             throw new CustomException("Requesting player does not exist", 404);
@@ -243,7 +262,7 @@ public class Game {
         
         // Require all responses to be approved to pause the game
         bool allApproved = responses.All(r => r.isAnAcceptedResponse == true);
-        isPaused = allApproved;
+        IsPaused = allApproved;
 
         return new GamePauseState
         {
@@ -252,6 +271,14 @@ public class Game {
             PlayerResponses = responses.ToDictionary(r => r.evokedByUsername, r => r.isAnAcceptedResponse ?? false),
             RequestedAt = pauseRequestEvent.HappenedAt
         };
+    }
+    
+    public void ContinueGame() {
+        if (!IsPaused) {
+            throw new CustomException("Game is not paused", 400);
+        }
+
+        IsPaused = false;
     }
     
     private bool IsInActivationPhase() {
