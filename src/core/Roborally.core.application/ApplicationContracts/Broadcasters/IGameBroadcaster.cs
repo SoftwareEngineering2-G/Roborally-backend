@@ -10,5 +10,5 @@ public interface IGameBroadcaster {
     Task BroadcastRobotMovedAsync(Guid gameId, string username, int positionX, int positionY, string direction, string executedCard, CancellationToken ct);
     Task BroadcastPauseGameRequestedAsync(Guid gameId, string requesterUsername, CancellationToken ct);
     Task BroadcastPauseGameResultAsync(Guid gameId, GamePauseState state, CancellationToken ct);
-    Task BroadcastNextPlayerInTurn(Guid gameId, string nextPlayerUsername, CancellationToken ct);
+    Task BroadcastNextPlayerInTurn(Guid gameId, string? nextPlayerUsername, CancellationToken ct);
 }

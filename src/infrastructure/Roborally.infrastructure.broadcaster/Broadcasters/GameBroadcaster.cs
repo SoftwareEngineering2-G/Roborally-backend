@@ -84,7 +84,7 @@ public class GameBroadcaster : IGameBroadcaster{
         return _hubContext.Clients.Groups(GroupName(gameId)).SendAsync("GamePauseResult", payload, ct);
     }
 
-    public Task BroadcastNextPlayerInTurn(Guid gameId, string nextPlayerUsername, CancellationToken ct) {
+    public Task BroadcastNextPlayerInTurn(Guid gameId, string? nextPlayerUsername, CancellationToken ct) {
         var payload = new
         {
             gameId,

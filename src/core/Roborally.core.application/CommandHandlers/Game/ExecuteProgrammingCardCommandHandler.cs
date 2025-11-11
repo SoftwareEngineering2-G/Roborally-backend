@@ -62,9 +62,7 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
             ct);
 
         Player? nextPlayer = game.GetNextExecutingPlayer();
-        if (nextPlayer is not null) {
-            await _gameBroadcaster.BroadcastNextPlayerInTurn(command.GameId, nextPlayer.Username, ct);
-        }
+        await _gameBroadcaster.BroadcastNextPlayerInTurn(command.GameId, nextPlayer?.Username, ct);
 
         return new ExecuteProgrammingCardCommandResponse
         {

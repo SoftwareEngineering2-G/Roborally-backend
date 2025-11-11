@@ -200,10 +200,10 @@ public class Game {
         // Find the index of the last player who executed
         int lastPlayerIndex = playersByTurnOrder.FindIndex(p => p.Username == lastPlayerToExecute.Username);
 
-        // Get the next player (wrap around to start if at the end)
-        int nextPlayerIndex = (lastPlayerIndex + 1) % playersByTurnOrder.Count;
-
-        return playersByTurnOrder[nextPlayerIndex];
+        // Get the next player (null all players have played)
+        return (lastPlayerIndex + 1 < playersByTurnOrder.Count)
+            ? playersByTurnOrder[lastPlayerIndex + 1]
+            : null;
     }
     
     public void RequestPauseGame(string requestedByUsername, ISystemTime systemTime) {
