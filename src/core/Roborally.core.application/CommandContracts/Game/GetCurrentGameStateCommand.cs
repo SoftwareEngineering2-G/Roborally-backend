@@ -11,16 +11,15 @@ public sealed class GetCurrentGameStateCommandResponse {
     public required string GameId { get; set; }
     public required string HostUsername { get; set; }
     public required string Name { get; set; }
+    public required bool IsPrivate { get; init; }
     public required List<Player> Players { get; set; } = [];
     public required GameBoardSpaces GameBoard { get; set; }
     public required string CurrentPhase { get; set; }
     public required int CurrentRevealedRegister { get; set; }
     public required MyState PersonalState { get; set; }
-
     public required string? CurrentTurnUsername { get; set; }
     public required int? CurrentExecutingRegister { get; set; }
-
-
+    
     public record Space(string Name, List<string> Walls, string? Direction = null);
 
     public record Player(

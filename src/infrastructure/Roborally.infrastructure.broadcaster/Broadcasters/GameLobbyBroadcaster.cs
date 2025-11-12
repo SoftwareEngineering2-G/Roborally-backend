@@ -40,4 +40,10 @@ public class GameLobbyBroadcaster : IGameLobbyBroadcaster
         var payload = new { GameId = gameId };  
         return _hubContext.Clients.Group(groupId).SendAsync("GameStarted", payload, cancellationToken);
     }
+    
+    public Task BroadcastGameContinuedAsync(Guid gameId, CancellationToken cancellationToken = default) {
+        string groupId = GetGroupId(gameId);
+        var payload = new { GameId = gameId };  
+        return _hubContext.Clients.Group(groupId).SendAsync("GameContinued", payload, cancellationToken);
+    }
 }

@@ -23,7 +23,9 @@ public class GameLobbyRepository : IGameLobbyRepository {
     }
 
     public Task<GameLobby?> FindAsync(Guid gameId) {
-        return _context.GameLobby.Include(gl => gl.JoinedUsers)
+        return _context.GameLobby
+            .Include(gl => gl.JoinedUsers)
+            .Include(gl => gl.RequiredUsers)
             .FirstOrDefaultAsync(gl => gl.GameId.Equals(gameId));
     }
 

@@ -78,10 +78,13 @@ public static class GameQueryExtensions {
     /// <summary>
     /// Gets the most recent CardExecutedEvent for the specified round
     /// </summary>
-    public static CardExecutedEvent? GetLastCardExecutedEvent(this Player.Player player, int round) {
-        return player.GetEventsForRound(round)
-            .OfType<CardExecutedEvent>()
-            .FirstOrDefault();
+    public static CardExecutedEvent? GetLastCardExecutedEvent(this Player.Player player, int round, int register)
+    {
+        var cardExcecutedEventsThisRound = 
+            player.GetEventsForRound(round)
+            .OfType<CardExecutedEvent>().ToArray();
+        if (register > cardExcecutedEventsThisRound.Length) return null;
+        return cardExcecutedEventsThisRound.ElementAt(cardExcecutedEventsThisRound.Length - register); // Desc order
     }
 
     /// <summary>
@@ -93,7 +96,7 @@ public static class GameQueryExtensions {
         var playersWithExecutions = game.Players
             .Select(p => new {
                 Player = p,
-                LastExecution = p.GetLastCardExecutedEvent(round)
+                LastExecution = p.GetLastCardExecutedEvent(round, currentRegister)
             })
             .Where(x => x.LastExecution != null)
             .ToList();

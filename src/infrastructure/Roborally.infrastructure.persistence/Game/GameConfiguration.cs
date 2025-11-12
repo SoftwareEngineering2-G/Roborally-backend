@@ -50,5 +50,6 @@ public class GameConfiguration : IEntityTypeConfiguration<core.domain.Game.Game>
             .WithOne()
             .HasForeignKey(g => g.GameId)
             .IsRequired();
+        
     }
 }

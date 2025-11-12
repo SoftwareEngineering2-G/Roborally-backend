@@ -52,8 +52,6 @@ public class RevealNextRegisterCommandHandler : ICommandHandler<RevealNextRegist
             ct);
 
         var nextPlayer = game.GetNextExecutingPlayer();
-        if (nextPlayer is not null) {
-            await _gameBroadcaster.BroadcastNextPlayerInTurn(command.GameId, nextPlayer.Username, ct);
-        }
+        await _gameBroadcaster.BroadcastNextPlayerInTurn(command.GameId, nextPlayer?.Username, ct);
     }
 }

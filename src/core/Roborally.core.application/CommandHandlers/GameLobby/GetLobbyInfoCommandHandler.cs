@@ -8,9 +8,11 @@ namespace Roborally.core.application.CommandHandlers.GameLobby;
 
 public class GetLobbyInfoCommandHandler : ICommandHandler<GetLobbyInfoCommand, GetLobbyInfoCommandResponse> {
     private readonly IGameLobbyRepository _gameLobbyRepository;
+    private readonly IGameRepository _gameRepository;
 
-    public GetLobbyInfoCommandHandler(IGameLobbyRepository gameLobbyRepository) {
+    public GetLobbyInfoCommandHandler(IGameLobbyRepository gameLobbyRepository, IGameRepository gameRepository) {
         _gameLobbyRepository = gameLobbyRepository;
+        _gameRepository = gameRepository;
     }
 
 
@@ -26,12 +28,28 @@ public class GetLobbyInfoCommandHandler : ICommandHandler<GetLobbyInfoCommand, G
         if (!contains) {
             throw new CustomException("User does not have access to this lobby", 403);
         }
+        
+        List<string> requiredUserNames = lobby.RequiredUsers.Select(users => users.Username).ToList();
+        if (lobby.RequiredUsers.Count > 0 && !requiredUserNames.Contains(command.Username)) {
+            throw new CustomException("User does not have access to this lobby", 403);
+        }
+
+        string? pausedGameBoardName = null;
+        if (lobby.RequiredUsers.Count > 0)
+        {
+            domain.Game.Game? game = await _gameRepository.FindAsync(lobby.GameId, ct);
+            if (game == null) throw new CustomException("Associated game not found", 404);
+            if (!game.IsPaused) throw new CustomException("Game is not paused", 400);
+            pausedGameBoardName = game.GameBoard.Name;
+        }
 
         return new GetLobbyInfoCommandResponse() {
             GameId = lobby.GameId,
             Lobbyname = lobby.Name,
             HostUsername = lobby.HostUsername,
             JoinedUsernames = joinedUserNames,
+            RequiredUsernames = requiredUserNames,
+            PausedGameBoardName = pausedGameBoardName
         };
     }
 }
