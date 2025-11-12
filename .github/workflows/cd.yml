@@ -81,7 +81,7 @@ jobs:
           #!/bin/bash
           set -e
           
-          echo "Starting backend deployment..."
+          echo "🚀 Starting backend deployment..."
           
           # Create directory if it doesn't exist
           mkdir -p $DEPLOY_PATH
@@ -89,20 +89,20 @@ jobs:
           
           # Stop existing containers
           if [ -f docker-compose.prod.yml ]; then
-            echo "Stopping existing containers..."
+            echo "🛑 Stopping existing containers..."
             docker-compose -f docker-compose.prod.yml down || true
           fi
           
           # Backup database (optional)
           if docker ps -a | grep -q roborally-postgres; then
-            echo "Creating database backup..."
+            echo "💾 Creating database backup..."
             docker exec roborally-postgres pg_dump -U $POSTGRES_USER $POSTGRES_DB > backup_$(date +%Y%m%d_%H%M%S).sql || true
           fi
           
           # Remove old files
           rm -rf publish/
           
-          echo "Deployment preparation complete"
+          echo "✅ Deployment preparation complete"
           EOF
           
           chmod +x deploy.sh
@@ -115,11 +115,11 @@ jobs:
           scp -i ~/.ssh/deploy_key deploy.sh $VM_USERNAME@$VM_HOST:$DEPLOY_PATH/
           
           # Execute deployment
-          echo "Executing deployment on VM..."
+          echo "🚀 Executing deployment on VM..."
           ssh -i ~/.ssh/deploy_key $VM_USERNAME@$VM_HOST "cd $DEPLOY_PATH && ./deploy.sh"
           
           # Start services with environment variables
-          echo "Starting Docker containers..."
+          echo "🐳 Starting Docker containers..."
           ssh -i ~/.ssh/deploy_key $VM_USERNAME@$VM_HOST << EOF
             cd $DEPLOY_PATH
             export POSTGRES_PASSWORD='$POSTGRES_PASSWORD'
@@ -137,7 +137,7 @@ jobs:
             docker-compose -f docker-compose.prod.yml logs --tail=50
           EOF
           
-          echo "Deployment complete!"
+          echo "✅ Deployment complete!"
 
       - name: Health Check
         env:
@@ -149,7 +149,7 @@ jobs:
           
           while [ $attempt -le $max_attempts ]; do
             if curl -f http://$VM_HOST:5000/health; then
-              echo "Backend is healthy!"
+              echo "✅ Backend is healthy!"
               exit 0
             fi
             echo "⏳ Attempt $attempt/$max_attempts failed, retrying in 10s..."
@@ -157,14 +157,14 @@ jobs:
             ((attempt++))
           done
           
-          echo "Health check failed after $max_attempts attempts"
+          echo "❌ Health check failed after $max_attempts attempts"
           exit 1
 
       - name: Notification
         if: always()
         run: |
           if [ "${{ job.status }}" == "success" ]; then
-            echo "Deployment successful!"
+            echo "✅ Deployment successful!"
           else
-            echo "Deployment failed!"
+            echo "❌ Deployment failed!"
           fi
