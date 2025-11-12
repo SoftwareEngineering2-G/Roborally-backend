@@ -291,11 +291,17 @@ public static class GameBoardFactory {
         PlaceGreenConveyor(3,5 , Direction.South, [Direction.East]);
         PlaceBlueConveyor(3,6 , Direction.South, [Direction.South]);
 
+        // ========== Checkpoints ==========
+        // Place 3 checkpoints at strategic locations on the board
+        spaces[2][7] = SpaceFactory.Checkpoint(1);  // Checkpoint 1 - Middle top area
+        spaces[7][11] = SpaceFactory.Checkpoint(2); // Checkpoint 2 - Right side
+        spaces[9][2] = SpaceFactory.Checkpoint(3);  // Checkpoint 3 - Bottom left area
         
         var board = new GameBoard
         {
             Name = "Starter Course",
-            Spaces = spaces
+            Spaces = spaces,
+            TotalCheckpoints = 3
         };
 
         return board;

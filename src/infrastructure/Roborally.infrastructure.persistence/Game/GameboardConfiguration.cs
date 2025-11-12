@@ -69,6 +69,10 @@ public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
             case Gear gear:
                 dto.Direction = gear.Direction.DisplayName;
                 break;
+            case CheckpointSpace checkpoint:
+                dto.Name = $"Checkpoint{checkpoint.CheckpointNumber}";
+                dto.Direction = null;
+                break;
         }
 
         return dto;
@@ -96,6 +100,14 @@ public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
                     ? GearDirection.ClockWise 
                     : GearDirection.AntiClockWise;
                 return BoardElementFactory.Gear(gearDir, walls);
+            
+            case var name when name.StartsWith("Checkpoint"):
+                string numberPart = name.Replace("Checkpoint", "");
+                if (int.TryParse(numberPart, out int checkpointNumber))
+                {
+                    return SpaceFactory.Checkpoint(checkpointNumber, walls);
+                }
+                throw new InvalidOperationException($"Invalid checkpoint name: {name}");
             
             default:
                 // Fall back to SpaceFactory for regular spaces
@@ -148,6 +160,10 @@ public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
             
             case Gear gear1 when space2 is Gear gear2:
                 return gear1.Direction.Equals(gear2.Direction);
+            
+            case CheckpointSpace checkpoint1 when space2 is CheckpointSpace checkpoint2:
+                return checkpoint1.CheckpointNumber == checkpoint2.CheckpointNumber;
+            
         }
 
         return true;

@@ -29,7 +29,8 @@ public sealed class GetCurrentGameStateCommandResponse {
         int PositionY,
         string Direction,
         bool HasLockedInRegisters,
-        List<string> RevealedCardsInOrder);
+        List<string> RevealedCardsInOrder,
+        int CurrentCheckpoint);
 
     public record MyState(List<string>? LockedInCards, List<string>? DealtCards);
     public record GameBoardSpaces(string Name, Space[][] Spaces);

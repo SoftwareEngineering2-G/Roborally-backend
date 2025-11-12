@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Roborally.infrastructure.persistence;
@@ -12,9 +13,11 @@ using Roborally.infrastructure.persistence;
 namespace Roborally.infrastructure.persistence.Migrations
 {
     [DbContext(typeof(AppDatabaseContext))]
-    partial class AppDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20251112191815_Checkpoint")]
+    partial class Checkpoint
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -334,20 +337,6 @@ namespace Roborally.infrastructure.persistence.Migrations
                     b.ToTable("BoardElementActivatedEvents", (string)null);
                 });
 
-            modelBuilder.Entity("Roborally.core.domain.Game.GameEvents.CheckpointReachedEvent", b =>
-                {
-                    b.HasBaseType("Roborally.core.domain.Game.GameEvents.GameEvent");
-
-                    b.Property<int>("CheckpointNumber")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.ToTable("CheckpointReachedEvents", (string)null);
-                });
-
             modelBuilder.Entity("Roborally.core.domain.Game.GameEvents.PauseGameEvent", b =>
                 {
                     b.HasBaseType("Roborally.core.domain.Game.GameEvents.GameEvent");
@@ -506,15 +495,6 @@ namespace Roborally.infrastructure.persistence.Migrations
                     b.HasOne("Roborally.core.domain.Game.GameEvents.GameEvent", null)
                         .WithOne()
                         .HasForeignKey("Roborally.core.domain.Game.GameEvents.BoardElementActivatedEvent", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Roborally.core.domain.Game.GameEvents.CheckpointReachedEvent", b =>
-                {
-                    b.HasOne("Roborally.core.domain.Game.GameEvents.GameEvent", null)
-                        .WithOne()
-                        .HasForeignKey("Roborally.core.domain.Game.GameEvents.CheckpointReachedEvent", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

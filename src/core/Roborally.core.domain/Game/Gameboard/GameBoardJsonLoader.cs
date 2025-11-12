@@ -33,10 +33,19 @@ public static class GameBoardJsonLoader
             .Select(row => row.Select(DtoToSpace).ToArray())
             .ToArray();
 
+        // Count the total number of checkpoints on the board
+        int totalCheckpoints = spaces
+            .SelectMany(row => row)
+            .OfType<CheckpointSpace>()
+            .Select(cp => cp.CheckpointNumber)
+            .Distinct()
+            .Count();
+
         return new GameBoard
         {
             Name = boardName,
-            Spaces = spaces
+            Spaces = spaces,
+            TotalCheckpoints = totalCheckpoints
         };
     }
 
@@ -60,7 +69,21 @@ public static class GameBoardJsonLoader
                     : GearDirection.AntiClockWise, 
                 walls),
             
+            var name when name.StartsWith("Checkpoint") => ParseCheckpoint(dto.Name, walls),
+            
             _ => SpaceFactory.FromNameAndWalls(dto.Name, walls)
         };
+    }
+
+    private static Space.Space ParseCheckpoint(string name, Direction[] walls)
+    {
+        // Extract checkpoint number from name like "Checkpoint1", "Checkpoint2", etc.
+        string numberPart = name.Replace("Checkpoint", "");
+        if (int.TryParse(numberPart, out int checkpointNumber))
+        {
+            return SpaceFactory.Checkpoint(checkpointNumber, walls);
+        }
+        
+        throw new InvalidOperationException($"Invalid checkpoint name: {name}. Expected format: Checkpoint1, Checkpoint2, etc.");
     }
 }

@@ -42,6 +42,8 @@ public class Game {
     
     public int RoundCount { get; set; }
     
+    public string? WinnerUsername { get; private set; }
+    
     public Game(Guid gameId, string hostUsername, string name, List<Player.Player> players, GameBoard gameBoard,
         bool isPrivate, DateTime createdAt) {
         GameId = gameId;
@@ -131,11 +133,9 @@ public class Game {
             .OrderByDescending(e => e.HappenedAt)
             .FirstOrDefault();
 
-
         string nextBoardElementName =
             BoardElementFactory.GetNextForActivation(lastActivatedElement?.BoardElementName ?? null);
 
-        // We get all players that are on the nextBoardElementName mapped to the board element they are on
         var allRelevantPlayersMappedWithRelevantBoardElement =
             GameBoard.FilterPlayersOnBoardElements(_players, nextBoardElementName);
 
@@ -144,10 +144,11 @@ public class Game {
 
         // Activate them all
         foreach (var (player, boardElement) in allRelevantPlayersMappedWithRelevantBoardElement) {
-            // TODO: current implementation activates players in arbitrary order, should it be by turn order?
             activationStrategy.Activate(this, player, boardElement);
+            
+            // Check for checkpoint after board element moves player
+            this.CheckPlayerOnCheckpoint(player, systemTime);
         }
-
 
         BoardElementActivatedEvent boardElementActivatedEvent = new BoardElementActivatedEvent() {
             HappenedAt = systemTime.CurrentTime,
@@ -173,9 +174,11 @@ public class Game {
         var action = ActionFactory.CreateAction(card);
         action.Execute(player, this, systemTime);
 
+        // No need to check checkpoint here - it's already checked after each move in MovePlayerInDirection
+
         return player;
     }
-
+    
     public Player.Player? GetNextExecutingPlayer() {
         if (!IsInActivationPhase()) {
             return null;
@@ -189,7 +192,7 @@ public class Game {
         // Get players ordered by age (turn order)
         var playersByTurnOrder = this.GetPlayersByTurnOrder();
 
-        // Get the last player who executed a card in this round
+        // Get the last player to execute a card in this round
         var lastPlayerToExecute = this.GetLastPlayerToExecuteCard(RoundCount, CurrentRevealedRegister);
 
         // If no one has executed yet, return the first player in turn order (oldest)
@@ -279,6 +282,15 @@ public class Game {
         }
 
         IsPaused = false;
+    }
+    
+    public void SetWinner(Player.Player player) {
+        if (WinnerUsername is not null) {
+            throw new CustomException("Game already has a winner", 400);
+        }
+        
+        WinnerUsername = player.Username;
+        CompletedAt = DateTime.UtcNow;
     }
     
     private bool IsInActivationPhase() {

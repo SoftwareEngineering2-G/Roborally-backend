@@ -5,6 +5,7 @@ namespace Roborally.core.domain.Game.Gameboard;
 public class GameBoard {
     public required string Name { get; set; }
     public required Space.Space[][] Spaces { get; init; }
+    public int TotalCheckpoints { get; internal set; }
 
     internal GameBoard() {
 

@@ -6,13 +6,14 @@ public class BlueConveyorBeltActivationStrategy : IBoardElementActivationStrateg
             throw new ArgumentException("boardElement must be of type BlueConveyorBelt");
         }
 
-        game.MovePlayerInDirection(player, blueConveyorBelt.Direction, shouldPush: false);  // Blue conveyor belt doesnt push other players
+        // Note: We don't pass systemTime here because checkpoint checking happens in Game.ActivateNextBoardElement
+        game.MovePlayerInDirection(player, blueConveyorBelt.Direction, shouldPush: false);
 
         Space.Space space = game.GameBoard.GetSpaceAt(player.CurrentPosition);      
 
         // Only push again, if the player is still on a blue conveyor belt
         if (space is BlueConveyorBelt) {
-            game.MovePlayerInDirection(player, blueConveyorBelt.Direction, shouldPush: false);  // Blue conveyor belt doesnt push other players
+            game.MovePlayerInDirection(player, blueConveyorBelt.Direction, shouldPush: false);
         }
 
     }

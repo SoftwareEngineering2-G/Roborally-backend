@@ -358,7 +358,7 @@
       "Direction": "North"
     },
     {
-      "Name": "EmptySpace",
+      "Name": "Checkpoint2",
       "Walls": [],
       "Direction": null
     },
@@ -564,7 +564,7 @@
       "Direction": "North"
     },
     {
-      "Name": "EmptySpace",
+      "Name": "Checkpoint1",
       "Walls": [],
       "Direction": null
     },

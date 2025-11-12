@@ -61,5 +61,4 @@ public static class BoardElementFactory {
         }
         return ActivationOrder[(idx + 1) % ActivationOrder.Length];
     }
-    
 }

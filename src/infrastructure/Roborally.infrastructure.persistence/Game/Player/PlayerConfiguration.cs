@@ -55,6 +55,11 @@ public class PlayerConfiguration : IEntityTypeConfiguration<core.domain.Game.Pla
             propBuilder.Property(p => p.Y).HasColumnName("SpawnPositionY");
         });
 
+        // Map CurrentCheckpointPassed to database column for tracking checkpoint progress
+        builder.Property(entity => entity.CurrentCheckpointPassed)
+            .HasColumnName("CurrentCheckpointPassed")
+            .IsRequired()
+            .HasDefaultValue(0);
 
         // We can just save the deck of the player as a list of card names in order.
         builder.ComplexProperty(entity => entity.ProgrammingDeck, propBuilder =>

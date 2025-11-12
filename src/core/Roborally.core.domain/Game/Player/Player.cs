@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using Roborally.core.domain.Bases;
 using Roborally.core.domain.Game.Deck;
+using Roborally.core.domain.Game.Gameboard.Space;
 using Roborally.core.domain.Game.Player.Events;
 
 namespace Roborally.core.domain.Game.Player;
@@ -19,6 +20,7 @@ public class Player {
     public List<PlayerEvent> PlayerEvents { get; init; } = [];
 
     public int RoundCount { get; set; }
+    public int CurrentCheckpointPassed { get; set; } = 0;
 
     // Navigation property to User for accessing age/birthday
     public User.User? User { get; init; }
@@ -152,5 +154,31 @@ public class Player {
             .OfType<CardExecutedEvent>()
             .OrderByDescending(e => e.HappenedAt)
             .FirstOrDefault()?.Card;
+    }
+    
+    public bool ReachCheckpoint(CheckpointSpace checkpoint, int totalCheckpointsOnBoard)
+    {
+        int nextRequired = CurrentCheckpointPassed + 1;
+        Console.WriteLine($"[PLAYER DEBUG] Player {Username} - Next required checkpoint: {nextRequired}, Checkpoint number: {checkpoint.CheckpointNumber}");
+        
+        if (checkpoint.CheckpointNumber != nextRequired)
+        {
+            Console.WriteLine($"[PLAYER DEBUG] Checkpoint skipped! Player needs checkpoint {nextRequired} but stepped on {checkpoint.CheckpointNumber}");
+            return false;
+        }
+
+        CurrentCheckpointPassed++;
+        Console.WriteLine($"[PLAYER DEBUG] Checkpoint reached! Player {Username} progress updated to: {CurrentCheckpointPassed}");
+        return CurrentCheckpointPassed >= totalCheckpointsOnBoard;
+    }
+
+    public void ResetCheckpointProgress()
+    {
+        CurrentCheckpointPassed = 0;
+    }
+    
+    public bool HasWon(int totalCheckpointsOnBoard)
+    {
+        return CurrentCheckpointPassed >= totalCheckpointsOnBoard;
     }
 }

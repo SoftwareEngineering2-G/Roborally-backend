@@ -6,7 +6,7 @@ public static class SpaceFactory {
     
     internal const string SpawnPointName = "SpawnPoint";
     internal const string EmptySpaceName = "EmptySpace";
-
+    internal const string CheckpointName = "Checkpoint";
 
     public static Space FromName(string name) {
         switch (name) {
@@ -36,5 +36,11 @@ public static class SpaceFactory {
 
     public static EmptySpace EmptySpace(Direction[]? walls = null) {
         return new EmptySpace(walls);
+    }
+    
+    public static CheckpointSpace Checkpoint(int checkpointNumber, Direction[]? walls = null) {
+        return new CheckpointSpace(walls) {
+            CheckpointNumber = checkpointNumber
+        };
     }
 }

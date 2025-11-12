@@ -4,10 +4,9 @@ using Roborally.core.application.ApplicationContracts.Persistence;
 using Roborally.core.application.CommandContracts.Game;
 using Roborally.core.domain;
 using Roborally.core.domain.Bases;
-using Roborally.core.domain.Game;
-using Roborally.core.domain.Game.CardActions;
 using Roborally.core.domain.Game.Deck;
 using Roborally.core.domain.Game.Player;
+using Roborally.core.domain.Game.GameEvents;
 
 namespace Roborally.core.application.CommandHandlers.Game;
 
@@ -28,15 +27,12 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
 
     public async Task<ExecuteProgrammingCardCommandResponse> ExecuteAsync(ExecuteProgrammingCardCommand command, CancellationToken ct)
     {
-        // Find the game
         var game = await _gameRepository.FindAsync(command.GameId, ct);
         if (game is null)
         {
             throw new CustomException("Game not found", 404);
         }
 
-
-        // Parse the card
         ProgrammingCard card;
         try
         {
@@ -47,11 +43,14 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
             throw new CustomException($"Invalid card name: {command.CardName}", 400);
         }
         
+        // Track how many checkpoint events existed before
+        var checkpointEventsBefore = game.GameEvents.OfType<CheckpointReachedEvent>().Count();
+        
         Player affectedPlayer = game.ExecuteProgrammingCard(command.Username, card, _systemTime);
         
         await _unitOfWork.SaveChangesAsync(ct);
         
-        // Broadcast the robot movement to all players in the game
+        // Broadcast robot movement
         await _gameBroadcaster.BroadcastRobotMovedAsync(
             command.GameId, 
             command.Username, 
@@ -60,6 +59,20 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
             affectedPlayer.CurrentFacingDirection.DisplayName,
             card.DisplayName,
             ct);
+
+        // Broadcast any new checkpoint events that were added
+        var newCheckpointEvents = game.GameEvents.OfType<CheckpointReachedEvent>()
+            .Skip(checkpointEventsBefore);
+        
+        foreach (var checkpointEvent in newCheckpointEvents)
+        {
+            await _gameBroadcaster.BroadcastCheckpointReachedAsync(
+                command.GameId,
+                checkpointEvent.Username,
+                checkpointEvent.CheckpointNumber,
+                ct
+            );
+        }
 
         Player? nextPlayer = game.GetNextExecutingPlayer();
         await _gameBroadcaster.BroadcastNextPlayerInTurn(command.GameId, nextPlayer?.Username, ct);
@@ -74,6 +87,5 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
                 Direction = affectedPlayer.CurrentFacingDirection.DisplayName
             }
         };
-
     }
 }

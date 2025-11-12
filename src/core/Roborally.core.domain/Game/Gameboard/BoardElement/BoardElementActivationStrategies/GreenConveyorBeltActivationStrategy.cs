@@ -9,6 +9,6 @@ public class GreenConveyorBeltActivationStrategy : IBoardElementActivationStrate
             throw new ArgumentException("boardElement must be of type GreenConveyorBelt");
         }
 
-        game.MovePlayerInDirection(player, greenConveyorBelt.Direction, shouldPush: false);  // Green conveyor belt does not push other players
+        game.MovePlayerInDirection(player, greenConveyorBelt.Direction, shouldPush: false);
     }
 }
