@@ -12,7 +12,7 @@ using Roborally.core.domain.Game.Player;
 
 namespace Roborally.core.application.CommandHandlers.Game;
 
-public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgrammingCardCommand, ExecuteProgrammingCardCommandResponse>
+public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgrammingCardCommand>
 {
     private readonly IGameRepository _gameRepository;
     private readonly IUnitOfWork _unitOfWork;
@@ -27,7 +27,7 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
         _systemTime = systemTime;
     }
 
-    public async Task<ExecuteProgrammingCardCommandResponse> ExecuteAsync(ExecuteProgrammingCardCommand command, CancellationToken ct)
+    public async Task ExecuteAsync(ExecuteProgrammingCardCommand command, CancellationToken ct)
     {
         // Find the game
         var game = await _gameRepository.FindAsync(command.GameId, ct);
@@ -90,21 +90,5 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
 
         Player? nextPlayer = game.GetNextExecutingPlayer();
         await _gameBroadcaster.BroadcastNextPlayerInTurn(command.GameId, nextPlayer?.Username, ct);
-
-        // Return the card executor's state
-        var cardExecutor = affectedPlayers.FirstOrDefault(p => p.Username == command.Username) 
-                          ?? game.Players.First(p => p.Username == command.Username);
-
-        return new ExecuteProgrammingCardCommandResponse
-        {
-            Message = $"Successfully executed {card.DisplayName}",
-            PlayerState = new PlayerState
-            {
-                PositionX = cardExecutor.CurrentPosition.X,
-                PositionY = cardExecutor.CurrentPosition.Y,
-                Direction = cardExecutor.CurrentFacingDirection.DisplayName
-            }
-        };
-
     }
 }

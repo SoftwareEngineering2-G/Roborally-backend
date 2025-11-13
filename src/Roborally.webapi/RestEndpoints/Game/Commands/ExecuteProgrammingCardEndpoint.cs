@@ -3,7 +3,7 @@ using Roborally.core.application.CommandContracts.Game;
 
 namespace Roborally.webapi.RestEndpoints.Game.Commands;
 
-public class ExecuteProgrammingCardEndpoint : Endpoint<ExecuteProgrammingCardRequest, ExecuteProgrammingCardResponse>
+public class ExecuteProgrammingCardEndpoint : Endpoint<ExecuteProgrammingCardRequest>
 {
     public override void Configure()
     {
@@ -19,14 +19,9 @@ public class ExecuteProgrammingCardEndpoint : Endpoint<ExecuteProgrammingCardReq
             CardName = req.CardName
         };
 
-        var response = await command.ExecuteAsync(ct);
+        await command.ExecuteAsync(ct);
 
-        await Send.OkAsync(new ExecuteProgrammingCardResponse
-        {
-            PositionX = response.PlayerState.PositionX,
-            PositionY = response.PlayerState.PositionY,
-            Direction = response.PlayerState.Direction
-        }, ct);
+        await Send.OkAsync(cancellation: ct);
     }
 }
 
@@ -35,11 +30,4 @@ public class ExecuteProgrammingCardRequest
     public Guid GameId { get; set; }
     public string Username { get; set; } = string.Empty;
     public string CardName { get; set; } = string.Empty;
-}
-
-public class ExecuteProgrammingCardResponse
-{
-    public required int PositionX { get; set; }
-    public required int PositionY { get; set; }
-    public required string Direction { get; set; }
 }
