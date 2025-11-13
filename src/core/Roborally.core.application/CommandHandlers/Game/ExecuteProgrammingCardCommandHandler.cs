@@ -50,6 +50,12 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
         // Get count of checkpoint events before execution
         int checkpointEventsCountBefore = game.GameEvents.OfType<CheckpointReachedEvent>().Count();
         
+        // Store positions BEFORE card execution to detect which robots actually moved
+        var positionsBefore = game.Players.ToDictionary(
+            p => p.Username,
+            p => new { X = p.CurrentPosition.X, Y = p.CurrentPosition.Y, Direction = p.CurrentFacingDirection.DisplayName }
+        );
+        
         Player affectedPlayer = game.ExecuteProgrammingCard(command.Username, card, _systemTime);
         
         // Check if a new checkpoint event was added during this card execution
@@ -61,15 +67,29 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
         
         await _unitOfWork.SaveChangesAsync(ct);
         
-        // Broadcast the robot movement to all players in the game
-        await _gameBroadcaster.BroadcastRobotMovedAsync(
-            command.GameId, 
-            command.Username, 
-            affectedPlayer.CurrentPosition.X,
-            affectedPlayer.CurrentPosition.Y,
-            affectedPlayer.CurrentFacingDirection.DisplayName,
-            card.DisplayName,
-            ct);
+        // Broadcast ONLY robots that actually moved (position or direction changed)
+        foreach (var player in game.Players)
+        {
+            var before = positionsBefore[player.Username];
+            bool hasMoved = before.X != player.CurrentPosition.X || 
+                           before.Y != player.CurrentPosition.Y || 
+                           before.Direction != player.CurrentFacingDirection.DisplayName;
+            
+            if (hasMoved)
+            {
+                // Determine if this is the card executor or a pushed robot
+                string cardNameToSend = player.Username == command.Username ? card.DisplayName : "Pushed";
+                
+                await _gameBroadcaster.BroadcastRobotMovedAsync(
+                    command.GameId, 
+                    player.Username, 
+                    player.CurrentPosition.X,
+                    player.CurrentPosition.Y,
+                    player.CurrentFacingDirection.DisplayName,
+                    cardNameToSend,
+                    ct);
+            }
+        }
 
         // Broadcast checkpoint reached if a new checkpoint was reached during this execution
         foreach (var checkpointEvent in newCheckpointEvents)
