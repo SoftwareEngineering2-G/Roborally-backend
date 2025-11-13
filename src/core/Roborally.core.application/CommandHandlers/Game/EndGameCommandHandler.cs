@@ -31,7 +31,6 @@ public class EndGameCommandHandler:ICommandHandler<EndGameCommand>
         
         game.CurrentPhase = GamePhase.GameOver;
         
-        await _gameRepository.AddAsync(game, ct);
         await _unitOfWork.SaveChangesAsync(ct);
         await _gameBroadcaster.BroadcastGameEndedAsync(command.GameId,command.Username, ct);
     }

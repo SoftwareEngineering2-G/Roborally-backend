@@ -15,7 +15,7 @@ public class EndGameEndpoint: Endpoint<EndGameRequest>
         EndGameCommand command = new EndGameCommand()
         {
             GameId = req.GameId,
-            Username = req.Username
+            Username = req.WinnerUsername
         };
         
         await command.ExecuteAsync(ct);
@@ -28,5 +28,5 @@ public class EndGameEndpoint: Endpoint<EndGameRequest>
 public class EndGameRequest
 {
     public Guid GameId { get; set; }
-    public string Username { get; set; }
+    public string WinnerUsername { get; set; }
 }
