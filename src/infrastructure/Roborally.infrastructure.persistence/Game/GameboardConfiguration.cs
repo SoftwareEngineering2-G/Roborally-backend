@@ -97,6 +97,15 @@ public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
                     : GearDirection.AntiClockWise;
                 return BoardElementFactory.Gear(gearDir, walls);
             
+            case var name when name.StartsWith("Checkpoint"):
+                // Extract checkpoint number from name like "Checkpoint1", "Checkpoint2", etc.
+                string numberPart = name.Replace("Checkpoint", "");
+                if (int.TryParse(numberPart, out int checkpointNumber))
+                {
+                    return SpaceFactory.Checkpoint(checkpointNumber, walls);
+                }
+                throw new InvalidOperationException($"Invalid checkpoint name: {name}");
+            
             default:
                 // Fall back to SpaceFactory for regular spaces
                 return SpaceFactory.FromNameAndWalls(dto.Name, walls);

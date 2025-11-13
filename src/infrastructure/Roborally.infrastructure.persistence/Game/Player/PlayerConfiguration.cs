@@ -39,6 +39,11 @@ public class PlayerConfiguration : IEntityTypeConfiguration<core.domain.Game.Pla
 
         builder.ComplexProperty(entity => entity.Robot,
             propBuilder => { propBuilder.Property(r => r.DisplayName).HasColumnName("Robot"); });
+        
+        builder.Property(entity => entity.CurrentCheckpointPassed)
+            .HasColumnName("CurrentCheckpointPassed")
+            .IsRequired()
+            .HasDefaultValue(0);
 
         builder.ComplexProperty(entity => entity.CurrentFacingDirection,
             propBuilder => { propBuilder.Property(c => c.DisplayName).HasColumnName("CurrentFacingDirection"); });

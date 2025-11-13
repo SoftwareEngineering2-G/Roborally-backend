@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="roborally_db@localhost" uuid="65fa5fa5-2525-4995-a141-2c091092f195">
+    <data-source source="LOCAL" name="roborally_db@localhost" uuid="e5d4941f-fd2b-4a05-87bd-12937861436b">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <configured-by-url>true</configured-by-url>

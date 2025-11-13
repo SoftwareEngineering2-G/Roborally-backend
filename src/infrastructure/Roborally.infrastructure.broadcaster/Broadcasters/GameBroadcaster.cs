@@ -92,4 +92,15 @@ public class GameBroadcaster : IGameBroadcaster{
         };
         return _hubContext.Clients.Groups(GroupName(gameId)).SendAsync("NextPlayerInTurn", payload, ct);
     }
+
+    public Task BroadcastCheckpointReachedAsync(Guid gameId, string username, int checkpointNumber, CancellationToken ct)
+    {
+        var payload = new
+        {
+            gameId,
+            username,
+            checkpointNumber
+        };
+        return _hubContext.Clients.Groups(GroupName(gameId)).SendAsync("CheckpointReached", payload, ct);
+    }
 }
