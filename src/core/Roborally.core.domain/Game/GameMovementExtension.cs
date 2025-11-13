@@ -8,7 +8,7 @@ namespace Roborally.core.domain.Game;
 public static class GameMovementExtension {
     // bool returns if the move was successful
     public static bool MovePlayerInDirection(this Game game, Player.Player player, Direction direction,
-        bool shouldPush = true, Bases.ISystemTime? systemTime = null) {
+        bool shouldPush = true) {
         Position nextPosition = player.GetNextPosition(direction);
 
         if (!game.GameBoard.IsWithinBounds(nextPosition)) {
@@ -27,19 +27,12 @@ public static class GameMovementExtension {
                 return false;
             }
 
-            // Recursively push the existing player - they also get checkpoint checked!
-            bool wasPushed = game.MovePlayerInDirection(existingPlayer, direction, shouldPush, systemTime);
+            // Recursively push the existing player
+            bool wasPushed = game.MovePlayerInDirection(existingPlayer, direction, shouldPush);
             if (!wasPushed) return false;
-            // Note: The pushed player's checkpoint is already checked in the recursive call above
         }
 
         player.MoveTo(nextPosition);
-        
-        // Check checkpoint immediately after EACH move step if systemTime is provided
-        if (systemTime != null)
-        {
-            game.CheckPlayerOnCheckpoint(player, systemTime);
-        }
         
         return true;
     }
@@ -59,8 +52,6 @@ public static class GameMovementExtension {
 
         if (checkpointReached)
         {
-            Console.WriteLine($"[CHECKPOINT] Player {player.Username} reached checkpoint {player.CurrentCheckpointPassed}!");
-            
             // Create and add checkpoint reached event
             var checkpointEvent = new GameEvents.CheckpointReachedEvent
             {

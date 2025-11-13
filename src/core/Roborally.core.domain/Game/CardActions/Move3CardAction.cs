@@ -8,7 +8,8 @@ public class Move3CardAction : ICardAction
     {
         for (int i = 0; i < 3; i++)
         {
-            game.MovePlayerInDirection(player, player.CurrentFacingDirection, shouldPush: true, systemTime: systemTime);
+            game.MovePlayerInDirection(player, player.CurrentFacingDirection, shouldPush: true);
+            game.CheckPlayerOnCheckpoint(player, systemTime); // Check after each step
         }
         player.RecordCardExecution(ProgrammingCard.Move3, systemTime);
     }
