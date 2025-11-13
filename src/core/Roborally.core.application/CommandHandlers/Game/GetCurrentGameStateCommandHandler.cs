@@ -78,7 +78,8 @@ public class
                         p.CurrentPosition.Y,
                         p.CurrentFacingDirection.DisplayName,
                         hasLockedRegisters,
-                        revealedCardsInOrder
+                        revealedCardsInOrder,
+                        p.CurrentCheckpointPassed
                     );
                 }).ToList(),
             PersonalState = personalState

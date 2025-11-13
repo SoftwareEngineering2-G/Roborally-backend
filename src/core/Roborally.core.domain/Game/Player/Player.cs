@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using Roborally.core.domain.Bases;
 using Roborally.core.domain.Game.Deck;
+using Roborally.core.domain.Game.Gameboard.Space;
 using Roborally.core.domain.Game.Player.Events;
 
 namespace Roborally.core.domain.Game.Player;
@@ -19,6 +20,7 @@ public class Player {
     public List<PlayerEvent> PlayerEvents { get; init; } = [];
 
     public int RoundCount { get; set; }
+    public int CurrentCheckpointPassed { get; set; } = 0;
 
     // Navigation property to User for accessing age/birthday
     public User.User? User { get; init; }
@@ -152,5 +154,18 @@ public class Player {
             .OfType<CardExecutedEvent>()
             .OrderByDescending(e => e.HappenedAt)
             .FirstOrDefault()?.Card;
+    }
+    
+    public bool ReachCheckpoint(Checkpoint checkpoint, int totalCheckpointsOnBoard)
+    {
+        int nextRequired = CurrentCheckpointPassed + 1;
+
+        if (checkpoint.CheckpointNumber != nextRequired)
+        {
+            return false;
+        }
+
+        CurrentCheckpointPassed++;
+        return CurrentCheckpointPassed >= totalCheckpointsOnBoard;
     }
 }

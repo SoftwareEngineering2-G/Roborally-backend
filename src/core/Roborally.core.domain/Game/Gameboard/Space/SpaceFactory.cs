@@ -6,6 +6,7 @@ public static class SpaceFactory {
     
     internal const string SpawnPointName = "SpawnPoint";
     internal const string EmptySpaceName = "EmptySpace";
+    internal const string CheckpointName = "Checkpoint";
 
 
     public static Space FromName(string name) {
@@ -14,6 +15,8 @@ public static class SpaceFactory {
                 return new EmptySpace();
             case SpawnPointName:
                 return new SpawnPoint();
+            case CheckpointName:
+                return new Checkpoint { CheckpointNumber = 0 }; // Default, should be set properly when creating board
             default:
                 throw new ArgumentException($"Unknown space type: {name}");
         }
@@ -25,6 +28,8 @@ public static class SpaceFactory {
                 return new EmptySpace(walls);
             case SpawnPointName:
                 return new SpawnPoint(walls);
+            case CheckpointName:
+                return new Checkpoint(walls) { CheckpointNumber = 0 }; // Default, should be set properly when creating board
             default:
                 throw new ArgumentException($"Unknown space type: {name}");
         }
@@ -36,5 +41,9 @@ public static class SpaceFactory {
 
     public static EmptySpace EmptySpace(Direction[]? walls = null) {
         return new EmptySpace(walls);
+    }
+    
+    public static Checkpoint Checkpoint(int checkpointNumber, Direction[]? walls = null) {
+        return new Checkpoint(walls) { CheckpointNumber = checkpointNumber };
     }
 }
