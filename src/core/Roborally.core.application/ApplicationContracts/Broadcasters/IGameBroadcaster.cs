@@ -11,6 +11,6 @@ public interface IGameBroadcaster {
     Task BroadcastPauseGameRequestedAsync(Guid gameId, string requesterUsername, CancellationToken ct);
     Task BroadcastPauseGameResultAsync(Guid gameId, GamePauseState state, CancellationToken ct);
     Task BroadcastNextPlayerInTurn(Guid gameId, string? nextPlayerUsername, CancellationToken ct);
-    Task BroadcastGameEndedAsync(Guid gameId, CancellationToken ct);
+    Task BroadcastGameEndedAsync(Guid gameId,string Username, CancellationToken ct);
     Task BroadcastCheckpointReachedAsync(Guid gameId, string username, int checkpointNumber, CancellationToken ct);
 }

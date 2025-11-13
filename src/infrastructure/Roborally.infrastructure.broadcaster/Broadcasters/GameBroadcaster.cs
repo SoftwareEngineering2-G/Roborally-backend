@@ -104,11 +104,12 @@ public class GameBroadcaster : IGameBroadcaster{
         return _hubContext.Clients.Groups(GroupName(gameId)).SendAsync("CheckpointReached", payload, ct);
     }
 
-    public async Task BroadcastGameEndedAsync(Guid gameId, CancellationToken ct)
+    public async Task BroadcastGameEndedAsync(Guid gameId,string username, CancellationToken ct)
     {
         var payload = new
         {
             gameId,
+            username
         };
         await _hubContext.Clients.Groups(GroupName(gameId)).SendAsync("GameEnded", payload, ct);
     }

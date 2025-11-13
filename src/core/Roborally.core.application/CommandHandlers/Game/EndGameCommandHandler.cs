@@ -33,6 +33,6 @@ public class EndGameCommandHandler:ICommandHandler<EndGameCommand>
         
         await _gameRepository.AddAsync(game, ct);
         await _unitOfWork.SaveChangesAsync(ct);
-        await _gameBroadcaster.BroadcastGameEndedAsync(command.GameId, ct);
+        await _gameBroadcaster.BroadcastGameEndedAsync(command.GameId,command.Username, ct);
     }
 }
