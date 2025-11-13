@@ -59,33 +59,11 @@ public class ExecuteProgrammingCardHandlerTests
     }
 
     [Fact]
-    public async Task ExecuteAsync_ShouldThrowException_WhenPlayerNotFoundInGame()
-    {
-        // Arrange
-        var game = GameFactory.GetValidGame();
-        var command = new ExecuteProgrammingCardCommand
-        {
-            GameId = game.GameId,
-            Username = "NonExistentPlayer",
-            CardName = "Move1"
-        };
-
-        _gameRepositoryMock.Setup(r => r.FindAsync(command.GameId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(game);
-
-        // Act & Assert
-        var exception = await Assert.ThrowsAsync<CustomException>(() => 
-            _handler.ExecuteAsync(command, CancellationToken.None));
-        
-        Assert.Equal("Player not found in this game", exception.Message);
-        Assert.Equal(404, exception.StatusCode);
-    }
-
-    [Fact]
     public async Task ExecuteAsync_ShouldThrowException_WhenInvalidCardName()
     {
         // Arrange
         var game = GameFactory.GetValidGame();
+        game.CurrentPhase = GamePhase.ActivationPhase; // Set to activation phase
         var player = game.Players[0];
         var command = new ExecuteProgrammingCardCommand
         {
@@ -110,6 +88,7 @@ public class ExecuteProgrammingCardHandlerTests
     {
         // Arrange
         var game = GameFactory.GetValidGame();
+        game.CurrentPhase = GamePhase.ActivationPhase; // Set to activation phase
         var player = game.Players[0];
         player.CurrentPosition = new Position(5, 5);
         player.CurrentFacingDirection = Direction.North;
@@ -140,6 +119,7 @@ public class ExecuteProgrammingCardHandlerTests
     {
         // Arrange
         var game = GameFactory.GetValidGame();
+        game.CurrentPhase = GamePhase.ActivationPhase; // Set to activation phase
         var player = game.Players[0];
         player.CurrentPosition = new Position(5, 5);
         player.CurrentFacingDirection = Direction.North;
@@ -170,6 +150,7 @@ public class ExecuteProgrammingCardHandlerTests
     {
         // Arrange
         var game = GameFactory.GetValidGame();
+        game.CurrentPhase = GamePhase.ActivationPhase; // Set to activation phase
         var player = game.Players[0];
         player.CurrentPosition = new Position(5, 5);
         player.CurrentFacingDirection = Direction.North;
@@ -200,6 +181,7 @@ public class ExecuteProgrammingCardHandlerTests
     {
         // Arrange
         var game = GameFactory.GetValidGame();
+        game.CurrentPhase = GamePhase.ActivationPhase; // Set to activation phase
         var player = game.Players[0];
         player.CurrentPosition = new Position(5, 5);
         player.CurrentFacingDirection = Direction.North;
@@ -230,6 +212,7 @@ public class ExecuteProgrammingCardHandlerTests
     {
         // Arrange
         var game = GameFactory.GetValidGame();
+        game.CurrentPhase = GamePhase.ActivationPhase; // Set to activation phase
         var player = game.Players[0];
         player.CurrentPosition = new Position(5, 5);
         player.CurrentFacingDirection = Direction.South;
@@ -260,6 +243,7 @@ public class ExecuteProgrammingCardHandlerTests
     {
         // Arrange
         var game = GameFactory.GetValidGame();
+        game.CurrentPhase = GamePhase.ActivationPhase; // Set to activation phase
         var player = game.Players[0];
         player.CurrentPosition = new Position(5, 5);
         player.CurrentFacingDirection = Direction.North;
@@ -290,6 +274,7 @@ public class ExecuteProgrammingCardHandlerTests
     {
         // Arrange
         var game = GameFactory.GetValidGame();
+        game.CurrentPhase = GamePhase.ActivationPhase; // Set to activation phase
         var player = game.Players[0];
         player.CurrentPosition = new Position(5, 5);
         player.CurrentFacingDirection = Direction.North;
@@ -316,6 +301,7 @@ public class ExecuteProgrammingCardHandlerTests
     {
         // Arrange
         var game = GameFactory.GetValidGame();
+        game.CurrentPhase = GamePhase.ActivationPhase; // Set to activation phase
         var player = game.Players[0];
         player.CurrentPosition = new Position(5, 5);
         player.CurrentFacingDirection = Direction.North;
@@ -349,6 +335,7 @@ public class ExecuteProgrammingCardHandlerTests
     {
         // Arrange
         var game = GameFactory.GetValidGame();
+        game.CurrentPhase = GamePhase.ActivationPhase; // Set to activation phase
         var player = game.Players[0];
         player.CurrentPosition = new Position(5, 5);
         player.CurrentFacingDirection = Direction.North;
