@@ -60,7 +60,21 @@ public static class GameBoardJsonLoader
                     : GearDirection.AntiClockWise, 
                 walls),
             
+            var name when name.StartsWith("Checkpoint") => ParseCheckpoint(dto.Name, walls),
+            
             _ => SpaceFactory.FromNameAndWalls(dto.Name, walls)
         };
+    }
+    
+    private static Space.Space ParseCheckpoint(string name, Direction[] walls)
+    {
+        // Extract checkpoint number from name like "Checkpoint1", "Checkpoint2", etc.
+        string numberPart = name.Replace("Checkpoint", "");
+        if (int.TryParse(numberPart, out int checkpointNumber))
+        {
+            return SpaceFactory.Checkpoint(checkpointNumber, walls);
+        }
+
+        throw new InvalidOperationException($"Invalid checkpoint name: {name}. Expected format: Checkpoint1, Checkpoint2, etc.");
     }
 }

@@ -7,6 +7,7 @@ using Roborally.core.domain.Bases;
 using Roborally.core.domain.Game;
 using Roborally.core.domain.Game.CardActions;
 using Roborally.core.domain.Game.Deck;
+using Roborally.core.domain.Game.GameEvents;
 using Roborally.core.domain.Game.Player;
 
 namespace Roborally.core.application.CommandHandlers.Game;
@@ -35,7 +36,6 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
             throw new CustomException("Game not found", 404);
         }
 
-
         // Parse the card
         ProgrammingCard card;
         try
@@ -47,7 +47,17 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
             throw new CustomException($"Invalid card name: {command.CardName}", 400);
         }
         
+        // Get count of checkpoint events before execution
+        int checkpointEventsCountBefore = game.GameEvents.OfType<CheckpointReachedEvent>().Count();
+        
         Player affectedPlayer = game.ExecuteProgrammingCard(command.Username, card, _systemTime);
+        
+        // Check if a new checkpoint event was added during this card execution
+        var newCheckpointEvents = game.GameEvents
+            .OfType<CheckpointReachedEvent>()
+            .Skip(checkpointEventsCountBefore)
+            .Where(e => e.Username == command.Username)
+            .ToList();
         
         await _unitOfWork.SaveChangesAsync(ct);
         
@@ -60,6 +70,16 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
             affectedPlayer.CurrentFacingDirection.DisplayName,
             card.DisplayName,
             ct);
+
+        // Broadcast checkpoint reached if a new checkpoint was reached during this execution
+        foreach (var checkpointEvent in newCheckpointEvents)
+        {
+            await _gameBroadcaster.BroadcastCheckpointReachedAsync(
+                command.GameId,
+                command.Username,
+                checkpointEvent.CheckpointNumber,
+                ct);
+        }
 
         Player? nextPlayer = game.GetNextExecutingPlayer();
         await _gameBroadcaster.BroadcastNextPlayerInTurn(command.GameId, nextPlayer?.Username, ct);

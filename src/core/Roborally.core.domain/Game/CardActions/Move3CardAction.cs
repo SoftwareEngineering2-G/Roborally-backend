@@ -9,6 +9,7 @@ public class Move3CardAction : ICardAction
         for (int i = 0; i < 3; i++)
         {
             game.MovePlayerInDirection(player, player.CurrentFacingDirection);
+            game.CheckAndRecordCheckpoint(player, systemTime);
         }
         player.RecordCardExecution(ProgrammingCard.Move3, systemTime);
     }
