@@ -58,7 +58,7 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
         
         Player affectedPlayer = game.ExecuteProgrammingCard(command.Username, card, _systemTime);
         
-        // Check if a new checkpoint event was added during this card execution
+        // Check if a new checkpoint event was added during card execution
         var newCheckpointEvents = game.GameEvents
             .OfType<CheckpointReachedEvent>()
             .Skip(checkpointEventsCountBefore)
