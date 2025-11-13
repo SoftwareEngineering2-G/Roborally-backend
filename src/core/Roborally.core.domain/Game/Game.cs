@@ -157,7 +157,7 @@ public class Game {
         GameEvents.Add(boardElementActivatedEvent);
     }
 
-    public Player.Player ExecuteProgrammingCard(string username, ProgrammingCard card, ISystemTime systemTime) {
+    public List<Player.Player> ExecuteProgrammingCard(string username, ProgrammingCard card, ISystemTime systemTime) {
         if (!IsInActivationPhase()) {
             throw new CustomException("The game needs to be in activation phase", 400);
         }
@@ -170,10 +170,25 @@ public class Game {
         if (player is null)
             throw new CustomException("Player does not exist", 404);
 
+        // Store positions BEFORE card execution to detect which robots actually moved
+        var positionsBefore = _players.ToDictionary(
+            p => p.Username,
+            p => new { X = p.CurrentPosition.X, Y = p.CurrentPosition.Y, Direction = p.CurrentFacingDirection.DisplayName }
+        );
+
         var action = ActionFactory.CreateAction(card);
         action.Execute(player, this, systemTime);
 
-        return player;
+        // Find all players that actually moved (position or direction changed)
+        var affectedPlayers = _players.Where(p =>
+        {
+            var before = positionsBefore[p.Username];
+            return before.X != p.CurrentPosition.X || 
+                   before.Y != p.CurrentPosition.Y || 
+                   before.Direction != p.CurrentFacingDirection.DisplayName;
+        }).ToList();
+
+        return affectedPlayers;
     }
 
     public Player.Player? GetNextExecutingPlayer() {

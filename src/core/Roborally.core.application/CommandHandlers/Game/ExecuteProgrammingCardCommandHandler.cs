@@ -12,7 +12,7 @@ using Roborally.core.domain.Game.Player;
 
 namespace Roborally.core.application.CommandHandlers.Game;
 
-public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgrammingCardCommand, ExecuteProgrammingCardCommandResponse>
+public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgrammingCardCommand>
 {
     private readonly IGameRepository _gameRepository;
     private readonly IUnitOfWork _unitOfWork;
@@ -27,7 +27,7 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
         _systemTime = systemTime;
     }
 
-    public async Task<ExecuteProgrammingCardCommandResponse> ExecuteAsync(ExecuteProgrammingCardCommand command, CancellationToken ct)
+    public async Task ExecuteAsync(ExecuteProgrammingCardCommand command, CancellationToken ct)
     {
         // Find the game
         var game = await _gameRepository.FindAsync(command.GameId, ct);
@@ -50,9 +50,10 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
         // Get count of checkpoint events before execution
         int checkpointEventsCountBefore = game.GameEvents.OfType<CheckpointReachedEvent>().Count();
         
-        Player affectedPlayer = game.ExecuteProgrammingCard(command.Username, card, _systemTime);
+        // Execute card and get all affected players (executor + pushed robots)
+        List<Player> affectedPlayers = game.ExecuteProgrammingCard(command.Username, card, _systemTime);
         
-        // Check if a new checkpoint event was added during this card execution
+        // Check if a new checkpoint event was added during card execution
         var newCheckpointEvents = game.GameEvents
             .OfType<CheckpointReachedEvent>()
             .Skip(checkpointEventsCountBefore)
@@ -61,15 +62,21 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
         
         await _unitOfWork.SaveChangesAsync(ct);
         
-        // Broadcast the robot movement to all players in the game
-        await _gameBroadcaster.BroadcastRobotMovedAsync(
-            command.GameId, 
-            command.Username, 
-            affectedPlayer.CurrentPosition.X,
-            affectedPlayer.CurrentPosition.Y,
-            affectedPlayer.CurrentFacingDirection.DisplayName,
-            card.DisplayName,
-            ct);
+        // Broadcast ALL affected players (executor + pushed robots)
+        foreach (var player in affectedPlayers)
+        {
+            // Determine if this is the card executor or a pushed robot
+            string cardNameToSend = player.Username == command.Username ? card.DisplayName : "Pushed";
+            
+            await _gameBroadcaster.BroadcastRobotMovedAsync(
+                command.GameId, 
+                player.Username, 
+                player.CurrentPosition.X,
+                player.CurrentPosition.Y,
+                player.CurrentFacingDirection.DisplayName,
+                cardNameToSend,
+                ct);
+        }
 
         // Broadcast checkpoint reached if a new checkpoint was reached during this execution
         foreach (var checkpointEvent in newCheckpointEvents)
@@ -83,17 +90,5 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
 
         Player? nextPlayer = game.GetNextExecutingPlayer();
         await _gameBroadcaster.BroadcastNextPlayerInTurn(command.GameId, nextPlayer?.Username, ct);
-
-        return new ExecuteProgrammingCardCommandResponse
-        {
-            Message = $"Successfully executed {card.DisplayName}",
-            PlayerState = new PlayerState
-            {
-                PositionX = affectedPlayer.CurrentPosition.X,
-                PositionY = affectedPlayer.CurrentPosition.Y,
-                Direction = affectedPlayer.CurrentFacingDirection.DisplayName
-            }
-        };
-
     }
 }
