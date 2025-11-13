@@ -159,16 +159,13 @@ public class Player {
     public bool ReachCheckpoint(CheckpointSpace checkpoint, int totalCheckpointsOnBoard)
     {
         int nextRequired = CurrentCheckpointPassed + 1;
-        Console.WriteLine($"[PLAYER DEBUG] Player {Username} - Next required checkpoint: {nextRequired}, Checkpoint number: {checkpoint.CheckpointNumber}");
         
         if (checkpoint.CheckpointNumber != nextRequired)
         {
-            Console.WriteLine($"[PLAYER DEBUG] Checkpoint skipped! Player needs checkpoint {nextRequired} but stepped on {checkpoint.CheckpointNumber}");
             return false;
         }
 
         CurrentCheckpointPassed++;
-        Console.WriteLine($"[PLAYER DEBUG] Checkpoint reached! Player {Username} progress updated to: {CurrentCheckpointPassed}");
         return CurrentCheckpointPassed >= totalCheckpointsOnBoard;
     }
 
