@@ -218,7 +218,7 @@ public class ExecuteProgrammingCardHandlerTests
 
         // Assert
         Assert.Equal(5, player.CurrentPosition.X);
-        Assert.Equal(8, player.CurrentPosition.Y); // Moved south (Y+3
+        Assert.Equal(8, player.CurrentPosition.Y); // Moved south (Y+3)
     }
 
     [Fact]
