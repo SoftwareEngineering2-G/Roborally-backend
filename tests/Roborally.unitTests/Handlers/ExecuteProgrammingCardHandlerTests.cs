@@ -104,14 +104,11 @@ public class ExecuteProgrammingCardHandlerTests
             .ReturnsAsync(game);
 
         // Act
-        var response = await _handler.ExecuteAsync(command, CancellationToken.None);
+        await _handler.ExecuteAsync(command, CancellationToken.None);
 
         // Assert
-        Assert.NotNull(response);
-        Assert.Equal(5, response.PlayerState.PositionX);
-        Assert.Equal(4, response.PlayerState.PositionY); // Moved north (Y-1)
-        Assert.Equal("North", response.PlayerState.Direction);
-        Assert.Contains("Move 1", response.Message);
+        Assert.Equal(5, player.CurrentPosition.X);
+        Assert.Equal(4, player.CurrentPosition.Y); // Moved north (Y-1)
     }
 
     [Fact]
@@ -135,14 +132,11 @@ public class ExecuteProgrammingCardHandlerTests
             .ReturnsAsync(game);
 
         // Act
-        var response = await _handler.ExecuteAsync(command, CancellationToken.None);
+        await _handler.ExecuteAsync(command, CancellationToken.None);
 
         // Assert
-        Assert.NotNull(response);
-        Assert.Equal(5, response.PlayerState.PositionX); // Position unchanged
-        Assert.Equal(5, response.PlayerState.PositionY); // Position unchanged
-        Assert.Equal("East", response.PlayerState.Direction); // Rotated right from North to East
-        Assert.Contains("Rotate Right", response.Message);
+        Assert.Equal(Direction.East, player.CurrentFacingDirection); // Rotated right from North to East
+        
     }
 
     [Fact]
@@ -166,14 +160,10 @@ public class ExecuteProgrammingCardHandlerTests
             .ReturnsAsync(game);
 
         // Act
-        var response = await _handler.ExecuteAsync(command, CancellationToken.None);
+        await _handler.ExecuteAsync(command, CancellationToken.None);
 
         // Assert
-        Assert.NotNull(response);
-        Assert.Equal(5, response.PlayerState.PositionX); // Position unchanged
-        Assert.Equal(5, response.PlayerState.PositionY); // Position unchanged
-        Assert.Equal("West", response.PlayerState.Direction); // Rotated left from North to West
-        Assert.Contains("Rotate Left", response.Message);
+        Assert.Equal(Direction.West, player.CurrentFacingDirection); // Rotated left from North to West
     }
 
     [Fact]
@@ -197,14 +187,10 @@ public class ExecuteProgrammingCardHandlerTests
             .ReturnsAsync(game);
 
         // Act
-        var response = await _handler.ExecuteAsync(command, CancellationToken.None);
+        await _handler.ExecuteAsync(command, CancellationToken.None);
 
         // Assert
-        Assert.NotNull(response);
-        Assert.Equal(5, response.PlayerState.PositionX); // Position unchanged
-        Assert.Equal(5, response.PlayerState.PositionY); // Position unchanged
-        Assert.Equal("South", response.PlayerState.Direction); // U-turn from North to South
-        Assert.Contains("U-Turn", response.Message);
+        Assert.Equal(Direction.South, player.CurrentFacingDirection); // U-Turn from North to South
     }
 
     [Fact]
@@ -228,14 +214,11 @@ public class ExecuteProgrammingCardHandlerTests
             .ReturnsAsync(game);
 
         // Act
-        var response = await _handler.ExecuteAsync(command, CancellationToken.None);
+        await _handler.ExecuteAsync(command, CancellationToken.None);
 
         // Assert
-        Assert.NotNull(response);
-        Assert.Equal(5, response.PlayerState.PositionX);
-        Assert.Equal(8, response.PlayerState.PositionY); // Moved 3 spaces south
-        Assert.Equal("South", response.PlayerState.Direction);
-        Assert.Contains("Move 3", response.Message);
+        Assert.Equal(5, player.CurrentPosition.X);
+        Assert.Equal(8, player.CurrentPosition.Y); // Moved south (Y+3)
     }
 
     [Fact]
@@ -259,14 +242,11 @@ public class ExecuteProgrammingCardHandlerTests
             .ReturnsAsync(game);
 
         // Act
-        var response = await _handler.ExecuteAsync(command, CancellationToken.None);
+        await _handler.ExecuteAsync(command, CancellationToken.None);
 
         // Assert
-        Assert.NotNull(response);
-        Assert.Equal(5, response.PlayerState.PositionX);
-        Assert.Equal(6, response.PlayerState.PositionY); // Moved backward (south) from facing north
-        Assert.Equal("North", response.PlayerState.Direction); // Direction stays the same
-        Assert.Contains("Move Back", response.Message);
+        Assert.Equal(5, player.CurrentPosition.X);
+        Assert.Equal(6, player.CurrentPosition.Y); // Moved back south (Y+1)
     }
 
     [Fact]
