@@ -154,10 +154,11 @@ public class Player {
     }
 
     public void ReachCheckpoint(Checkpoint checkpoint, ISystemTime systemTime) {
-        if (checkpoint.CheckpointNumber == CurrentCheckpointPassed + 1) {
-            CurrentCheckpointPassed++;
+        if (checkpoint.CheckpointNumber != CurrentCheckpointPassed + 1) {
+            return;
         }
 
+        CurrentCheckpointPassed++;
         CheckpointReachedEvent reachedEvent = new CheckpointReachedEvent() {
             HappenedAt = systemTime.CurrentTime,
             GameId = this.GameId,
