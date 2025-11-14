@@ -340,7 +340,7 @@ public class Game {
             .ToDictionary(p => p.Username, p => p.User!.Rating);
 
         // Create the broadcast event instance
-         await new GameCompletedBroadcastEvent() {
+        await new GameCompletedBroadcastEvent() {
             GameId = this.GameId,
             Winner = this.Winner,
             OldRatings = initialRatings,

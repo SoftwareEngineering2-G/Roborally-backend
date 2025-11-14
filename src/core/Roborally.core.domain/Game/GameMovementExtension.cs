@@ -54,7 +54,7 @@ public static class GameMovementExtension {
             Space space = game.GameBoard.GetSpaceAt(player.CurrentPosition);
 
             if (space is not Checkpoint checkpoint) {
-                return; // Not on a checkpoint
+                continue; // Not on a checkpoint
             }
 
             // Get total number of checkpoints on the board
