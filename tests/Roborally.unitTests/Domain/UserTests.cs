@@ -13,6 +13,7 @@ public class UserTests {
         var user = new User() {
             Username = validUsername,
             Password = "ValidPassword123",
+            Birthday = DateOnly.FromDateTime(DateTime.Today)
         };
 
         // No exception should be thrown
@@ -25,6 +26,8 @@ public class UserTests {
         var exception = Assert.Throws<CustomException>(() => new User() {
             Username = invalidUsername,
             Password = "ValidPassword123",
+            Birthday = DateOnly.FromDateTime(DateTime.Today)
+
         });
     }
 
@@ -35,6 +38,8 @@ public class UserTests {
         var user = new User() {
             Username = "ValidUsername",
             Password = validPassword,
+            Birthday = DateOnly.FromDateTime(DateTime.Today)
+
         };
 
         // No exception should be thrown
@@ -47,6 +52,8 @@ public class UserTests {
         Assert.Throws<CustomException>(() => new User() {
             Username = "ValidUsername",
             Password = invalidPassword,
+            Birthday = DateOnly.FromDateTime(DateTime.Today)
+
         });
     }
 }

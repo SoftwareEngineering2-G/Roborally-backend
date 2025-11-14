@@ -73,6 +73,7 @@ public class
 
                     return new GetCurrentGameStateCommandResponse.Player(
                         p.Username,
+                        p.User!.Rating,
                         p.Robot.DisplayName,
                         p.CurrentPosition.X,
                         p.CurrentPosition.Y,

@@ -16,7 +16,6 @@ public class MoveBackwardCardAction : ICardAction
         for (int i = 0; i < _spaces; i++)
         {
             game.MovePlayerInDirection(player, player.CurrentFacingDirection.Opposite());
-            game.CheckAndRecordCheckpoint(player, systemTime);
         }
         player.RecordCardExecution(ProgrammingCard.MoveBack, systemTime);
     }

@@ -23,7 +23,9 @@ public class User{
         }
     }
 
-    public DateOnly Birthday { get; set; }
+    public required DateOnly Birthday { get; init; }
+
+    public int Rating { get; set; } = 1000; // Player starts with 1000 ratings
 
 
     private readonly string _username = string.Empty;

@@ -24,6 +24,7 @@ public sealed class GetCurrentGameStateCommandResponse {
 
     public record Player(
         string Username,
+        int CurrentRating,
         string Robot,
         int PositionX,
         int PositionY,

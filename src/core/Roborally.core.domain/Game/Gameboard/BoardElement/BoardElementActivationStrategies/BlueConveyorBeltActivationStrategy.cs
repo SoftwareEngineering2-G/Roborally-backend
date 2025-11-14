@@ -14,6 +14,5 @@ public class BlueConveyorBeltActivationStrategy : IBoardElementActivationStrateg
         if (space is BlueConveyorBelt) {
             game.MovePlayerInDirection(player, blueConveyorBelt.Direction, shouldPush: false);  // Blue conveyor belt doesnt push other players
         }
-
     }
 }

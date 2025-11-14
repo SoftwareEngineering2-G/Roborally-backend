@@ -2,6 +2,7 @@
 using Roborally.core.domain.Bases;
 using Roborally.core.domain.Game.Deck;
 using Roborally.core.domain.Game.Gameboard.Space;
+using Roborally.core.domain.Game.GameEvents;
 using Roborally.core.domain.Game.Player.Events;
 
 namespace Roborally.core.domain.Game.Player;
@@ -43,26 +44,24 @@ public class Player {
 
 
     internal void LockInRegisters(List<ProgrammingCard> lockedInCards, ISystemTime systemTime) {
-
         var lastLockedInEvent = this.GetRegistersProgrammedEvent(RoundCount);
 
         if (lastLockedInEvent is not null) {
             throw new Exception("You can only lock in cards once per round.");
         }
-        
+
         if (lockedInCards.Count != 5) {
             throw new CustomException("You must lock in exactly 5 cards.", 400);
         }
-        
+
         var lastProgrammingCardsDealtEvent = this.GetCardsDealtEvent(RoundCount);
 
         if (lastProgrammingCardsDealtEvent is null) {
             throw new CustomException("No cards have been dealt to the player yet.", 400);
         }
-        
+
         // Ensure all lockedInCards were actually dealt
-        if (lockedInCards.Any(card => !lastProgrammingCardsDealtEvent.DealtCards.Contains(card)))
-        {
+        if (lockedInCards.Any(card => !lastProgrammingCardsDealtEvent.DealtCards.Contains(card))) {
             throw new CustomException("You can only lock in cards that were dealt to you.", 400);
         }
 
@@ -74,12 +73,11 @@ public class Player {
             ProgrammedCardsInOrder = lockedInCards,
             Round = RoundCount
         };
-        
+
         this.PlayerEvents.Add(lockedInEvent);
     }
 
     internal List<ProgrammingCard> DealProgrammingCards(int count, ISystemTime systemTime) {
-
         var lastDealtEvent = this.GetCardsDealtEvent(RoundCount);
         if (lastDealtEvent is not null) {
             throw new CustomException("You can only deal cards once per round", 400);
@@ -126,7 +124,6 @@ public class Player {
     }
 
     public Position GetNextPosition([Optional] Direction? direction) {
-
         return CurrentPosition.GetNext(direction ?? CurrentFacingDirection);
     }
 
@@ -155,17 +152,23 @@ public class Player {
             .OrderByDescending(e => e.HappenedAt)
             .FirstOrDefault()?.Card;
     }
-    
-    public bool ReachCheckpoint(Checkpoint checkpoint, int totalCheckpointsOnBoard)
-    {
-        int nextRequired = CurrentCheckpointPassed + 1;
 
-        if (checkpoint.CheckpointNumber != nextRequired)
-        {
-            return false;
+    public void ReachCheckpoint(Checkpoint checkpoint, ISystemTime systemTime) {
+        if (checkpoint.CheckpointNumber == CurrentCheckpointPassed + 1) {
+            CurrentCheckpointPassed++;
         }
 
-        CurrentCheckpointPassed++;
-        return CurrentCheckpointPassed >= totalCheckpointsOnBoard;
+        CheckpointReachedEvent reachedEvent = new CheckpointReachedEvent() {
+            HappenedAt = systemTime.CurrentTime,
+            GameId = this.GameId,
+            Username = this.Username,
+            CheckpointNumber = checkpoint.CheckpointNumber,
+            Round = RoundCount
+        };
+        this.PlayerEvents.Add(reachedEvent);
+    }
+
+    public bool HasCompletedAllCheckpoints(int totalCheckpoints) {
+        return CurrentCheckpointPassed >= totalCheckpoints;
     }
 }
