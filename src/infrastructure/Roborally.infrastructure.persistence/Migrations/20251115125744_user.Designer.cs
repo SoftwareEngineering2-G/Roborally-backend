@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Roborally.infrastructure.persistence;
@@ -12,9 +13,11 @@ using Roborally.infrastructure.persistence;
 namespace Roborally.infrastructure.persistence.Migrations
 {
     [DbContext(typeof(AppDatabaseContext))]
-    partial class AppDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20251115125744_user")]
+    partial class user
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -199,6 +202,10 @@ namespace Roborally.infrastructure.persistence.Migrations
                     b.Property<int>("RoundCount")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Username1")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.ComplexProperty<Dictionary<string, object>>("CurrentFacingDirection", "Roborally.core.domain.Game.Player.Player.CurrentFacingDirection#Direction", b1 =>
                         {
                             b1.IsRequired();
@@ -263,6 +270,8 @@ namespace Roborally.infrastructure.persistence.Migrations
                     b.HasKey("GameId", "Username");
 
                     b.HasIndex("Username");
+
+                    b.HasIndex("Username1");
 
                     b.ToTable("Players", (string)null);
                 });
@@ -473,10 +482,16 @@ namespace Roborally.infrastructure.persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Roborally.core.domain.User.User", "User")
+                    b.HasOne("Roborally.core.domain.User.User", null)
                         .WithMany()
                         .HasForeignKey("Username")
                         .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Roborally.core.domain.User.User", "User")
+                        .WithMany()
+                        .HasForeignKey("Username1")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");

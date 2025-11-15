@@ -61,5 +61,9 @@ public static class BoardElementFactory {
         }
         return ActivationOrder[(idx + 1) % ActivationOrder.Length];
     }
+
+    public static bool IsThisElementLastInQueue(string boardElementName) {
+        return boardElementName == ActivationOrder[^1];
+    }
     
 }

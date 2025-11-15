@@ -4,7 +4,7 @@ using Roborally.core.application.QueryContracts;
 
 namespace Roborally.core.application.QueryHandlers;
 
-public class GetGamesForUserQueryHandler : ICommandHandler<GetGamesForUserQuery, List<GetGamesForUserResponse>> {
+public class GetGamesForUserQueryHandler : ICommandHandler<GetGamesForUserQuery, GetGamesForUserQueryResult> {
 
     private readonly IGameRepository _gameRepository;
 
@@ -13,7 +13,7 @@ public class GetGamesForUserQueryHandler : ICommandHandler<GetGamesForUserQuery,
         _gameRepository = gameRepository;
     }
 
-    public Task<List<GetGamesForUserResponse>> ExecuteAsync(GetGamesForUserQuery query, CancellationToken ct) {
+    public Task<GetGamesForUserQueryResult> ExecuteAsync(GetGamesForUserQuery query, CancellationToken ct) {
         return _gameRepository.QueryGamesForUserAsync(query, ct);
     }
 }

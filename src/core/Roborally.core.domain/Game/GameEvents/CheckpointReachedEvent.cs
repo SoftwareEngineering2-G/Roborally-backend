@@ -1,8 +1,9 @@
-﻿namespace Roborally.core.domain.Game.GameEvents;
+﻿using Roborally.core.domain.Game.Player.Events;
 
-public class CheckpointReachedEvent : GameEvent
+namespace Roborally.core.domain.Game.GameEvents;
+
+public class CheckpointReachedEvent : PlayerEvent
 {
-    public required string Username { get; init; }
     public required int CheckpointNumber { get; init; }
     
 }

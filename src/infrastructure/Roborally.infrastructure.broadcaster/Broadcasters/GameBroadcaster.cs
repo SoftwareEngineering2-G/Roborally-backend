@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Roborally.core.application.ApplicationContracts.Broadcasters;
+using Roborally.core.domain.BroadCastEvents;
 using Roborally.core.domain.Game;
 using Roborally.core.domain.Game.Deck;
 using Roborally.infrastructure.broadcaster.Game;
@@ -104,13 +105,9 @@ public class GameBroadcaster : IGameBroadcaster{
         return _hubContext.Clients.Groups(GroupName(gameId)).SendAsync("CheckpointReached", payload, ct);
     }
 
-    public async Task BroadcastGameEndedAsync(Guid gameId,string username, CancellationToken ct)
+    public async Task BroadcastGameCompletedAsync(GameCompletedBroadcastEvent eventModel,CancellationToken ct)
     {
-        var payload = new
-        {
-            gameId,
-            username
-        };
-        await _hubContext.Clients.Groups(GroupName(gameId)).SendAsync("GameEnded", payload, ct);
+
+        await _hubContext.Clients.Groups(GroupName(eventModel.GameId)).SendAsync("GameCompleted", eventModel, ct);
     }
 }

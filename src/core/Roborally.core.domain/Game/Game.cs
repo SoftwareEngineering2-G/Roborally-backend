@@ -1,4 +1,6 @@
-﻿using Roborally.core.domain.Bases;
+﻿using FastEndpoints;
+using Roborally.core.domain.Bases;
+using Roborally.core.domain.BroadCastEvents;
 using Roborally.core.domain.Game.CardActions;
 using Roborally.core.domain.Game.Deck;
 using Roborally.core.domain.Game.Gameboard;
@@ -37,11 +39,13 @@ public class Game {
     public DateTime CreatedAt { get; set; }
 
     public DateTime? CompletedAt { get; set; }
-    
+
     public bool IsPaused { get; set; } = false;
-    
+
     public int RoundCount { get; set; }
-    
+
+    public string? Winner { get; set; }
+
     public Game(Guid gameId, string hostUsername, string name, List<Player.Player> players, GameBoard gameBoard,
         bool isPrivate, DateTime createdAt) {
         GameId = gameId;
@@ -71,12 +75,12 @@ public class Game {
 
         return playerDealtCards;
     }
-    
+
     public void LockInRegisters(string playerUsername, List<ProgrammingCard> lockedInCards, ISystemTime systemTime) {
         if (IsInActivationPhase()) {
             throw new CustomException("The game needs to be in programming phase", 400);
         }
-        
+
         if (IsPaused) {
             throw new CustomException("The game is currently paused", 400);
         }
@@ -92,7 +96,7 @@ public class Game {
         if (!IsInActivationPhase()) {
             throw new CustomException("The game needs to be in activation phase", 400);
         }
-        
+
         if (IsPaused) {
             throw new CustomException("The game is currently paused", 400);
         }
@@ -118,11 +122,11 @@ public class Game {
         return revealedCards;
     }
 
-    public void ActivateNextBoardElement(ISystemTime systemTime) {
+    public async Task ActivateNextBoardElement(ISystemTime systemTime) {
         if (!IsInActivationPhase()) {
             throw new CustomException("The game needs to be in activation phase", 400);
         }
-        
+
         if (IsPaused) {
             throw new CustomException("The game is currently paused", 400);
         }
@@ -148,20 +152,28 @@ public class Game {
             activationStrategy.Activate(this, player, boardElement);
         }
 
-
         BoardElementActivatedEvent boardElementActivatedEvent = new BoardElementActivatedEvent() {
             HappenedAt = systemTime.CurrentTime,
             GameId = this.GameId,
-            BoardElementName = nextBoardElementName
+            BoardElementName = nextBoardElementName,
+            RoundCount = this.RoundCount
         };
         GameEvents.Add(boardElementActivatedEvent);
+
+        if (BoardElementFactory.IsThisElementLastInQueue(nextBoardElementName)) {
+            await this.CheckAndRecordCheckpoint(systemTime);
+
+            // TODO: Here, next round should be started...
+            // TODO: RoundCount++;
+            // ALso then we need to notify players somehow that a new round has started
+        }
     }
 
     public List<Player.Player> ExecuteProgrammingCard(string username, ProgrammingCard card, ISystemTime systemTime) {
         if (!IsInActivationPhase()) {
             throw new CustomException("The game needs to be in activation phase", 400);
         }
-        
+
         if (IsPaused) {
             throw new CustomException("The game is currently paused", 400);
         }
@@ -173,18 +185,19 @@ public class Game {
         // Store positions BEFORE card execution to detect which robots actually moved
         var positionsBefore = _players.ToDictionary(
             p => p.Username,
-            p => new { X = p.CurrentPosition.X, Y = p.CurrentPosition.Y, Direction = p.CurrentFacingDirection.DisplayName }
+            p => new {
+                X = p.CurrentPosition.X, Y = p.CurrentPosition.Y, Direction = p.CurrentFacingDirection.DisplayName
+            }
         );
 
         var action = ActionFactory.CreateAction(card);
         action.Execute(player, this, systemTime);
 
         // Find all players that actually moved (position or direction changed)
-        var affectedPlayers = _players.Where(p =>
-        {
+        var affectedPlayers = _players.Where(p => {
             var before = positionsBefore[p.Username];
-            return before.X != p.CurrentPosition.X || 
-                   before.Y != p.CurrentPosition.Y || 
+            return before.X != p.CurrentPosition.X ||
+                   before.Y != p.CurrentPosition.Y ||
                    before.Direction != p.CurrentFacingDirection.DisplayName;
         }).ToList();
 
@@ -220,17 +233,17 @@ public class Game {
             ? playersByTurnOrder[lastPlayerIndex + 1]
             : null;
     }
-    
+
     public void RequestPauseGame(string requestedByUsername, ISystemTime systemTime) {
         if (IsPaused) {
             throw new CustomException("Game is already paused", 400);
         }
-        
+
         Player.Player? requestingPlayer = _players.Find(p => p.Username.Equals(requestedByUsername));
         if (requestingPlayer is null) {
             throw new CustomException("Requesting player does not exist", 404);
         }
-        
+
         PauseGameEvent requestedPauseEvent = new PauseGameEvent {
             GameId = this.GameId,
             evokedByUsername = requestedByUsername,
@@ -238,16 +251,16 @@ public class Game {
             isAnAcceptedResponse = null,
             HappenedAt = systemTime.CurrentTime,
         };
-        
+
         GameEvents.Add(requestedPauseEvent);
     }
-    
+
     public void ResponsePauseGame(string responderUsername, bool approved, ISystemTime systemTime) {
         Player.Player? respondingPlayer = _players.Find(p => p.Username.Equals(responderUsername));
         if (respondingPlayer is null) {
             throw new CustomException("Responding player does not exist", 404);
         }
-        
+
         PauseGameEvent responsePauseEvent = new PauseGameEvent {
             GameId = this.GameId,
             evokedByUsername = responderUsername,
@@ -255,39 +268,38 @@ public class Game {
             isAnAcceptedResponse = approved,
             HappenedAt = systemTime.CurrentTime,
         };
-        
+
         GameEvents.Add(responsePauseEvent);
     }
-    
+
     public GamePauseState? GetGamePauseState() {
         var pauseRequestEvent = GameEvents.OfType<PauseGameEvent>()
             .Where(e => e.isRequest)
             .OrderByDescending(e => e.HappenedAt)
             .FirstOrDefault();
-        
+
         if (pauseRequestEvent is null) {
             throw new CustomException("No pause request found", 400);
         }
-        
+
         var responses = GameEvents.OfType<PauseGameEvent>()
             .Where(e => !e.isRequest && e.HappenedAt > pauseRequestEvent.HappenedAt)
             .ToList();
 
         if (responses.Count < _players.Count - 1) return null;
-        
+
         // Require all responses to be approved to pause the game
         bool allApproved = responses.All(r => r.isAnAcceptedResponse == true);
         IsPaused = allApproved;
 
-        return new GamePauseState
-        {
+        return new GamePauseState {
             result = allApproved,
             RequestedBy = pauseRequestEvent.evokedByUsername,
             PlayerResponses = responses.ToDictionary(r => r.evokedByUsername, r => r.isAnAcceptedResponse ?? false),
             RequestedAt = pauseRequestEvent.HappenedAt
         };
     }
-    
+
     public void ContinueGame() {
         if (!IsPaused) {
             throw new CustomException("Game is not paused", 400);
@@ -295,7 +307,7 @@ public class Game {
 
         IsPaused = false;
     }
-    
+
     private bool IsInActivationPhase() {
         return CurrentPhase.Equals(GamePhase.ActivationPhase);
     }
@@ -303,7 +315,7 @@ public class Game {
     private bool IsInProgrammingPhase() {
         return CurrentPhase.Equals(GamePhase.ProgrammingPhase);
     }
-    
+
     public int? GetCurrentExecutingRegister() {
         if (!IsInActivationPhase()) {
             return null;
@@ -311,9 +323,83 @@ public class Game {
 
         return CurrentRevealedRegister;
     }
-    
+
+    public async Task HandleGameCompleted(Player.Player player, ISystemTime systemTime) {
+        this.CompletedAt = systemTime.CurrentTime;
+        this.Winner = player.Username;
+
+        var initialRatings = _players
+            .Where(p => p.User is not null)
+            .ToDictionary(p => p.Username, p => p.User!.Rating);
+
+        UpdatePlayerRatings();
+
+        // Create dictionary of username to final ratings
+        var finalRatings = _players
+            .Where(p => p.User is not null)
+            .ToDictionary(p => p.Username, p => p.User!.Rating);
+
+        // Create the broadcast event instance
+        await new GameCompletedBroadcastEvent() {
+            GameId = this.GameId,
+            Winner = this.Winner,
+            OldRatings = initialRatings,
+            NewRatings = finalRatings,
+        }.PublishAsync();
+
+    }
+
     private Game() {
         // EFC needs the empty constructor , i know IDE warns it but please dont delete it.
         _players = [];
+    }
+
+
+    private void UpdatePlayerRatings() {
+        if (Winner is null) {
+            return;
+        }
+
+        const int kFactor = 32; // Standard ELO K-factor for competitive games
+
+        // Find the winner
+        var winningPlayer = _players.FirstOrDefault(p => p.Username == Winner);
+        if (winningPlayer?.User is null) {
+            return; // Can't update ratings if User navigation property isn't loaded
+        }
+
+        // Get all losing players
+        var losingPlayers = _players.Where(p => p.Username != Winner && p.User is not null).ToList();
+        if (losingPlayers.Count == 0) {
+            return; // No losers to calculate against
+        }
+
+        int winnerOldRating = winningPlayer.User.Rating;
+        double totalRatingChangeForWinner = 0;
+
+        // Calculate rating changes for each matchup (winner vs each loser)
+        foreach (var loser in losingPlayers) {
+            int loserOldRating = loser.User!.Rating;
+
+            // Expected score for winner against this specific loser (0 to 1)
+            double expectedScoreWinner = 1.0 / (1.0 + Math.Pow(10, (loserOldRating - winnerOldRating) / 400.0));
+
+            // Expected score for loser against winner
+            double expectedScoreLoser = 1.0 - expectedScoreWinner;
+
+            // Winner gets 1 point (won), loser gets 0 points (lost)
+            // Rating change = K * (actual - expected)
+            double ratingChangeForWinner = kFactor * (1.0 - expectedScoreWinner);
+            double ratingChangeForLoser = kFactor * (0.0 - expectedScoreLoser);
+
+            // Accumulate winner's total gain from all opponents
+            totalRatingChangeForWinner += ratingChangeForWinner;
+
+            // Apply loser's rating change immediately
+            loser.User.Rating = Math.Max(0, loserOldRating + (int)Math.Round(ratingChangeForLoser));
+        }
+
+        // Apply winner's total rating gain
+        winningPlayer.User.Rating = winnerOldRating + (int)Math.Round(totalRatingChangeForWinner);
     }
 }
