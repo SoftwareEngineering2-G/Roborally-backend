@@ -21,4 +21,5 @@ public class GetGamesForUserResponse {
     public required DateOnly StartDate { get; set; }
     public required bool IsFinished { get; set; }
     public required bool IsPrivate { get; set; }
+    public required string? Winner { get; set; }
 }

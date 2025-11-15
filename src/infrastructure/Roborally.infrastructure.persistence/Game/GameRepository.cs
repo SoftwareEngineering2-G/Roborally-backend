@@ -71,6 +71,7 @@ public class GameRepository : IGameRepository {
                 StartDate = DateOnly.FromDateTime(game.CreatedAt),
                 IsFinished = game.CompletedAt != null,
                 IsPrivate = game.IsPrivate,
+                Winner = game.Winner
             })
             .ToListAsync(ct); // Only one database call because we only call ToListAsync once
     }

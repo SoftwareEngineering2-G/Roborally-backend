@@ -324,7 +324,7 @@ public class Game {
         return CurrentRevealedRegister;
     }
 
-    internal async Task HandleGameCompleted(Player.Player player, ISystemTime systemTime) {
+    public async Task HandleGameCompleted(Player.Player player, ISystemTime systemTime) {
         this.CompletedAt = systemTime.CurrentTime;
         this.Winner = player.Username;
 
@@ -345,7 +345,7 @@ public class Game {
             Winner = this.Winner,
             OldRatings = initialRatings,
             NewRatings = finalRatings,
-        }.PublishAsync(Mode.WaitForNone);
+        }.PublishAsync();
 
     }
 

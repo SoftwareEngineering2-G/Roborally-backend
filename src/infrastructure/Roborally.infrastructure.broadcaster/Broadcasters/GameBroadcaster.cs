@@ -108,6 +108,6 @@ public class GameBroadcaster : IGameBroadcaster{
     public async Task BroadcastGameCompletedAsync(GameCompletedBroadcastEvent eventModel,CancellationToken ct)
     {
 
-        await _hubContext.Clients.Groups(GroupName(eventModel.GameId)).SendAsync("GameEnded", eventModel, ct);
+        await _hubContext.Clients.Groups(GroupName(eventModel.GameId)).SendAsync("GameCompleted", eventModel, ct);
     }
 }

@@ -26,6 +26,7 @@ public class GetAllGamesEndpoint : Endpoint<GetAllGamesRequest, List<GetAllGames
             StartDate = game.StartDate,
             IsFinished = game.IsFinished,
             IsPrivate = game.IsPrivate,
+            Winner = game.Winner,
         }).ToList();
 
         await Send.OkAsync(responsePacker, ct);
@@ -47,5 +48,6 @@ public class GetAllGamesResponse {
     public required string HostUsername { get; set; }
     public required DateOnly StartDate { get; set; }
     public required bool IsFinished { get; set; }
+    public required string? Winner { get; set; }
     public required bool IsPrivate { get; set; }
 }

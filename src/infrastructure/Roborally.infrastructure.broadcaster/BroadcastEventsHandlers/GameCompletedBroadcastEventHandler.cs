@@ -12,6 +12,8 @@ public class GameCompletedBroadcastEventHandler : IEventHandler<GameCompletedBro
 
 
     public async Task HandleAsync(GameCompletedBroadcastEvent eventModel, CancellationToken ct) {
+
+        Console.WriteLine("Game completed");
        await _gameBroadcaster.BroadcastGameCompletedAsync(eventModel, ct);
     }
 }
