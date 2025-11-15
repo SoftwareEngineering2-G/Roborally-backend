@@ -3,7 +3,7 @@ using Roborally.core.application.QueryContracts;
 
 namespace Roborally.webapi.RestEndpoints.User.Queries;
 
-public class GetAllGamesEndpoint : Endpoint<GetAllGamesRequest, List<GetAllGamesResponse>> {
+public class GetAllGamesEndpoint : Endpoint<GetAllGamesRequest, GetAllGamesEndpointResponse> {
     public override void Configure() {
         Get("/users/{username}/games");
     }
@@ -16,20 +16,29 @@ public class GetAllGamesEndpoint : Endpoint<GetAllGamesRequest, List<GetAllGames
             IsFinished = req.IsFinished,
             IsPrivate = req.IsPrivate,
             SearchTag = req.SearchTag,
+            PageNumber = req.PageNumber,
+            PageSize = req.PageSize
         };
 
-        var response = await query.ExecuteAsync(ct);
-        var responsePacker = response.Select(game => new GetAllGamesResponse() {
-            GameId = game.GameId,
-            GameRoomName = game.GameRoomName,
-            HostUsername = game.HostUsername,
-            StartDate = game.StartDate,
-            IsFinished = game.IsFinished,
-            IsPrivate = game.IsPrivate,
-            Winner = game.Winner,
-        }).ToList();
+        var result = await query.ExecuteAsync(ct);
 
-        await Send.OkAsync(responsePacker, ct);
+        var response = new GetAllGamesEndpointResponse {
+            Items = result.Items.Select(game => new GetAllGamesResponse() {
+                GameId = game.GameId,
+                GameRoomName = game.GameRoomName,
+                HostUsername = game.HostUsername,
+                StartDate = game.StartDate,
+                IsFinished = game.IsFinished,
+                IsPrivate = game.IsPrivate,
+                Winner = game.Winner,
+            }).ToList(),
+            TotalCount = result.TotalCount,
+            TotalPages = result.TotalPages,
+            CurrentPage = result.CurrentPage,
+            PageSize = result.PageSize
+        };
+
+        await Send.OkAsync(response, ct);
     }
 }
 
@@ -40,6 +49,16 @@ public class GetAllGamesRequest {
     public DateOnly? From { get; set; }
     public DateOnly? To { get; set; }
     public string? SearchTag { get; set; }
+    public int PageNumber { get; set; } = 1;
+    public int PageSize { get; set; } = 10;
+}
+
+public class GetAllGamesEndpointResponse {
+    public required List<GetAllGamesResponse> Items { get; set; }
+    public required int TotalCount { get; set; }
+    public required int TotalPages { get; set; }
+    public required int CurrentPage { get; set; }
+    public required int PageSize { get; set; }
 }
 
 public class GetAllGamesResponse {

@@ -34,7 +34,7 @@ public class GameRepository : IGameRepository {
             .ToListAsync(ct);
     }
 
-    public async Task<List<GetGamesForUserResponse>>
+    public async Task<GetGamesForUserQueryResult>
         QueryGamesForUserAsync(GetGamesForUserQuery query, CancellationToken ct) {
         // The queries dont need to be tracked by EF Core as we are only reading data
         var queryable =
@@ -63,7 +63,13 @@ public class GameRepository : IGameRepository {
             queryable = queryable.Where(game => DateOnly.FromDateTime(game.CreatedAt) <= query.To);
         }
 
-        return await queryable.OrderByDescending(game => game.CreatedAt)
+        // Get total count before pagination
+        var totalCount = await queryable.CountAsync(ct);
+
+        // Apply pagination
+        var items = await queryable.OrderByDescending(game => game.CreatedAt)
+            .Skip((query.PageNumber - 1) * query.PageSize)
+            .Take(query.PageSize)
             .Select(game => new GetGamesForUserResponse {
                 GameId = game.GameId,
                 GameRoomName = game.Name,
@@ -73,7 +79,17 @@ public class GameRepository : IGameRepository {
                 IsPrivate = game.IsPrivate,
                 Winner = game.Winner
             })
-            .ToListAsync(ct); // Only one database call because we only call ToListAsync once
+            .ToListAsync(ct);
+
+        var totalPages = (int)Math.Ceiling(totalCount / (double)query.PageSize);
+
+        return new GetGamesForUserQueryResult {
+            Items = items,
+            TotalCount = totalCount,
+            TotalPages = totalPages,
+            CurrentPage = query.PageNumber,
+            PageSize = query.PageSize
+        };
     }
 
     public async Task<GetCurrentUserPlayingStatusResponse> QueryUserCurrentPlayingStatusAsync(
