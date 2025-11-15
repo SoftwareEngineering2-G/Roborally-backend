@@ -45,26 +45,25 @@ public class ActivateNextBoardElementCommandHandler : ICommandHandler<ActivateNe
         await _unitOfWork.SaveChangesAsync(ct);
 
         // Broadcast position updates for ALL players after board element activation
-        var broadcastTasks = new List<Task>();
+        var playersWithChanges = game.Players
+            .Where(player => {
+                if (!playerPositionsBefore.TryGetValue(player.Username, out var beforePos)) return false;
+                // Check if position or direction changed
+                return beforePos.X != player.CurrentPosition.X ||
+                       beforePos.Y != player.CurrentPosition.Y ||
+                       beforePos.Direction != player.CurrentFacingDirection.DisplayName;
+            });
 
-        foreach (var player in game.Players) {
-            if (!playerPositionsBefore.TryGetValue(player.Username, out var beforePos)) continue;
-            // Always broadcast if position or direction changed
-            if (beforePos.X != player.CurrentPosition.X ||
-                beforePos.Y != player.CurrentPosition.Y ||
-                beforePos.Direction != player.CurrentFacingDirection.DisplayName) {
-                // Collect the task instead of awaiting immediately so we can run them in parallel
-                broadcastTasks.Add(_gameBroadcaster.BroadcastRobotMovedAsync(
-                    command.GameId,
-                    player.Username,
-                    player.CurrentPosition.X,
-                    player.CurrentPosition.Y,
-                    player.CurrentFacingDirection.DisplayName,
-                    "Board Element", // Indicate this was from board element activation
-                    ct
-                ));
-            }
-        }
+        var broadcastTasks = playersWithChanges
+            .Select(player => _gameBroadcaster.BroadcastRobotMovedAsync(
+                command.GameId,
+                player.Username,
+                player.CurrentPosition.X,
+                player.CurrentPosition.Y,
+                player.CurrentFacingDirection.DisplayName,
+                "Board Element", // Indicate this was from board element activation
+                ct
+            ));
 
         // Await all broadcasts to complete
         await Task.WhenAll(broadcastTasks);
