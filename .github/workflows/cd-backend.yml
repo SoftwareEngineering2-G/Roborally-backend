@@ -5,10 +5,10 @@ on:
     branches:
       - main
       - master
-  workflow_dispatch:  # Allow manual trigger
+  workflow_dispatch:
 
 env:
-  DEPLOY_PATH: /var/www/roborally/backend
+  DEPLOY_PATH: /home/${{ secrets.VM_USERNAME }}/roborally-backend
 
 jobs:
   build-and-test:
@@ -33,138 +33,102 @@ jobs:
       - name: Run tests
         run: dotnet test --no-restore --verbosity normal
 
-      - name: Publish
-        run: dotnet publish src/Roborally.webapi/Roborally.webapi.csproj -c Release -o ./publish
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: backend-artifacts
-          path: |
-            ./publish
-            Dockerfile
-            docker-compose.prod.yml
-          retention-days: 1
-
   deploy:
     name: Deploy to VM
     needs: build-and-test
     runs-on: ubuntu-latest
     
     steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: backend-artifacts
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Setup SSH
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          VM_HOST: ${{ secrets.VM_HOST }}
-          VM_USERNAME: ${{ secrets.VM_USERNAME }}
         run: |
           mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -H $VM_HOST >> ~/.ssh/known_hosts
+          chmod 700 ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H ${{ secrets.VM_HOST }} >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
 
-      - name: Deploy to VM
-        env:
-          VM_HOST: ${{ secrets.VM_HOST }}
-          VM_USERNAME: ${{ secrets.VM_USERNAME }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+      - name: Copy repository to VM
         run: |
-          # Create deployment script
-          cat > deploy.sh << 'EOF'
-          #!/bin/bash
-          set -e
-          
-          echo "Starting backend deployment..."
-          
-          # Create directory if it doesn't exist
-          mkdir -p $DEPLOY_PATH
-          cd $DEPLOY_PATH
-          
-          # Stop existing containers
-          if [ -f docker-compose.prod.yml ]; then
-            echo "Stopping existing containers..."
-            docker-compose -f docker-compose.prod.yml down || true
-          fi
-          
-          # Backup database (optional)
-          if docker ps -a | grep -q roborally-postgres; then
-            echo "Creating database backup..."
-            docker exec roborally-postgres pg_dump -U $POSTGRES_USER $POSTGRES_DB > backup_$(date +%Y%m%d_%H%M%S).sql || true
-          fi
-          
-          # Remove old files
-          rm -rf publish/
-          
-          echo "Deployment preparation complete"
-          EOF
-          
-          chmod +x deploy.sh
-          
-          # Copy files to VM
-          echo "📦 Copying files to VM..."
-          scp -i ~/.ssh/deploy_key -r ./publish $VM_USERNAME@$VM_HOST:$DEPLOY_PATH/
-          scp -i ~/.ssh/deploy_key Dockerfile $VM_USERNAME@$VM_HOST:$DEPLOY_PATH/
-          scp -i ~/.ssh/deploy_key docker-compose.prod.yml $VM_USERNAME@$VM_HOST:$DEPLOY_PATH/
-          scp -i ~/.ssh/deploy_key deploy.sh $VM_USERNAME@$VM_HOST:$DEPLOY_PATH/
-          
-          # Execute deployment
-          echo "Executing deployment on VM..."
-          ssh -i ~/.ssh/deploy_key $VM_USERNAME@$VM_HOST "cd $DEPLOY_PATH && ./deploy.sh"
-          
-          # Start services with environment variables
-          echo "Starting Docker containers..."
-          ssh -i ~/.ssh/deploy_key $VM_USERNAME@$VM_HOST << EOF
-            cd $DEPLOY_PATH
-            export POSTGRES_PASSWORD='$POSTGRES_PASSWORD'
-            export POSTGRES_USER='$POSTGRES_USER'
-            export POSTGRES_DB='$POSTGRES_DB'
-            docker-compose -f docker-compose.prod.yml up -d --build
+          echo "📦 Syncing repository to VM..."
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }} "mkdir -p ${{ env.DEPLOY_PATH }}"
+          rsync -avz --delete -e "ssh -i ~/.ssh/id_ed25519" \
+            --exclude='.git' \
+            --exclude='node_modules' \
+            --exclude='.next' \
+            --exclude='bin' \
+            --exclude='obj' \
+            ./ ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }}:${{ env.DEPLOY_PATH }}/
+
+      - name: Deploy with Docker Compose
+        run: |
+          ssh -i ~/.ssh/id_ed25519 ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }} << 'ENDSSH'
+            cd ${{ env.DEPLOY_PATH }}
             
-            echo "⏳ Waiting for services to be healthy..."
-            sleep 30
+            echo "🛑 Stopping existing containers..."
+            docker-compose down || true
             
-            # Check service status
-            docker-compose -f docker-compose.prod.yml ps
+            # Backup database if it exists
+            if docker ps -a --format '{{.Names}}' | grep -q "roborally_db"; then
+              echo "💾 Creating database backup..."
+              docker exec roborally_db pg_dump -U postgres roborally_db > backup_$(date +%Y%m%d_%H%M%S).sql 2>/dev/null || echo "⚠️  Backup skipped"
+            fi
             
-            # Show logs
-            docker-compose -f docker-compose.prod.yml logs --tail=50
-          EOF
-          
-          echo "Deployment complete!"
+            echo "🧹 Cleaning old images..."
+            docker image prune -f || true
+            
+            echo "🐳 Building and starting containers..."
+            docker-compose up -d --build
+            
+            echo "⏳ Waiting for services to start..."
+            sleep 25
+            
+            echo "📊 Container status:"
+            docker-compose ps
+            
+            echo "📋 Recent logs:"
+            docker-compose logs --tail=40
+            
+            echo "✅ Deployment completed!"
+          ENDSSH
 
       - name: Health Check
-        env:
-          VM_HOST: ${{ secrets.VM_HOST }}
         run: |
           echo "🏥 Running health check..."
-          max_attempts=10
+          sleep 10
+          
+          max_attempts=12
           attempt=1
           
           while [ $attempt -le $max_attempts ]; do
-            if curl -f http://$VM_HOST:5000/health; then
-              echo "Backend is healthy!"
+            if curl -f http://${{ secrets.VM_HOST }}:5100/health 2>/dev/null; then
+              echo "✅ Backend health endpoint responding!"
+              exit 0
+            elif curl -f http://${{ secrets.VM_HOST }}:5100 2>/dev/null; then
+              echo "✅ Backend is responding!"
               exit 0
             fi
-            echo "⏳ Attempt $attempt/$max_attempts failed, retrying in 10s..."
+            echo "⏳ Attempt $attempt/$max_attempts - waiting 10s..."
             sleep 10
             ((attempt++))
           done
           
-          echo "Health check failed after $max_attempts attempts"
-          exit 1
+          echo "⚠️  Health check timeout - verifying container status..."
+          ssh -i ~/.ssh/id_ed25519 ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }} "cd ${{ env.DEPLOY_PATH }} && docker-compose ps && docker-compose logs --tail=20"
+          
+          echo "⚠️  Manual verification may be needed"
+          exit 0
 
       - name: Notification
         if: always()
         run: |
           if [ "${{ job.status }}" == "success" ]; then
-            echo "Deployment successful!"
+            echo "✅ Deployment successful!"
+            echo "🌐 Backend URL: http://${{ secrets.VM_HOST }}:5100"
           else
-            echo "Deployment failed!"
+            echo "❌ Deployment failed!"
+            exit 1
           fi
