@@ -46,16 +46,16 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.VM_HOST }} >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
 
       - name: Copy repository to VM
         run: |
           echo "📦 Syncing repository to VM..."
-          ssh -o StrictHostKeyChecking=no ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }} "mkdir -p ${{ env.DEPLOY_PATH }}"
-          rsync -avz --delete -e "ssh -i ~/.ssh/id_ed25519" \
+          ssh ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }} "mkdir -p ${{ env.DEPLOY_PATH }}"
+          rsync -avz --delete -e "ssh -i ~/.ssh/id_rsa" \
             --exclude='.git' \
             --exclude='node_modules' \
             --exclude='.next' \
@@ -65,7 +65,7 @@ jobs:
 
       - name: Deploy with Docker Compose
         run: |
-          ssh -i ~/.ssh/id_ed25519 ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }} << 'ENDSSH'
+          ssh -i ~/.ssh/id_rsa ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }} << 'ENDSSH'
             cd ${{ env.DEPLOY_PATH }}
             
             echo "🛑 Stopping existing containers..."
@@ -74,11 +74,16 @@ jobs:
             # Backup database if it exists
             if docker ps -a --format '{{.Names}}' | grep -q "roborally_db"; then
               echo "💾 Creating database backup..."
-              docker exec roborally_db pg_dump -U postgres roborally_db > backup_$(date +%Y%m%d_%H%M%S).sql 2>/dev/null || echo "⚠️  Backup skipped"
+              docker exec roborally_db pg_dump -U ${{ secrets.POSTGRES_USER }} ${{ secrets.POSTGRES_DB }} > backup_$(date +%Y%m%d_%H%M%S).sql 2>/dev/null || echo "⚠️  Backup skipped"
             fi
             
             echo "🧹 Cleaning old images..."
             docker image prune -f || true
+            
+            # Export PostgreSQL credentials for docker-compose
+            export POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+            export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+            export POSTGRES_DB=${{ secrets.POSTGRES_DB }}
             
             echo "🐳 Building and starting containers..."
             docker-compose up -d --build
@@ -117,7 +122,7 @@ jobs:
           done
           
           echo "⚠️  Health check timeout - verifying container status..."
-          ssh -i ~/.ssh/id_ed25519 ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }} "cd ${{ env.DEPLOY_PATH }} && docker-compose ps && docker-compose logs --tail=20"
+          ssh -i ~/.ssh/id_rsa ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }} "cd ${{ env.DEPLOY_PATH }} && docker-compose ps && docker-compose logs --tail=20"
           
           echo "⚠️  Manual verification may be needed"
           exit 0
