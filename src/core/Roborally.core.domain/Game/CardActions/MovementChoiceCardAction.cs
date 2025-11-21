@@ -69,7 +69,7 @@ public class MovementChoiceCardAction : ICardAction
                 player.UTurn();
                 break;
             default:
-                throw new CustomException($"Unhandled movement option: {chosenCard.DisplayName}", 500);
+                throw new CustomException($"Unhandled movement option: {card.DisplayName}", 500);
         }
     }
 }
