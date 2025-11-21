@@ -58,6 +58,8 @@ public class MovementChoiceCardAction : ICardAction
             case "U-Turn":
                 player.UTurn();
                 break;
+            default:
+                throw new CustomException($"Unhandled movement option: {chosenCard.DisplayName}", 500);
         }
 
         player.RecordCardExecution(ProgrammingCard.MovementChoice, systemTime);
