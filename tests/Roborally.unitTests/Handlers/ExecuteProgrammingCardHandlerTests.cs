@@ -338,5 +338,64 @@ public class ExecuteProgrammingCardHandlerTests
         Assert.NotNull(lastCard);
         Assert.Equal("Move 1", lastCard.DisplayName);
     }
-    
+
+    [Fact]
+    public async Task ExecuteAsync_ShouldHandleSwapPositionInteractiveInput()
+    {
+        var game = GameFactory.GetValidGame();
+        game.CurrentPhase = GamePhase.ActivationPhase;
+        var player = game.Players[0];
+        var target = game.Players[1];
+
+        player.CurrentPosition = new Position(1, 1);
+        target.CurrentPosition = new Position(8, 2);
+
+        var command = new ExecuteProgrammingCardCommand
+        {
+            GameId = game.GameId,
+            Username = player.Username,
+            CardName = "Swap Position",
+            InteractiveInput = new ExecuteProgrammingCardInteractiveInput
+            {
+                TargetPlayerUsername = target.Username
+            }
+        };
+
+        _gameRepositoryMock.Setup(r => r.FindAsync(command.GameId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(game);
+
+        await _handler.ExecuteAsync(command, CancellationToken.None);
+
+        Assert.Equal(new Position(8, 2), player.CurrentPosition);
+        Assert.Equal(new Position(1, 1), target.CurrentPosition);
+    }
+
+    [Fact]
+    public async Task ExecuteAsync_ShouldHandleMovementChoiceInteractiveInput()
+    {
+        var game = GameFactory.GetValidGame();
+        game.CurrentPhase = GamePhase.ActivationPhase;
+        var player = game.Players[0];
+        player.CurrentPosition = new Position(3, 3);
+        player.CurrentFacingDirection = Direction.North;
+
+        var command = new ExecuteProgrammingCardCommand
+        {
+            GameId = game.GameId,
+            Username = player.Username,
+            CardName = "Movement Choice",
+            InteractiveInput = new ExecuteProgrammingCardInteractiveInput
+            {
+                SelectedMovementCard = "Move 2"
+            }
+        };
+
+        _gameRepositoryMock.Setup(r => r.FindAsync(command.GameId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(game);
+
+        await _handler.ExecuteAsync(command, CancellationToken.None);
+
+        Assert.Equal(new Position(3, 1), player.CurrentPosition);
+        Assert.Equal("Movement Choice", player.GetLastExecutedCard()?.DisplayName);
+    }
 }
