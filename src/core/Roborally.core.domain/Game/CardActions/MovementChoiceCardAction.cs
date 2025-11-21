@@ -11,7 +11,10 @@ public class MovementChoiceCardAction : ICardAction
         ProgrammingCard.Move1,
         ProgrammingCard.Move2,
         ProgrammingCard.Move3,
-        ProgrammingCard.MoveBack
+        ProgrammingCard.MoveBack,
+        ProgrammingCard.RotateLeft,
+        ProgrammingCard.RotateRight,
+        ProgrammingCard.UTurn
     };
 
     public void Execute(Player.Player player, Game game, Bases.ISystemTime systemTime, CardExecutionContext? context = null)
@@ -28,18 +31,33 @@ public class MovementChoiceCardAction : ICardAction
             throw new CustomException($"Selected card {chosenCard.DisplayName} is not a valid movement option.", 400);
         }
 
-        if (chosenCard == ProgrammingCard.MoveBack)
+        switch (chosenCard.DisplayName)
         {
-            game.MovePlayerInDirection(player, player.CurrentFacingDirection.Opposite());
-        }
-        else
-        {
-            int spaces = chosenCard == ProgrammingCard.Move3 ? 3 : chosenCard == ProgrammingCard.Move2 ? 2 : 1;
-
-            for (int i = 0; i < spaces; i++)
-            {
+            case "Move 1":
                 game.MovePlayerInDirection(player, player.CurrentFacingDirection);
-            }
+                break;
+            case "Move 2":
+                for (int i = 0; i < 2; i++) {
+                    game.MovePlayerInDirection(player, player.CurrentFacingDirection);
+                }
+                break;
+            case "Move 3":
+                for (int i = 0; i < 3; i++) {
+                    game.MovePlayerInDirection(player, player.CurrentFacingDirection);
+                }
+                break;
+            case "Move Back":
+                game.MovePlayerInDirection(player, player.CurrentFacingDirection.Opposite());
+                break;
+            case "Rotate Left":
+                player.RotateLeft();
+                break;
+            case "Rotate Right":
+                player.RotateRight();
+                break;
+            case "U-Turn":
+                player.UTurn();
+                break;
         }
 
         player.RecordCardExecution(ProgrammingCard.MovementChoice, systemTime);

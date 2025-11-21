@@ -59,6 +59,21 @@ public class MovementChoiceCardActionTests
     }
 
     [Fact]
+    public void Execute_ShouldRotate_WhenRotateOptionSelected()
+    {
+        _player.CurrentFacingDirection = Direction.North;
+
+        var context = new CardExecutionContext
+        {
+            SelectedMovementCard = ProgrammingCard.RotateRight
+        };
+
+        _action.Execute(_player, _game, _systemTimeMock.Object, context);
+
+        Assert.Equal(Direction.East, _player.CurrentFacingDirection);
+    }
+
+    [Fact]
     public void Execute_ShouldThrow_WhenSelectionMissing()
     {
         var exception = Assert.Throws<CustomException>(() =>
