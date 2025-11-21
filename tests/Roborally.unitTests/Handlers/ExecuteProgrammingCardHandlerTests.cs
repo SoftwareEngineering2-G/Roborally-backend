@@ -342,6 +342,7 @@ public class ExecuteProgrammingCardHandlerTests
     [Fact]
     public async Task ExecuteAsync_ShouldHandleSwapPositionInteractiveInput()
     {
+        // Arrange
         var game = GameFactory.GetValidGame();
         game.CurrentPhase = GamePhase.ActivationPhase;
         var player = game.Players[0];
@@ -364,8 +365,10 @@ public class ExecuteProgrammingCardHandlerTests
         _gameRepositoryMock.Setup(r => r.FindAsync(command.GameId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(game);
 
+        // Act
         await _handler.ExecuteAsync(command, CancellationToken.None);
 
+        // Assert
         Assert.Equal(new Position(8, 2), player.CurrentPosition);
         Assert.Equal(new Position(1, 1), target.CurrentPosition);
     }
@@ -373,6 +376,7 @@ public class ExecuteProgrammingCardHandlerTests
     [Fact]
     public async Task ExecuteAsync_ShouldHandleMovementChoiceInteractiveInput()
     {
+        // Arrange
         var game = GameFactory.GetValidGame();
         game.CurrentPhase = GamePhase.ActivationPhase;
         var player = game.Players[0];
@@ -393,8 +397,10 @@ public class ExecuteProgrammingCardHandlerTests
         _gameRepositoryMock.Setup(r => r.FindAsync(command.GameId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(game);
 
+        // Act
         await _handler.ExecuteAsync(command, CancellationToken.None);
 
+        // Assert
         Assert.Equal(new Position(3, 1), player.CurrentPosition);
         Assert.Equal("Movement Choice", player.GetLastExecutedCard()?.DisplayName);
     }

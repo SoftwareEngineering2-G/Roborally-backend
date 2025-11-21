@@ -20,6 +20,8 @@ public class AgainCardAction : ICardAction
             throw new CustomException($"Cannot execute Again card for {player.Username}: Cannot repeat an Again action.", 400);
         }
 
+        // Interactive cards require user input that wasn't stored with the original execution,
+        // so they cannot be repeated by the Again card
         if (lastExecutedCard == ProgrammingCard.SwapPosition || lastExecutedCard == ProgrammingCard.MovementChoice)
         {
             throw new CustomException($"Cannot execute Again card for {player.Username}: Cannot repeat interactive card {lastExecutedCard.DisplayName}.", 400);
