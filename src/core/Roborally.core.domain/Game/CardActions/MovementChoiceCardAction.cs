@@ -31,18 +31,28 @@ public class MovementChoiceCardAction : ICardAction
             throw new CustomException($"Selected card {chosenCard.DisplayName} is not a valid movement option.", 400);
         }
 
-        switch (chosenCard.DisplayName)
+        // Execute the chosen movement - extracted to avoid duplication with individual card actions
+        ExecuteMovement(player, game, chosenCard);
+
+        player.RecordCardExecution(ProgrammingCard.MovementChoice, systemTime);
+    }
+
+    private static void ExecuteMovement(Player.Player player, Game game, ProgrammingCard card)
+    {
+        switch (card.DisplayName)
         {
             case "Move 1":
                 game.MovePlayerInDirection(player, player.CurrentFacingDirection);
                 break;
             case "Move 2":
-                for (int i = 0; i < 2; i++) {
+                for (int i = 0; i < 2; i++)
+                {
                     game.MovePlayerInDirection(player, player.CurrentFacingDirection);
                 }
                 break;
             case "Move 3":
-                for (int i = 0; i < 3; i++) {
+                for (int i = 0; i < 3; i++)
+                {
                     game.MovePlayerInDirection(player, player.CurrentFacingDirection);
                 }
                 break;
@@ -61,7 +71,5 @@ public class MovementChoiceCardAction : ICardAction
             default:
                 throw new CustomException($"Unhandled movement option: {chosenCard.DisplayName}", 500);
         }
-
-        player.RecordCardExecution(ProgrammingCard.MovementChoice, systemTime);
     }
 }
