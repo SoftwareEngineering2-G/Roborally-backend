@@ -26,8 +26,8 @@ public class SwapPositionCardAction : ICardAction
             throw new CustomException("Cannot swap positions with yourself.", 400);
         }
 
-        var playerPosition = new Position(player.CurrentPosition.X, player.CurrentPosition.Y);
-        var targetPosition = new Position(targetPlayer.CurrentPosition.X, targetPlayer.CurrentPosition.Y);
+        var playerPosition = player.CurrentPosition;
+        var targetPosition = targetPlayer.CurrentPosition;
 
         player.MoveTo(targetPosition);
         targetPlayer.MoveTo(playerPosition);
