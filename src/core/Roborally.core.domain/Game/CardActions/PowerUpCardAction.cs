@@ -4,7 +4,7 @@ namespace Roborally.core.domain.Game.CardActions;
 
 public class PowerUpCardAction : ICardAction
 {
-    public void Execute(Player.Player player, Game game, Bases.ISystemTime systemTime)
+    public void Execute(Player.Player player, Game game, Bases.ISystemTime systemTime, CardExecutionContext? context = null)
     {
         // PowerUp card increases the player's energy or gives special abilities
         // This is a placeholder implementation - adjust based on your game rules
