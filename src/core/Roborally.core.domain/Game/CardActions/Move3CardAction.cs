@@ -4,7 +4,7 @@ namespace Roborally.core.domain.Game.CardActions;
 
 public class Move3CardAction : ICardAction
 {
-    public void Execute(Player.Player player, Game game, Bases.ISystemTime systemTime)
+    public void Execute(Player.Player player, Game game, Bases.ISystemTime systemTime, CardExecutionContext? context = null)
     {
         for (int i = 0; i < 3; i++)
         {

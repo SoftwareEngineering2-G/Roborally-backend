@@ -169,7 +169,7 @@ public class Game {
         }
     }
 
-    public List<Player.Player> ExecuteProgrammingCard(string username, ProgrammingCard card, ISystemTime systemTime) {
+    public List<Player.Player> ExecuteProgrammingCard(string username, ProgrammingCard card, ISystemTime systemTime, CardExecutionContext? context = null) {
         if (!IsInActivationPhase()) {
             throw new CustomException("The game needs to be in activation phase", 400);
         }
@@ -191,7 +191,7 @@ public class Game {
         );
 
         var action = ActionFactory.CreateAction(card);
-        action.Execute(player, this, systemTime);
+        action.Execute(player, this, systemTime, context);
 
         // Find all players that actually moved (position or direction changed)
         var affectedPlayers = _players.Where(p => {

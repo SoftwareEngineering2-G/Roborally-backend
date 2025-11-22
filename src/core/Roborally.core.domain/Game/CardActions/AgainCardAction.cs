@@ -4,7 +4,7 @@ namespace Roborally.core.domain.Game.CardActions;
 
 public class AgainCardAction : ICardAction
 {
-    public void Execute(Player.Player player, Game game, Bases.ISystemTime systemTime)
+    public void Execute(Player.Player player, Game game, Bases.ISystemTime systemTime, CardExecutionContext? context = null)
     {
         // Check if there's a last executed card
         var lastExecutedCard = player.GetLastExecutedCard();
@@ -18,6 +18,13 @@ public class AgainCardAction : ICardAction
         if (lastExecutedCard == ProgrammingCard.Again)
         {
             throw new CustomException($"Cannot execute Again card for {player.Username}: Cannot repeat an Again action.", 400);
+        }
+
+        // Interactive cards require user input that wasn't stored with the original execution,
+        // so they cannot be repeated by the Again card
+        if (lastExecutedCard == ProgrammingCard.SwapPosition || lastExecutedCard == ProgrammingCard.MovementChoice)
+        {
+            throw new CustomException($"Cannot execute Again card for {player.Username}: Cannot repeat interactive card {lastExecutedCard.DisplayName}.", 400);
         }
         
         // Reconstruct the action from the card

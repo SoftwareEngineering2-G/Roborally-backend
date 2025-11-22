@@ -14,6 +14,8 @@ public class ProgrammingCard : Enumeration
     public static readonly ProgrammingCard MoveBack = new ProgrammingCard("Move Back");
     public static readonly ProgrammingCard PowerUp = new ProgrammingCard("Power Up");
     public static readonly ProgrammingCard Again = new ProgrammingCard("Again");
+    public static readonly ProgrammingCard SwapPosition = new ProgrammingCard("Swap Position");
+    public static readonly ProgrammingCard MovementChoice = new ProgrammingCard("Movement Choice");
 
     private ProgrammingCard(string displayName) : base(displayName)
     {
