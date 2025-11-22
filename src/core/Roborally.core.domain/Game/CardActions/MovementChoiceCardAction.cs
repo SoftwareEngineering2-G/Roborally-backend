@@ -31,7 +31,8 @@ public class MovementChoiceCardAction : ICardAction
             throw new CustomException($"Selected card {chosenCard.DisplayName} is not a valid movement option.", 400);
         }
 
-        // Execute the chosen movement - extracted to avoid duplication with individual card actions
+        // Execute the chosen movement - we duplicate logic here instead of calling ActionFactory
+        // because we need to record "Movement Choice" as the executed card, not the individual movement
         ExecuteMovement(player, game, chosenCard);
 
         player.RecordCardExecution(ProgrammingCard.MovementChoice, systemTime);
