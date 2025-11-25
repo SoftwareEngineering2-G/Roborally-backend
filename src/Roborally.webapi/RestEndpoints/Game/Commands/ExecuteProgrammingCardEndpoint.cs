@@ -16,7 +16,14 @@ public class ExecuteProgrammingCardEndpoint : Endpoint<ExecuteProgrammingCardReq
         {
             GameId = req.GameId,
             Username = req.Username,
-            CardName = req.CardName
+            CardName = req.CardName,
+            InteractiveInput = req.InteractiveInput is null
+                ? null
+                : new ExecuteProgrammingCardInteractiveInput
+                {
+                    TargetPlayerUsername = req.InteractiveInput.TargetPlayerUsername,
+                    SelectedMovementCard = req.InteractiveInput.SelectedMovementCard
+                }
         };
 
         await command.ExecuteAsync(ct);
@@ -30,4 +37,11 @@ public class ExecuteProgrammingCardRequest
     public Guid GameId { get; set; }
     public string Username { get; set; } = string.Empty;
     public string CardName { get; set; } = string.Empty;
+    public InteractiveCardInputDto? InteractiveInput { get; set; }
+}
+
+public class InteractiveCardInputDto
+{
+    public string? TargetPlayerUsername { get; set; }
+    public string? SelectedMovementCard { get; set; }
 }

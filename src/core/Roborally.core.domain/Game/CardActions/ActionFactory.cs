@@ -18,6 +18,8 @@ public static class ActionFactory
             "Move Back" => new MoveBackwardCardAction(1),
             "Power Up" => new PowerUpCardAction(),
             "Again" => new AgainCardAction(),
+            "Swap Position" => new SwapPositionCardAction(),
+            "Movement Choice" => new MovementChoiceCardAction(),
             _ => throw new CustomException($"Unknown card type: {card.DisplayName}", 400)
         };
     }
