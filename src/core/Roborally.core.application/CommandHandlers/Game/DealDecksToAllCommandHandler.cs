@@ -32,11 +32,13 @@ public class DealDecksToAllCommandHandler : ICommandHandler<DealDecksToAllComman
         var playerDealtCards = game.DealDecksToAllPlayers(_systemTime);
 
         List<Task> broadcastTasks = (from playerDealtCard in playerDealtCards
-                let player = playerDealtCard.Key
-                let cards = playerDealtCard.Value.Select(card => card.DisplayName).ToList()
-                select _individualPlayerBroadcaster.BroadcastHandToPlayerAsync(player.Username, player.GameId, cards,
-                    ct))
-            .ToList();
+            let player = playerDealtCard.Key
+            let cards = playerDealtCard.Value.DealtCards.Select(card => card.DisplayName).ToList()
+            let isDeckReshuffled = playerDealtCard.Value.IsDeckReshuffled
+            let programmingPickPilesCount = player.ProgrammingDeck.PickPiles.Count
+            let discardPilesCount = player.ProgrammingDeck.DiscardedPiles.Count
+            select _individualPlayerBroadcaster.BroadcastHandToPlayerAsync(player.Username, player.GameId, cards, isDeckReshuffled, programmingPickPilesCount, discardPilesCount, ct)
+        ).ToList();
 
         // Await all broadcast tasks to ensure they complete and are done in parallel
         await Task.WhenAll(broadcastTasks);

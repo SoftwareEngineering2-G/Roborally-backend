@@ -64,7 +64,13 @@ public class Player {
         if (lockedInCards.Any(card => !lastProgrammingCardsDealtEvent.DealtCards.Contains(card))) {
             throw new CustomException("You can only lock in cards that were dealt to you.", 400);
         }
-
+        
+        // Add not locked in cards to discard pile
+        var notLockedInCards = new List<ProgrammingCard>( lastProgrammingCardsDealtEvent.DealtCards );
+        foreach (var card in lockedInCards) {
+            notLockedInCards.Remove(card);
+        }
+        ProgrammingDeck.DiscardedPiles.AddRange(notLockedInCards);
 
         RegistersProgrammedEvent lockedInEvent = new RegistersProgrammedEvent() {
             HappenedAt = systemTime.CurrentTime,
@@ -77,14 +83,14 @@ public class Player {
         this.PlayerEvents.Add(lockedInEvent);
     }
 
-    internal List<ProgrammingCard> DealProgrammingCards(int count, ISystemTime systemTime) {
+    internal DealCardInfo DealProgrammingCards(int count, ISystemTime systemTime) {
         var lastDealtEvent = this.GetCardsDealtEvent(RoundCount);
         if (lastDealtEvent is not null) {
             throw new CustomException("You can only deal cards once per round", 400);
         }
-
-
+        
         var dealt = new List<ProgrammingCard>(count);
+        bool deckReshuffled = false;
 
         // Draw as many as possible from PickPiles
         dealt.AddRange(ProgrammingDeck.Draw(count));
@@ -93,9 +99,18 @@ public class Player {
         if (dealt.Count < count && ProgrammingDeck.DiscardedPiles.Count > 0) {
             int remaining = count - dealt.Count;
             ProgrammingDeck.RefillFromDiscard();
+            
+            deckReshuffled = true;
+            DiscardPilesShuffledIntoPickPilesEvent shuffleEvent = new DiscardPilesShuffledIntoPickPilesEvent() {
+                HappenedAt = systemTime.CurrentTime,
+                GameId = this.GameId,
+                Username = this.Username,
+                Round = RoundCount,
+                NewPickPiles = ProgrammingDeck.PickPiles,
+            };
+            this.PlayerEvents.Add(shuffleEvent);
+            
             dealt.AddRange(ProgrammingDeck.Draw(remaining));
-
-            // TODO: We need to add an event called DiscardPilesShuffledIntoPickPilesEvent
         }
 
         ProgrammingCardsDealtEvent dealtEvent = new ProgrammingCardsDealtEvent() {
@@ -107,8 +122,10 @@ public class Player {
         };
         this.PlayerEvents.Add(dealtEvent);
 
-
-        return dealt;
+        return new DealCardInfo() {
+            DealtCards = dealt,
+            IsDeckReshuffled = deckReshuffled
+        };
     }
 
     public void RotateLeft() {

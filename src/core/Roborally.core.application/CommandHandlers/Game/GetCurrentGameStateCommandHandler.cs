@@ -29,15 +29,17 @@ public class
         GetCurrentGameStateCommandResponse.MyState personalState;
         if (game.CurrentPhase.Equals(GamePhase.ActivationPhase)) {
             personalState =
-                new GetCurrentGameStateCommandResponse.MyState(null, null);
+                new GetCurrentGameStateCommandResponse.MyState(null, null, 0, 0);
         }
         else {
             var player = game.Players.FirstOrDefault(p => p.Username.Equals(command.Username));
 
             var cardsDealt = player?.GetDealtCardsDisplayNames(game.RoundCount);
             var programmedRegisters = player?.GetProgrammedRegistersDisplayNames(game.RoundCount);
+            var programmingDeckPickPilesCount = player?.ProgrammingDeck.PickPiles.Count ?? 0;
+            var discardPilesCount = player?.ProgrammingDeck.DiscardedPiles.Count ?? 0;
 
-            personalState = new GetCurrentGameStateCommandResponse.MyState(programmedRegisters, cardsDealt);
+            personalState = new GetCurrentGameStateCommandResponse.MyState(programmedRegisters, cardsDealt, programmingDeckPickPilesCount, discardPilesCount);
         }
 
         return new GetCurrentGameStateCommandResponse() {
