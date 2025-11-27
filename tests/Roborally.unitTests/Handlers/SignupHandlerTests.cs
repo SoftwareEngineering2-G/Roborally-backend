@@ -1,5 +1,6 @@
 ﻿using Moq;
 using Roborally.core.application;
+using Roborally.core.application.ApplicationContracts;
 using Roborally.core.application.ApplicationContracts.Persistence;
 using Roborally.core.application.CommandContracts;
 using Roborally.core.application.CommandHandlers;
@@ -16,7 +17,8 @@ public class SignupHandlerTests {
         // Arrange
         var repositoryMock = new Mock<IUserRepository>();
         var unitOfWorkMock = new Mock<IUnitOfWork>();
-        var handler = new SignupCommandHandler(repositoryMock.Object, unitOfWorkMock.Object);
+        var jwtServiceMock = new Mock<IJwtService>();
+        var handler = new SignupCommandHandler(repositoryMock.Object, unitOfWorkMock.Object, jwtServiceMock.Object);
 
         // When the username already exists
         repositoryMock.Setup(r => r.ExistsByUsernameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
@@ -45,11 +47,15 @@ public class SignupHandlerTests {
         // Arrange
         var repositoryMock = new Mock<IUserRepository>();
         var unitOfWorkMock = new Mock<IUnitOfWork>();
-        var handler = new SignupCommandHandler(repositoryMock.Object, unitOfWorkMock.Object);
+        var jwtServiceMock = new Mock<IJwtService>();
+        var handler = new SignupCommandHandler(repositoryMock.Object, unitOfWorkMock.Object, jwtServiceMock.Object);
 
         // When the username doesn't exist
         repositoryMock.Setup(r => r.ExistsByUsernameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
+        
+        jwtServiceMock.Setup(j => j.GenerateToken("NewUser"))
+            .Returns("mock-jwt-token-67890");
 
         var command = new SignupCommand {
             Username = "NewUser",
@@ -60,15 +66,20 @@ public class SignupHandlerTests {
         // Act
         var result = await handler.ExecuteAsync(command, CancellationToken.None);
 
-        // Assert
-        Assert.Equal("NewUser", result);
+        // Assert - verify response contains username and token
+        Assert.Equal("NewUser", result.Username);
+        Assert.Equal("mock-jwt-token-67890", result.Token);
         
-        // Verify that the user is added and changes are saved
+        // Verify that the user is added with HASHED password (not plain text!)
+        // We check that password was hashed by verifying it's NOT equal to plain text,
+        // and that it starts with BCrypt hash prefix
         repositoryMock.Verify(r => r.AddAsync(It.Is<User>(u => 
             u.Username == command.Username && 
-            u.Password == command.Password && 
+            u.Password != command.Password &&  // Password should be hashed, NOT plain text
+            u.Password.StartsWith("$2") &&  // BCrypt hashes start with $2a, $2b, or $2y
             u.Birthday == command.Birthday), 
             It.IsAny<CancellationToken>()), Times.Once);
         unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+        jwtServiceMock.Verify(j => j.GenerateToken("NewUser"), Times.Once);
     }
 }
