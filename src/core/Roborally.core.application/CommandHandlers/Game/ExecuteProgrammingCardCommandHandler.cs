@@ -47,11 +47,14 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
             throw new CustomException($"Invalid card name: {command.CardName}", 400);
         }
         
+        // Build optional context for interactive cards
+        var executionContext = BuildExecutionContext(command);
+        
         // Get count of checkpoint events before execution
         int checkpointEventsCountBefore = game.GameEvents.OfType<CheckpointReachedEvent>().Count();
         
         // Execute card and get all affected players (executor + pushed robots)
-        List<Player> affectedPlayers = game.ExecuteProgrammingCard(command.Username, card, _systemTime);
+        List<Player> affectedPlayers = game.ExecuteProgrammingCard(command.Username, card, _systemTime, executionContext);
         
         // Check if a new checkpoint event was added during card execution
         var newCheckpointEvents = game.GameEvents
@@ -90,5 +93,35 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
 
         Player? nextPlayer = game.GetNextExecutingPlayer();
         await _gameBroadcaster.BroadcastNextPlayerInTurn(command.GameId, nextPlayer?.Username, ct);
+    }
+
+    private static CardExecutionContext? BuildExecutionContext(ExecuteProgrammingCardCommand command)
+    {
+        if (command.InteractiveInput is null)
+        {
+            return null;
+        }
+
+        ProgrammingCard? selectedMovementCard = null;
+
+        if (!string.IsNullOrWhiteSpace(command.InteractiveInput.SelectedMovementCard))
+        {
+            try
+            {
+                selectedMovementCard = ProgrammingCard.FromString(command.InteractiveInput.SelectedMovementCard);
+            }
+            catch (ArgumentException)
+            {
+                throw new CustomException($"Invalid selected movement card: {command.InteractiveInput.SelectedMovementCard}", 400);
+            }
+        }
+
+        return new CardExecutionContext
+        {
+            TargetPlayerUsername = string.IsNullOrWhiteSpace(command.InteractiveInput.TargetPlayerUsername)
+                ? null
+                : command.InteractiveInput.TargetPlayerUsername,
+            SelectedMovementCard = selectedMovementCard
+        };
     }
 }
