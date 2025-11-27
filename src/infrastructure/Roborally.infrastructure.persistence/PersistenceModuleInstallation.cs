@@ -1,7 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Roborally.core.application.ApplicationContracts;
 using Roborally.core.application.ApplicationContracts.Persistence;
 using Roborally.core.domain.Bases;
+using Roborally.infrastructure.persistence.Authentication;
 using Roborally.infrastructure.persistence.Contracts;
 using Roborally.infrastructure.persistence.Game;
 using Roborally.infrastructure.persistence.Lobby;
@@ -12,7 +15,7 @@ namespace Roborally.infrastructure.persistence;
 public static class PersistenceModuleInstallation
 {
     public static IServiceCollection InstallPersistenceModule(this IServiceCollection services,
-        string connectionString)
+        string connectionString, IConfiguration configuration)
     {
         if (string.IsNullOrEmpty(connectionString))
         {
@@ -28,6 +31,13 @@ public static class PersistenceModuleInstallation
         services.AddScoped<IGameBoardRepository, GameBoardRepository>();
         services.AddScoped<ISystemTime, SystemTime>();
         services.AddScoped<GameBoardSeeder>();
+        
+        // Register JWT settings from configuration
+        services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+        
+        // Register JWT service
+        services.AddScoped<IJwtService, JwtService>();
+        
         return services;
     }
 }
