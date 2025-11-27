@@ -1,13 +1,11 @@
 ﻿using Moq;
-using Roborally.core.application;
 using Roborally.core.application.ApplicationContracts.Persistence;
 using Roborally.core.application.CommandContracts;
-using Roborally.core.application.CommandHandlers;
 using Roborally.core.application.CommandHandlers.UserManagement;
 using Roborally.core.domain;
 using Roborally.core.domain.User;
 
-namespace Roborally.unitTests.Handlers;
+namespace Roborally.unitTests.Handlers.UserManagement;
 
 public class SigninHandlerTests {
     [Fact]

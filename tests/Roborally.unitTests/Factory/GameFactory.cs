@@ -3,11 +3,11 @@ using Roborally.core.domain.Game.Gameboard;
 
 namespace Roborally.unitTests.Factory;
 
-public class GameFactory
+public static class GameFactory
 {
-    public static Game GetValidGame()
+    public static Game GetValidGame(int playersCount = 2)
     {
-        var players = PlayerFactory.GetValidPlayers();
+        var players = PlayerFactory.GetValidPlayers(playersCount);
         return new Game(
             Guid.NewGuid(),
             players[0].Username,
