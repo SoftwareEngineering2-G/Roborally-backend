@@ -7,7 +7,7 @@ using Roborally.core.domain;
 using Roborally.core.domain.Bases;
 using Roborally.unitTests.Factory;
 
-namespace Roborally.unitTests.Handlers.Game;
+namespace Roborally.unitTests.CommandHandlers.Game;
 
 public class DealDecksToAllHandlerTests
 {
@@ -32,8 +32,7 @@ public class DealDecksToAllHandlerTests
     public async Task CannotDealDecks_WhenGameDoesNotExist()
     {
         // Arrange
-        var gameRepositoryMock = new Mock<IGameRepository>();
-        gameRepositoryMock.Setup(repo => repo.FindAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+        _gameRepositoryMock.Setup(repo => repo.FindAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((core.domain.Game.Game?)null);
 
         var command = new DealDecksToAllCommand

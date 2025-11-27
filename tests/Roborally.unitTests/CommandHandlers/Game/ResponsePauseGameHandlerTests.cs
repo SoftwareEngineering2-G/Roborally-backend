@@ -7,7 +7,7 @@ using Roborally.core.domain;
 using Roborally.core.domain.Bases;
 using Roborally.unitTests.Factory;
 
-namespace Roborally.unitTests.Handlers.Game;
+namespace Roborally.unitTests.CommandHandlers.Game;
 
 public class ResponsePauseGameHandlerTests
 {

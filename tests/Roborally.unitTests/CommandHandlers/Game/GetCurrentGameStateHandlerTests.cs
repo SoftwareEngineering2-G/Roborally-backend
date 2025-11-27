@@ -6,7 +6,7 @@ using Roborally.core.domain;
 using Roborally.core.domain.Game;
 using Roborally.unitTests.Factory;
 
-namespace Roborally.unitTests.Handlers.Game;
+namespace Roborally.unitTests.CommandHandlers.Game;
 
 public class GetCurrentGameStateHandlerTests
 {
@@ -23,8 +23,7 @@ public class GetCurrentGameStateHandlerTests
     public async Task CannotGetCurrentGameState_WhenGameDoesNotExist()
     {
         // Arrange
-        var gameRepositoryMock = new Mock<IGameRepository>();
-        gameRepositoryMock.Setup(repo => repo.FindAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+        _gameRepositoryMock.Setup(repo => repo.FindAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((core.domain.Game.Game?)null);
 
         var command = new GetCurrentGameStateCommand

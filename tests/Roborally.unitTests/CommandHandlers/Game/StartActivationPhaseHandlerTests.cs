@@ -5,40 +5,39 @@ using Roborally.core.application.CommandContracts.Game;
 using Roborally.core.application.CommandHandlers.Game;
 using Roborally.core.domain;
 using Roborally.core.domain.Bases;
+using Roborally.core.domain.Game;
 using Roborally.unitTests.Factory;
 
-namespace Roborally.unitTests.Handlers.Game;
+namespace Roborally.unitTests.CommandHandlers.Game;
 
-public class RequestPauseGameHandlerTests
+public class StartActivationPhaseHandlerTests
 {
     private readonly Mock<IGameRepository> _gameRepositoryMock;
     private readonly Mock<IGameBroadcaster> _gameBroadcasterMock;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-    private readonly Mock<ISystemTime> _systemTimeMock;
-    private readonly RequestPauseGameCommandHandler _handler;
+    private readonly StartActivationPhaseCommandHandler _handler;
 
-    public RequestPauseGameHandlerTests()
+    public StartActivationPhaseHandlerTests()
     {
         _gameRepositoryMock = new Mock<IGameRepository>();
         _gameBroadcasterMock = new Mock<IGameBroadcaster>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
-        _systemTimeMock = new Mock<ISystemTime>();
 
-        _handler = new RequestPauseGameCommandHandler(_gameRepositoryMock.Object, _gameBroadcasterMock.Object,
-            _unitOfWorkMock.Object, _systemTimeMock.Object);
+        _handler = new StartActivationPhaseCommandHandler(_gameRepositoryMock.Object, _gameBroadcasterMock.Object,
+            _unitOfWorkMock.Object);
     }
 
     [Fact]
-    public async Task CannotRequestPauseGame_WhenGameDoesNotExist()
+    public async Task CannotStartActivationPhase_WhenGameDoesNotExist()
     {
         // Arrange
         _gameRepositoryMock.Setup(repo => repo.FindAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((core.domain.Game.Game?)null);
 
-        var command = new RequestPauseGameCommand
+        var command = new StartActivationPhaseCommand
         {
             GameId = Guid.NewGuid(),
-            RequesterUsername = "SomePlayer"
+            Username = "SomePlayer"
         };
 
         // Act & Assert
@@ -46,26 +45,28 @@ public class RequestPauseGameHandlerTests
     }
 
     [Fact]
-    public async Task RequestPauseGame_WhenGameExists()
+    public async Task StartActivationPhase_WhenGameExists()
     {
         // Arrange
         var game = GameFactory.GetValidGame();
+        game.CurrentPhase = GamePhase.ProgrammingPhase;
         _gameRepositoryMock.Setup(repo => repo.FindAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(game);
 
-        var command = new RequestPauseGameCommand
+        var command = new StartActivationPhaseCommand
         {
             GameId = game.GameId,
-            RequesterUsername = game.Players[0].Username
+            Username = game.Players[0].Username
         };
 
         // Act
         await _handler.ExecuteAsync(command, CancellationToken.None);
 
         // Assert
+        Assert.Equal(game.CurrentPhase, GamePhase.ActivationPhase);
         _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
         _gameBroadcasterMock.Verify(
-            g => g.BroadcastPauseGameRequestedAsync(game.GameId, command.RequesterUsername,
-                It.IsAny<CancellationToken>()), Times.Once);
+            broadcaster => broadcaster.BroadcastActivationPhaseStartedAsync(game.GameId, It.IsAny<CancellationToken>()),
+            Times.Once);
     }
 }

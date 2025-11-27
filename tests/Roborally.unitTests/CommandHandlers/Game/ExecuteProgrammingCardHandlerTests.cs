@@ -9,7 +9,7 @@ using Roborally.core.domain.Game;
 using Roborally.core.domain.Game.Player;
 using Roborally.unitTests.Factory;
 
-namespace Roborally.unitTests.Handlers.Game;
+namespace Roborally.unitTests.CommandHandlers.Game;
 
 public class ExecuteProgrammingCardHandlerTests
 {

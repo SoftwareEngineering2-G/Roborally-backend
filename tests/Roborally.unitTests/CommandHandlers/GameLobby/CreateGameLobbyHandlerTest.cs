@@ -6,7 +6,7 @@ using Roborally.core.domain;
 using Roborally.core.domain.Bases;
 using Roborally.core.domain.User;
 
-namespace Roborally.unitTests.Handlers.GameLobby;
+namespace Roborally.unitTests.CommandHandlers.GameLobby;
 
 public class CreateGameLobbyHandlerTest
 {
