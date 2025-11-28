@@ -1,17 +1,14 @@
 ﻿using Moq;
-using Roborally.core.application;
 using Roborally.core.application.ApplicationContracts.Persistence;
 using Roborally.core.application.CommandContracts;
-using Roborally.core.application.CommandHandlers;
 using Roborally.core.application.CommandHandlers.GameLobby;
 using Roborally.core.domain;
 using Roborally.core.domain.Bases;
-using Roborally.core.domain.Lobby;
 using Roborally.core.domain.User;
 
-namespace Roborally.unitTests.Handlers;
+namespace Roborally.unitTests.CommandHandlers.GameLobby;
 
-public class GameLobbyHandlerTest
+public class CreateGameLobbyHandlerTest
 {
     private readonly Mock<IGameLobbyRepository> _gameLobbyRepoMock;
     private readonly Mock<IUserRepository> _userRepoMock;
@@ -19,7 +16,7 @@ public class GameLobbyHandlerTest
     private readonly Mock<ISystemTime> _systemTimeMock;
     private readonly CreateGameLobbyCommandHandler _handler;
 
-    public GameLobbyHandlerTest()
+    public CreateGameLobbyHandlerTest()
     {
         _gameLobbyRepoMock = new Mock<IGameLobbyRepository>();
         _userRepoMock = new Mock<IUserRepository>();
@@ -131,7 +128,7 @@ public class GameLobbyHandlerTest
 
         // Assert
         Assert.NotEqual(Guid.Empty, resultId);
-        _gameLobbyRepoMock.Verify(r => r.AddAsync(It.Is<GameLobby>(lobby => 
+        _gameLobbyRepoMock.Verify(r => r.AddAsync(It.Is<core.domain.Lobby.GameLobby>(lobby => 
             lobby.HostUsername == hostUser.Username && 
             !lobby.IsPrivate && 
             lobby.Name == "Public Game" &&
@@ -166,7 +163,7 @@ public class GameLobbyHandlerTest
 
         // Assert
         Assert.NotEqual(Guid.Empty, resultId);
-        _gameLobbyRepoMock.Verify(r => r.AddAsync(It.Is<GameLobby>(lobby => 
+        _gameLobbyRepoMock.Verify(r => r.AddAsync(It.Is<core.domain.Lobby.GameLobby>(lobby => 
             lobby.HostUsername == hostUser.Username && 
             lobby.IsPrivate && 
             lobby.Name == "Private Game" &&
@@ -202,7 +199,7 @@ public class GameLobbyHandlerTest
 
         // Assert
         Assert.NotEqual(Guid.Empty, resultId);
-        _gameLobbyRepoMock.Verify(r => r.AddAsync(It.IsAny<GameLobby>(), It.IsAny<CancellationToken>()), Times.Once);
+        _gameLobbyRepoMock.Verify(r => r.AddAsync(It.IsAny<core.domain.Lobby.GameLobby>(), It.IsAny<CancellationToken>()), Times.Once);
         _uowMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 }

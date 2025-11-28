@@ -1,7 +1,10 @@
-﻿namespace Roborally.unitTests.Factory;
+﻿using Roborally.core.domain.User;
+
+namespace Roborally.unitTests.Factory;
 
 public static class UserFactory {
-
+    private static int _userId = 1;
+    
     public static IEnumerable<object[]> GetValidUsernames() {
         return new List<object[]>() {
             new object[]{"Alice"},
@@ -39,5 +42,14 @@ public static class UserFactory {
             new object[]{"   "}, // Only spaces (less than 4 chars)
         };
     }
-    
+
+    public static User GetValidUser()
+    {
+        return new User()
+        {
+            Username = "User" + _userId++,
+            Password = "SecurePass123",
+            Birthday = new DateOnly(1990, 1, 1)
+        };
+    }
 }

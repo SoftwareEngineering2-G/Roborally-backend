@@ -1,5 +1,4 @@
 ﻿using Moq;
-using Roborally.core.application;
 using Roborally.core.application.ApplicationContracts.Broadcasters;
 using Roborally.core.application.ApplicationContracts.Persistence;
 using Roborally.core.application.CommandContracts.Game;
@@ -10,7 +9,7 @@ using Roborally.core.domain.Game;
 using Roborally.core.domain.Game.Player;
 using Roborally.unitTests.Factory;
 
-namespace Roborally.unitTests.Handlers;
+namespace Roborally.unitTests.CommandHandlers.Game;
 
 public class ExecuteProgrammingCardHandlerTests
 {
@@ -48,7 +47,7 @@ public class ExecuteProgrammingCardHandlerTests
         };
 
         _gameRepositoryMock.Setup(r => r.FindAsync(command.GameId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync((Game?)null);
+            .ReturnsAsync((core.domain.Game.Game?)null);
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<CustomException>(() => 

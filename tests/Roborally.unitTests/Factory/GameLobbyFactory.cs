@@ -1,4 +1,6 @@
-﻿using Roborally.core.domain.User;
+﻿using Roborally.core.domain.Bases;
+using Roborally.core.domain.Lobby;
+using Roborally.core.domain.User;
 
 namespace Roborally.unitTests.Factory;
 
@@ -14,7 +16,7 @@ public class GameLobbyFactory
             new object[] { "AA" },
         };
     }
-    
+
     public static IEnumerable<object[]> GetInvalidGameRoomNames()
     {
         return new List<object[]>()
@@ -23,7 +25,7 @@ public class GameLobbyFactory
             new object[] { "A" },
         };
     }
-    
+
     public static IEnumerable<object[]> GetValidPrivacySettings()
     {
         return new List<object[]>()
@@ -41,5 +43,11 @@ public class GameLobbyFactory
             Password = password,
             Birthday = DateOnly.FromDateTime(DateTime.Now.AddYears(-25))
         };
+    }
+
+    public static GameLobby GetValidGameLobby(User hostUser, ISystemTime systemTime, string roomName = "Test Lobby",
+        bool isPrivate = false)
+    {
+        return new GameLobby(hostUser, isPrivate, roomName, systemTime);
     }
 }
