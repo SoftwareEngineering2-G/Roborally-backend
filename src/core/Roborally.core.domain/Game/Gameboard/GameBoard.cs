@@ -76,4 +76,15 @@ public class GameBoard {
         }
         return positions;
     }
+    
+    public Position? GetPriorityAntennaPosition() {
+        for (int y = 0; y < Spaces.Length; y++) {
+            for (int x = 0; x < Spaces[y].Length; x++) {
+                if (Spaces[y][x] is BoardElement.PriorityAntenna) {
+                    return new Position(x, y);
+                }
+            }
+        }
+        return null;
+    }
 }

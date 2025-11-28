@@ -22,6 +22,12 @@ public static class GameMovementExtension {
             // We do not move
             return false;
         }
+        
+        // Check if target space is a priority antenna (cannot occupy)
+        Space targetSpace = game.GameBoard.GetSpaceAt(nextPosition);
+        if (targetSpace is Gameboard.BoardElement.PriorityAntenna) {
+            return false;
+        }
 
         // If there exists already a player
         var existingPlayer = game.Players.FirstOrDefault(p =>

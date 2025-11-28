@@ -60,6 +60,8 @@ public static class GameBoardJsonLoader
                     : GearDirection.AntiClockWise, 
                 walls),
             
+            "PriorityAntenna" => BoardElementFactory.PriorityAntenna(walls),
+            
             var name when name.StartsWith("Checkpoint") => ParseCheckpoint(dto.Name, walls),
             
             _ => SpaceFactory.FromNameAndWalls(dto.Name, walls)
