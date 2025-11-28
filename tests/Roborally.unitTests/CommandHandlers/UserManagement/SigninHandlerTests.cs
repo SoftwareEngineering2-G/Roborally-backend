@@ -8,7 +8,7 @@ using Roborally.core.application.CommandHandlers.UserManagement;
 using Roborally.core.domain;
 using Roborally.core.domain.User;
 
-namespace Roborally.unitTests.Handlers;
+namespace Roborally.unitTests.CommandHandlers.UserManagement;
 
 public class SigninHandlerTests {
     [Fact]

@@ -9,7 +9,7 @@ using Roborally.core.domain;
 using Roborally.core.domain.Bases;
 using Roborally.core.domain.User;
 
-namespace Roborally.unitTests.Handlers;
+namespace Roborally.unitTests.CommandHandlers.UserManagement;
 
 public class SignupHandlerTests {
     [Fact]
