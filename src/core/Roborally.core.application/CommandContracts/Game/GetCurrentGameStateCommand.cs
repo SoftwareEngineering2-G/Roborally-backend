@@ -33,7 +33,7 @@ public sealed class GetCurrentGameStateCommandResponse {
         List<string> RevealedCardsInOrder,
         int CurrentCheckpointPassed);
 
-    public record MyState(List<string>? LockedInCards, List<string>? DealtCards);
+    public record MyState(List<string>? LockedInCards, List<string>? DealtCards, int ProgrammingPickPilesCount, int DiscardPilesCount);
     public record GameBoardSpaces(string Name, Space[][] Spaces);
 
 }

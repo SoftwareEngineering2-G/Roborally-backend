@@ -11,7 +11,7 @@ public class IndividualPlayerBroadcaster : IIndividualPlayerBroadcaster {
         _hubContext = hubContext;
     }
 
-    public async Task BroadcastHandToPlayerAsync(string username, Guid gameId, List<string> dealtCards,
+    public async Task BroadcastHandToPlayerAsync(string username, Guid gameId, List<string> dealtCards, bool isDeckReshuffled, int programmingPickPilesCount, int discardPilesCount,
         CancellationToken ct) {
         string groupName = GroupName.IndividualPlayer(username, gameId.ToString());
 
@@ -19,6 +19,9 @@ public class IndividualPlayerBroadcaster : IIndividualPlayerBroadcaster {
             gameId,
             username,
             dealtCards,
+            isDeckReshuffled,
+            programmingPickPilesCount,
+            discardPilesCount
         };
 
         await _hubContext.Clients.Group(groupName).SendAsync("PlayerCardsDealt", payload, ct);

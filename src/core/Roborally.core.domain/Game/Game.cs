@@ -60,17 +60,17 @@ public class Game {
         RoundCount = 1;
     }
 
-    public Dictionary<Player.Player, List<ProgrammingCard>> DealDecksToAllPlayers(ISystemTime systemTime) {
+    public Dictionary<Player.Player, DealCardInfo> DealDecksToAllPlayers(ISystemTime systemTime) {
         if (!IsInProgrammingPhase()) {
             throw new CustomException("The game needs to be in programming phase", 400);
         }
 
-        Dictionary<Player.Player, List<ProgrammingCard>> playerDealtCards = new();
+        Dictionary<Player.Player, DealCardInfo> playerDealtCards = new();
 
         // We get what players have been dealt what cards so we can broadcast it later
         _players.ForEach(player => {
-            List<ProgrammingCard> dealtCards = player.DealProgrammingCards(9, systemTime);
-            playerDealtCards.Add(player, dealtCards);
+            var dealCardInfo  = player.DealProgrammingCards(9, systemTime);
+            playerDealtCards.Add(player, dealCardInfo);
         });
 
         return playerDealtCards;
@@ -165,6 +165,7 @@ public class Game {
 
             // TODO: Here, next round should be started...
             // TODO: RoundCount++;
+            // TODO: Remember to add all locked in cards to the discard pile of each player: player.ProgrammingDeck.DiscardedPiles.AddRange( LockedInCards )
             // ALso then we need to notify players somehow that a new round has started
         }
     }
