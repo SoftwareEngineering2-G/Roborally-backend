@@ -57,7 +57,7 @@ public class GetCurrentGameStateHandlerTests
         // Assert
         Assert.NotNull(getCurrentGameStateResponse);
         Assert.Equal(getCurrentGameStateResponse.PersonalState,
-            new GetCurrentGameStateCommandResponse.MyState(null, null));
+            new GetCurrentGameStateCommandResponse.MyState(null, null, 0, 0));
     }
 
     [Fact]

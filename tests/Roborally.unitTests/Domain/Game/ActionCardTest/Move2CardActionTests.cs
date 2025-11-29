@@ -10,24 +10,24 @@ using Roborally.unitTests.Factory;
 
 namespace Roborally.unitTests.Domain;
 
-public class Move3CardActionTests
+public class Move2CardActionTests
 {
-    private readonly Game _game;
+    private readonly core.domain.Game.Game _game;
     private readonly Player _player;
-    private readonly Move3CardAction _action;
+    private readonly Move2CardAction _action;
     private readonly Mock<ISystemTime> _systemTimeMock;
 
-    public Move3CardActionTests()
+    public Move2CardActionTests()
     {
         _game = GameFactory.GetValidGame();
         _player = _game.Players[0];
-        _action = new Move3CardAction();
+        _action = new Move2CardAction();
         _systemTimeMock = new Mock<ISystemTime>();
         _systemTimeMock.Setup(x => x.CurrentTime).Returns(DateTime.UtcNow);
     }
 
     [Fact]
-    public void Move3_ShouldMovePlayerThreeSpacesForward()
+    public void Move2_ShouldMovePlayerTwoSpacesForward()
     {
         // Arrange
         _player.CurrentPosition = new Position(5, 5);
@@ -37,11 +37,11 @@ public class Move3CardActionTests
         _action.Execute(_player, _game, _systemTimeMock.Object);
 
         // Assert
-        Assert.Equal(new Position(5, 2), _player.CurrentPosition);
+        Assert.Equal(new Position(5, 3), _player.CurrentPosition);
     }
-    
+
     [Fact]
-    public void Move3_ShouldRecordCardExecution()
+    public void Move2_ShouldRecordCardExecution()
     {
         // Arrange
         _player.CurrentPosition = new Position(5, 5);
@@ -52,6 +52,6 @@ public class Move3CardActionTests
 
         // Assert
         var lastCard = _player.GetLastExecutedCard();
-        Assert.Equal(ProgrammingCard.Move3, lastCard);
+        Assert.Equal(ProgrammingCard.Move2, lastCard);
     }
 }
