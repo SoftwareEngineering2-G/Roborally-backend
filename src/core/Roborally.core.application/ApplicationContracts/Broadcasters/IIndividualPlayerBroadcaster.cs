@@ -1,5 +1,5 @@
 ﻿namespace Roborally.core.application.ApplicationContracts.Broadcasters;
 
 public interface IIndividualPlayerBroadcaster {
-    public Task BroadcastHandToPlayerAsync(string username, Guid gameId, List<string> dealtCards, CancellationToken ct);
+    public Task BroadcastHandToPlayerAsync(string username, Guid gameId, List<string> dealtCards, bool isDeckReshuffled, int programmingPickPilesCount, int discardPilesCount, CancellationToken ct);
 }

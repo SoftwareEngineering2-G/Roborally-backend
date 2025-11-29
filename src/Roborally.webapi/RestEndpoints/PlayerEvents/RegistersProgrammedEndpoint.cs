@@ -7,8 +7,7 @@ public class RegistersProgrammedEndpoint : Endpoint<RegisterProgrammedRequest> {
     public override void Configure() {
         Post("/games/{gameId}/registers-programmed");
     }
-
-
+    
     public override async Task HandleAsync(RegisterProgrammedRequest req, CancellationToken ct) {
         RegistersProgrammedCommand command = new RegistersProgrammedCommand() {
             GameId = req.GameId,
