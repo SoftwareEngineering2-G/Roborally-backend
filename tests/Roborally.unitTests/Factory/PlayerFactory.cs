@@ -7,13 +7,13 @@ public static class PlayerFactory
 {
     private static int _playerId = 1;
 
-    public static Player GetValidPlayer()
+    public static Player GetValidPlayer(DateOnly? birthday = null)
     {
         var user = new User
         {
             Username = "User" + _playerId++,
             Password = "SecurePass123",
-            Birthday = new DateOnly(1990, 1, 1)
+            Birthday = birthday ?? DateOnly.FromDateTime(DateTime.Now.AddYears(-20))
         };
 
         var player = new Player(user.Username, Guid.NewGuid(), new Position(0, 0), Robot.Black)
@@ -26,8 +26,14 @@ public static class PlayerFactory
 
     public static List<Player> GetValidPlayers(int playersCount)
     {
+        var birthday = DateOnly.FromDateTime(DateTime.Now.AddYears(-20));
+
         return Enumerable.Range(0, playersCount)
-            .Select(_ => GetValidPlayer())
-            .ToList();
+            .Select(_ =>
+            {
+                var player = GetValidPlayer(birthday);
+                birthday = birthday.AddDays(1);
+                return player;
+            }).ToList();
     }
 }

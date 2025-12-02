@@ -8,11 +8,11 @@ using Roborally.unitTests.Factory;
 
 namespace Roborally.unitTests.Domain;
 
-public class GameLobbyTest
+public class GameLobbyTests
 {
     private readonly Mock<ISystemTime> _systemTimeMock;
 
-    public GameLobbyTest()
+    public GameLobbyTests()
     {
         _systemTimeMock = new Mock<ISystemTime>();
         _systemTimeMock.Setup(x => x.CurrentTime).Returns(DateTime.UtcNow);

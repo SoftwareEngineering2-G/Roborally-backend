@@ -1,6 +1,7 @@
-﻿using Roborally.core.domain.Game;
+﻿using Moq;
+using Roborally.core.domain.Bases;
+using Roborally.core.domain.Game;
 using Roborally.core.domain.Game.Deck;
-using Roborally.core.domain.Game.Player;
 using Roborally.core.domain.Game.Player.Events;
 using Roborally.unitTests.Factory;
 
@@ -8,6 +9,83 @@ namespace Roborally.unitTests.Domain;
 
 public class GameQueryExtensionsTests
 {
+    private readonly Mock<ISystemTime> _systemTimeMock;
+
+    public GameQueryExtensionsTests()
+    {
+        _systemTimeMock = new Mock<ISystemTime>();
+        _systemTimeMock.Setup(x => x.CurrentTime).Returns(DateTime.UtcNow);
+    }
+    
+    [Fact]
+    public void GetDealtCardsDisplayNames_ShouldReturnNull_WhenNoCardsDealtEventPresent()
+    {
+        // Arrange
+        var game = GameFactory.GetValidGame();
+        var player = game.Players[0];
+        var round = 1;
+
+        // Act
+        var dealtCards = player.GetDealtCardsDisplayNames(round);
+
+        // Assert
+        Assert.Null(dealtCards);
+    }
+
+    [Fact]
+    public void GetDealtCardsDisplayNames_ShouldReturnDealtCards_WhenCardsDealtEventPresent()
+    {
+        // Arrange
+        var game = GameFactory.GetValidGame();
+        var player = game.Players[0];
+        var round = 1;
+        game.DealDecksToAllPlayers(_systemTimeMock.Object);
+        var dealtCards = player.GetCardsDealtEvent(round)!.DealtCards;
+        
+        // Act
+        var dealtCardsNames = player.GetDealtCardsDisplayNames(round);
+
+        // Assert
+        Assert.NotNull(dealtCardsNames);
+        Assert.Equal(dealtCards.Count, dealtCardsNames.Count);
+    }
+
+    [Fact]
+    public void GetProgrammedRegistersDisplayNames_ShouldReturnNull_WhenNoProgrammedEventPresent()
+    {
+        // Arrange
+        var game = GameFactory.GetValidGame();
+        var player = game.Players[0];
+        var round = 1;
+
+        // Act
+        var programmedCards = player.GetProgrammedRegistersDisplayNames(round);
+
+        // Assert
+        Assert.Null(programmedCards);
+    }
+
+    [Fact]
+    public void GetProgrammedRegistersDisplayNames_ShouldReturnProgrammedCards_WhenProgrammedEventPresent()
+    {
+        // Arrange
+        var game = GameFactory.GetValidGame();
+        game.CurrentPhase = GamePhase.ProgrammingPhase;
+        game.DealDecksToAllPlayers(_systemTimeMock.Object);
+        var round = 1;
+        var player = game.Players[0];
+        var lockedInCards = player.GetCardsDealtEvent(round)!.DealtCards.Take(5).ToList();
+        
+        game.LockInRegisters(player.Username, lockedInCards, _systemTimeMock.Object);
+        
+        // Act
+        var programmedRegisters = player.GetProgrammedRegistersDisplayNames(round);
+        
+        // Assert
+        Assert.NotNull(programmedRegisters);
+        Assert.Equal(5, programmedRegisters.Count);
+    }
+
     [Fact]
     public void GetRevealedCardsDisplayNames_ShouldReturnRevealedCards_WhenProgrammedEventPresent()
     {
