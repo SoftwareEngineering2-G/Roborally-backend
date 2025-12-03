@@ -16,6 +16,7 @@ public sealed class GetCurrentGameStateCommandResponse {
     public required GameBoardSpaces GameBoard { get; set; }
     public required string CurrentPhase { get; set; }
     public required int CurrentRevealedRegister { get; set; }
+    public required int RoundCount { get; set; }
     public required MyState PersonalState { get; set; }
     public required string? CurrentTurnUsername { get; set; }
     public required int? CurrentExecutingRegister { get; set; }
@@ -31,7 +32,8 @@ public sealed class GetCurrentGameStateCommandResponse {
         string Direction,
         bool HasLockedInRegisters,
         List<string> RevealedCardsInOrder,
-        int CurrentCheckpointPassed);
+        int CurrentCheckpointPassed,
+        int RoundCount);
 
     public record MyState(List<string>? LockedInCards, List<string>? DealtCards, int ProgrammingPickPilesCount, int DiscardPilesCount);
     public record GameBoardSpaces(string Name, Space[][] Spaces);

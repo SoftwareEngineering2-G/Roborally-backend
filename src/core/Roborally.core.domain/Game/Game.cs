@@ -162,12 +162,54 @@ public class Game {
 
         if (BoardElementFactory.IsThisElementLastInQueue(nextBoardElementName)) {
             await this.CheckAndRecordCheckpoint(systemTime);
-
-            // TODO: Here, next round should be started...
-            // TODO: RoundCount++;
-            // TODO: Remember to add all locked in cards to the discard pile of each player: player.ProgrammingDeck.DiscardedPiles.AddRange( LockedInCards )
-            // ALso then we need to notify players somehow that a new round has started
         }
+    }
+
+    public void StartNextRound(ISystemTime systemTime) {
+        if (!IsInActivationPhase()) {
+            throw new CustomException("Cannot start next round outside of activation phase", 400);
+        }
+        
+        // Check if all board elements have been activated (last board element was activated)
+        var lastActivatedElement = GameEvents.OfType<BoardElementActivatedEvent>()
+            .Where(e => e.RoundCount == RoundCount)
+            .OrderByDescending(e => e.HappenedAt)
+            .FirstOrDefault();
+            
+        if (lastActivatedElement == null || !BoardElementFactory.IsThisElementLastInQueue(lastActivatedElement.BoardElementName)) {
+            throw new CustomException("Cannot start next round until all board elements have been activated", 400);
+        }
+
+        // Discard all locked-in cards from all players
+        foreach (var player in _players) {
+            var lockedInEvent = player.GetRegistersProgrammedEvent(RoundCount);
+            if (lockedInEvent != null) {
+                player.ProgrammingDeck.DiscardedPiles.AddRange(lockedInEvent.ProgrammedCardsInOrder);
+            }
+        }
+        
+        int completedRound = RoundCount;
+        
+        // Increment round count for all players and the game
+        RoundCount++;
+        foreach (var player in _players) {
+            player.RoundCount = RoundCount;
+        }
+
+        // Reset the revealed register counter for the new round
+        CurrentRevealedRegister = 0;
+
+        // Switch back to programming phase
+        CurrentPhase = GamePhase.ProgrammingPhase;
+        
+        // Record the round completion event
+        RoundCompletedEvent roundCompletedEvent = new RoundCompletedEvent {
+            GameId = this.GameId,
+            HappenedAt = systemTime.CurrentTime,
+            CompletedRound = completedRound,
+            NewRound = this.RoundCount
+        };
+        GameEvents.Add(roundCompletedEvent);
     }
 
     public List<Player.Player> ExecuteProgrammingCard(string username, ProgrammingCard card, ISystemTime systemTime, CardExecutionContext? context = null) {
