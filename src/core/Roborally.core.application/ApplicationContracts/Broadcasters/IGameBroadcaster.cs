@@ -14,4 +14,5 @@ public interface IGameBroadcaster {
     Task BroadcastNextPlayerInTurn(Guid gameId, string? nextPlayerUsername, CancellationToken ct);
     Task BroadcastGameCompletedAsync(GameCompletedBroadcastEvent eventModel, CancellationToken ct);
     Task BroadcastCheckpointReachedAsync(Guid gameId, string username, int checkpointNumber, CancellationToken ct);
+    Task BroadcastRoundCompletedAsync(Guid gameId, int completedRound, int newRound, CancellationToken ct);
 }

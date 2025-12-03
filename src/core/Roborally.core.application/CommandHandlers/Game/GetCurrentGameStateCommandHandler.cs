@@ -49,6 +49,7 @@ public class
             CurrentPhase = game.CurrentPhase.DisplayName,
             IsPrivate = game.IsPrivate,
             CurrentRevealedRegister = game.CurrentRevealedRegister,
+            RoundCount = game.RoundCount,
             CurrentTurnUsername = game.GetNextExecutingPlayer()?.Username,
             CurrentExecutingRegister = game.GetCurrentExecutingRegister(),
             GameBoard = new GetCurrentGameStateCommandResponse.GameBoardSpaces(game.GameBoard.Name,
@@ -82,7 +83,8 @@ public class
                         p.CurrentFacingDirection.DisplayName,
                         hasLockedRegisters,
                         revealedCardsInOrder,
-                        p.CurrentCheckpointPassed
+                        p.CurrentCheckpointPassed,
+                        p.RoundCount
                     );
                 }).ToList(),
             PersonalState = personalState
