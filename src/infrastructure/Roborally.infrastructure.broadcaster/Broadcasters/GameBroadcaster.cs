@@ -110,4 +110,15 @@ public class GameBroadcaster : IGameBroadcaster{
 
         await _hubContext.Clients.Groups(GroupName(eventModel.GameId)).SendAsync("GameCompleted", eventModel, ct);
     }
+
+    public Task BroadcastRoundCompletedAsync(Guid gameId, int completedRound, int newRound, CancellationToken ct)
+    {
+        var payload = new
+        {
+            gameId,
+            completedRound,
+            newRound
+        };
+        return _hubContext.Clients.Groups(GroupName(gameId)).SendAsync("RoundCompleted", payload, ct);
+    }
 }
