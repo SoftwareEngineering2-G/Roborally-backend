@@ -10,7 +10,7 @@ namespace Roborally.unitTests.Domain.ActionCardTest;
 
 public class SwapPositionCardActionTests
 {
-    private readonly Game _game;
+    private readonly core.domain.Game.Game _game;
     private readonly Player _player;
     private readonly Player _targetPlayer;
     private readonly SwapPositionCardAction _action;
@@ -66,5 +66,20 @@ public class SwapPositionCardActionTests
 
         Assert.Contains("does not exist", exception.Message);
         Assert.Equal(404, exception.StatusCode);
+    }
+    
+    [Fact]
+    public void Execute_ShouldThrow_WhenTargetIsSelf()
+    {
+        var context = new CardExecutionContext
+        {
+            TargetPlayerUsername = _player.Username
+        };
+
+        var exception = Assert.Throws<CustomException>(() =>
+            _action.Execute(_player, _game, _systemTimeMock.Object, context));
+
+        Assert.Contains("Cannot swap positions with yourself", exception.Message);
+        Assert.Equal(400, exception.StatusCode);
     }
 }
