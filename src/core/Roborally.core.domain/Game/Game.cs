@@ -131,10 +131,11 @@ public class Game {
             throw new CustomException("The game is currently paused", 400);
         }
 
+        // Get the last activated element for THIS round only
         var lastActivatedElement = GameEvents.OfType<BoardElementActivatedEvent>()
+            .Where(e => e.RoundCount == RoundCount)
             .OrderByDescending(e => e.HappenedAt)
             .FirstOrDefault();
-
 
         string nextBoardElementName =
             BoardElementFactory.GetNextForActivation(lastActivatedElement?.BoardElementName ?? null);
