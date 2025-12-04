@@ -34,9 +34,31 @@ public static class GameMovementExtension {
                     false; // If push is disabled, we dont push the other robot and cannot move either...
             }
 
-            // Recursion to push the existing player
-            bool wasPushed = game.MovePlayerInDirection(existingPlayer, direction);
-            if (!wasPushed) return false;
+            // Check if the robot can be pushed (only one robot at a time)
+            Position positionBehindExistingPlayer = existingPlayer.GetNextPosition(direction);
+            
+            // Check if the position behind is out of bounds
+            if (!game.GameBoard.IsWithinBounds(positionBehindExistingPlayer)) {
+                return false; // Cannot push robot off the board
+            }
+            
+            // Check if there's a wall blocking the push
+            if (game.GameBoard.HasWallBetween(existingPlayer.CurrentPosition, positionBehindExistingPlayer, existingPlayer.CurrentFacingDirection)) {
+                return false; // Wall blocks the push
+            }
+            
+            // Check if there's ANOTHER robot behind the one we're trying to push
+            var secondRobot = game.Players.FirstOrDefault(p =>
+                !p.Username.Equals(player.Username) && 
+                !p.Username.Equals(existingPlayer.Username) && 
+                p.CurrentPosition.Equals(positionBehindExistingPlayer));
+            
+            if (secondRobot is not null) {
+                return false; // Cannot push two or more robots at once
+            }
+
+            // Only one robot to push, so push them
+            existingPlayer.MoveTo(positionBehindExistingPlayer);
         }
 
         // If there is no player blocking, simply make a move
