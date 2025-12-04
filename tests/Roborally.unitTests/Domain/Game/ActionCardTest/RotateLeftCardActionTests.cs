@@ -10,7 +10,7 @@ namespace Roborally.unitTests.Domain;
 
 public class RotateLeftCardActionTests
 {
-    private readonly Game _game;
+    private readonly core.domain.Game.Game _game;
     private readonly Player _player;
     private readonly RotateLeftCardAction _action;
     private readonly Mock<ISystemTime> _systemTimeMock;
