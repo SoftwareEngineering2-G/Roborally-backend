@@ -91,6 +91,33 @@ public class Game {
         player.LockInRegisters(lockedInCards, systemTime);
     }
 
+    // Assigns random cards to players that have not locked in and have empty registers and automatically locks them in.
+    // Returns a dictionary of username mapped to the cards assigned to that player
+    public Dictionary<string, List<ProgrammingCard>> AutoCompleteEmptyRegisters(ISystemTime systemTime)
+    {
+        if (IsInActivationPhase())
+        {
+            throw new CustomException("The game needs to be in programming phase", 400);
+        }
+
+        if (IsPaused)
+        {
+            throw new CustomException("The game is currently paused", 400);
+        }
+
+        var assignedCards = new Dictionary<string, List<ProgrammingCard>>();
+        
+        _players
+            .Where(p => !p.HasLockedRegisters(RoundCount))
+            .ToList()
+            .ForEach(player =>
+            {
+                assignedCards[player.Username] = player.AutoCompleteRegisters(systemTime);
+            });
+        
+        return assignedCards;
+    }
+
     // Returns username mapped to the revealed card for that register
     public Dictionary<string, ProgrammingCard> RevealNextRegister() {
         if (!IsInActivationPhase()) {

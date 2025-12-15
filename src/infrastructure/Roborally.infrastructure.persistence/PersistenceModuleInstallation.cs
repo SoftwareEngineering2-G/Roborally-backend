@@ -2,11 +2,13 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Roborally.core.application.ApplicationContracts;
+using Roborally.core.application.ApplicationContracts.GameTimer;
 using Roborally.core.application.ApplicationContracts.Persistence;
 using Roborally.core.domain.Bases;
 using Roborally.infrastructure.persistence.Authentication;
 using Roborally.infrastructure.persistence.Contracts;
 using Roborally.infrastructure.persistence.Game;
+using Roborally.infrastructure.persistence.GameTimer;
 using Roborally.infrastructure.persistence.Lobby;
 using Roborally.infrastructure.persistence.User;
 
@@ -37,6 +39,7 @@ public static class PersistenceModuleInstallation
         
         // Register JWT service
         services.AddScoped<IJwtService, JwtService>();
+        services.AddSingleton<IGameTimerService, GameTimerService>();
         
         return services;
     }
