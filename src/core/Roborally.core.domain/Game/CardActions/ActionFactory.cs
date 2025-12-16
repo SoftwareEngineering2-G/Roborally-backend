@@ -16,7 +16,6 @@ public static class ActionFactory
             "Rotate Right" => new RotateRightCardAction(),
             "U-Turn" => new UTurnCardAction(),
             "Move Back" => new MoveBackwardCardAction(1),
-            "Power Up" => new PowerUpCardAction(),
             "Again" => new AgainCardAction(),
             "Swap Position" => new SwapPositionCardAction(),
             "Movement Choice" => new MovementChoiceCardAction(),
