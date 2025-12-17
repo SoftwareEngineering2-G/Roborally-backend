@@ -29,5 +29,10 @@ public class ProgrammingTimeoutHandler : IProgrammingTimeoutHandler
         var assignedCards = game.AutoCompleteEmptyRegisters(_systemTime);
         await _unitOfWork.SaveChangesAsync(ct);
         await _gameBroadcaster.BroadcastProgrammingTimeoutAsync(gameId, assignedCards, ct);
+
+        var tasks = assignedCards
+            .Select(item => _gameBroadcaster.BroadcastPlayerLockedInRegisterAsync(item.Key, null, gameId, ct))
+            .ToList();
+        await Task.WhenAll(tasks);
     }
 }
