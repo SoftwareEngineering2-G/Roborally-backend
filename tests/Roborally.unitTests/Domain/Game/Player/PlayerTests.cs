@@ -30,7 +30,6 @@ public class PlayerTests
             ProgrammingCard.UTurn,
             ProgrammingCard.MoveBack,
             ProgrammingCard.Again,
-            ProgrammingCard.PowerUp,
             ProgrammingCard.MovementChoice,
             ProgrammingCard.SwapPosition
         ];

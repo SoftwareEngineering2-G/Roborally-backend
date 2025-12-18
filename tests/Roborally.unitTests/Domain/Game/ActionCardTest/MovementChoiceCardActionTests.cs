@@ -88,7 +88,7 @@ public class MovementChoiceCardActionTests
     {
         var context = new CardExecutionContext
         {
-            SelectedMovementCard = ProgrammingCard.PowerUp
+            SelectedMovementCard = ProgrammingCard.Again
         };
         
         var exception = Assert.Throws<CustomException>(() =>
