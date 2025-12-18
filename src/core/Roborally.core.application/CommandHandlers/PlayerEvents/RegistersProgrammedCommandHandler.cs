@@ -42,12 +42,12 @@ public class RegistersProgrammedCommandHandler : ICommandHandler<RegistersProgra
         
         game.LockInRegisters(command.Username, lockedInCards, _systemTime);
 
-        var timeoutExpiresAt = new DateTimeOffset?();
+        DateTimeOffset? timeoutExpiresAt = null;
         
         if (isFirstPlayer)
         {
             var timeSpan = TimeSpan.FromSeconds(30);
-            timeoutExpiresAt = DateTimeOffset.Now.Add(timeSpan);
+            timeoutExpiresAt = _systemTime.CurrentTime.Add(timeSpan);
             _timerService.StartProgrammingTimer(game.GameId, timeSpan);
         }
         
@@ -61,6 +61,6 @@ public class RegistersProgrammedCommandHandler : ICommandHandler<RegistersProgra
 
         // Broadcast that the player has locked in their registers
         await _gameBroadcaster.BroadcastPlayerLockedInRegisterAsync(command.Username,
-            timeoutExpiresAt.ToString(), command.GameId, ct);
+            timeoutExpiresAt?.ToString("O") ?? string.Empty, command.GameId, ct);
     }
 }

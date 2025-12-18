@@ -23,13 +23,20 @@ public class GameTimerService : IGameTimerService
         
         _ = Task.Run(async () =>
         {
-            await Task.Delay(duration, cts.Token);
-
-            if (!cts.Token.IsCancellationRequested)
+            try
             {
+                await Task.Delay(duration, cts.Token);
+
                 using var scope = _scopeFactory.CreateScope();
                 var handler = scope.ServiceProvider.GetRequiredService<IProgrammingTimeoutHandler>();
                 await handler.HandleTimeoutAsync(gameId, cts.Token);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+            finally
+            {
                 _timers.TryRemove(gameId, out _);
             }
         }, cts.Token);
