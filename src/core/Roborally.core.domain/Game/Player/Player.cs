@@ -83,6 +83,28 @@ public class Player {
         this.PlayerEvents.Add(lockedInEvent);
     }
 
+        internal List<ProgrammingCard> AutoCompleteRegisters(ISystemTime systemTime) {
+            var lastProgrammingCardsDealtEvent = this.GetCardsDealtEvent(RoundCount);
+
+            if (lastProgrammingCardsDealtEvent is null) {
+                throw new CustomException("No cards have been dealt to the player yet.", 400);
+            }
+
+            // Assign random cards
+            var assignedCards = new List<ProgrammingCard>();
+            var dealtCards = new List<ProgrammingCard>( lastProgrammingCardsDealtEvent.DealtCards );
+
+            for (var i = 0; i < 5; i++) {
+                var randomIndex = new Random().Next(int.Min(5, dealtCards.Count));
+                assignedCards.Add(dealtCards[randomIndex]);
+                dealtCards.RemoveAt(randomIndex);
+            }
+
+            LockInRegisters(assignedCards, systemTime);
+
+            return assignedCards;
+        }
+    
     internal DealCardInfo DealProgrammingCards(int count, ISystemTime systemTime) {
         var lastDealtEvent = this.GetCardsDealtEvent(RoundCount);
         if (lastDealtEvent is not null) {
