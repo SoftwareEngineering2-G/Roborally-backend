@@ -15,7 +15,7 @@ public class ProgrammingDeck {
 
     // Creates a new shuffled programming deck
     public static ProgrammingDeck NewShuffled() {
-        List<ProgrammingCard> cards = new List<ProgrammingCard>(22);
+        List<ProgrammingCard> cards = new List<ProgrammingCard>(21);
         // 4 copies of Move 1, rotate right, rotate left
         for (int i = 0; i < 4; i++) {
             cards.Add(ProgrammingCard.Move1);
@@ -29,7 +29,6 @@ public class ProgrammingDeck {
         cards.Add(ProgrammingCard.Move3);
         cards.Add(ProgrammingCard.UTurn);
         cards.Add(ProgrammingCard.MoveBack);
-        cards.Add(ProgrammingCard.PowerUp);
         cards.Add(ProgrammingCard.Again);
         cards.Add(ProgrammingCard.SwapPosition);
         cards.Add(ProgrammingCard.MovementChoice);
