@@ -7,6 +7,7 @@ public static class BoardElementFactory {
     internal const string BlueConveyorBeltName = "BlueConveyorBelt";
     internal const string GreenConveyorBeltName = "GreenConveyorBelt";
     internal const string GearName = "Gear";
+    internal const string PriorityAntennaName = "PriorityAntenna";
 
     // Use Type objects for activation order
     private static readonly string[] ActivationOrder = new string[] {
@@ -49,6 +50,14 @@ public static class BoardElementFactory {
         return new Gear(walls) {
             Direction = direction
         };
+    }
+
+    public static BoardElement PriorityAntenna() {
+        return new PriorityAntenna();
+    }
+    
+    public static BoardElement PriorityAntenna(Direction[] walls) {
+        return new PriorityAntenna(walls);
     }
 
     public static string GetNextForActivation(string? lastActivatedElement) {
