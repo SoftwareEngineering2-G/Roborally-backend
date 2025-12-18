@@ -18,8 +18,6 @@ public class StartActivationPhaseEndpoint : Endpoint<StartActivationPhaseRequest
             Username = req.Username
         };
 
-        Console.WriteLine($"Received GameId: {req.GameId}, Username: {req.Username}");
-
         await command.ExecuteAsync(ct);
         await Send.OkAsync(cancellation: ct);
     }
