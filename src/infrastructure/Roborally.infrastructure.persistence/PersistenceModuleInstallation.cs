@@ -1,12 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Quartz;
 using Roborally.core.application.ApplicationContracts;
+using Roborally.core.application.ApplicationContracts.GameTimer;
 using Roborally.core.application.ApplicationContracts.Persistence;
 using Roborally.core.domain.Bases;
 using Roborally.infrastructure.persistence.Authentication;
-using Roborally.infrastructure.persistence.Contracts;
 using Roborally.infrastructure.persistence.Game;
+using Roborally.infrastructure.persistence.GameTimer;
 using Roborally.infrastructure.persistence.Lobby;
 using Roborally.infrastructure.persistence.User;
 
@@ -29,7 +31,7 @@ public static class PersistenceModuleInstallation
         services.AddScoped<IGameLobbyRepository, GameLobbyRepository>();
         services.AddScoped<IGameRepository, GameRepository>();
         services.AddScoped<IGameBoardRepository, GameBoardRepository>();
-        services.AddScoped<ISystemTime, SystemTime>();
+        services.AddScoped<ISystemTime, Contracts.SystemTime>();
         services.AddScoped<GameBoardSeeder>();
         
         // Register JWT settings from configuration
@@ -37,6 +39,21 @@ public static class PersistenceModuleInstallation
         
         // Register JWT service
         services.AddScoped<IJwtService, JwtService>();
+
+        // Configure Quartz
+        services.AddQuartz(q =>
+        {
+            // Use a simple in-memory job store (can be configured for persistence later if needed)
+            q.UseInMemoryStore();
+
+            // Register the job
+            q.AddJob<ProgrammingTimeoutJob>(opts => opts.WithIdentity("ProgrammingTimeoutJob").StoreDurably());
+        });
+
+        // Add the Quartz.NET hosted service
+        services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+
+        services.AddSingleton<IGameTimerService, GameTimerService>();
         
         return services;
     }

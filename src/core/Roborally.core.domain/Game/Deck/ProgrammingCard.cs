@@ -12,7 +12,6 @@ public class ProgrammingCard : Enumeration
     public static readonly ProgrammingCard RotateRight = new ProgrammingCard("Rotate Right");
     public static readonly ProgrammingCard UTurn = new ProgrammingCard("U-Turn");
     public static readonly ProgrammingCard MoveBack = new ProgrammingCard("Move Back");
-    public static readonly ProgrammingCard PowerUp = new ProgrammingCard("Power Up");
     public static readonly ProgrammingCard Again = new ProgrammingCard("Again");
     public static readonly ProgrammingCard SwapPosition = new ProgrammingCard("Swap Position");
     public static readonly ProgrammingCard MovementChoice = new ProgrammingCard("Movement Choice");

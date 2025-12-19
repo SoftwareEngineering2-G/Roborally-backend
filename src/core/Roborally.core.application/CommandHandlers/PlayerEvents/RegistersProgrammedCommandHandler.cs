@@ -1,5 +1,7 @@
 ﻿using FastEndpoints;
+using Roborally.core.application.ApplicationContracts;
 using Roborally.core.application.ApplicationContracts.Broadcasters;
+using Roborally.core.application.ApplicationContracts.GameTimer;
 using Roborally.core.application.ApplicationContracts.Persistence;
 using Roborally.core.application.CommandContracts.PlayerEvents;
 using Roborally.core.domain;
@@ -14,14 +16,15 @@ public class RegistersProgrammedCommandHandler : ICommandHandler<RegistersProgra
     private readonly IGameRepository _gameRepository;
     private readonly ISystemTime _systemTime;
     private readonly IGameBroadcaster _gameBroadcaster;
-
+    private readonly IGameTimerService _timerService;
     
     public RegistersProgrammedCommandHandler(IUnitOfWork unitOfWork,
-        ISystemTime systemTime, IGameBroadcaster gameBroadcaster, IGameRepository gameRepository) {
+        ISystemTime systemTime, IGameBroadcaster gameBroadcaster, IGameRepository gameRepository, IGameTimerService timerService) {
         _unitOfWork = unitOfWork;
         _systemTime = systemTime;
         _gameBroadcaster = gameBroadcaster;
         _gameRepository = gameRepository;
+        _timerService = timerService;
     }
 
     public async Task ExecuteAsync(RegistersProgrammedCommand command, CancellationToken ct) {
@@ -34,13 +37,30 @@ public class RegistersProgrammedCommandHandler : ICommandHandler<RegistersProgra
         
         List<ProgrammingCard> lockedInCards =
             command.LockedInCardsInOrder.Select(ProgrammingCard.FromString).ToList();
+
+        var isFirstPlayer = game.Players.All(player => !player.HasLockedRegisters(game.RoundCount));
         
         game.LockInRegisters(command.Username, lockedInCards, _systemTime);
 
+        DateTimeOffset? timeoutExpiresAt = null;
+        
+        if (isFirstPlayer)
+        {
+            var timeSpan = TimeSpan.FromSeconds(30);
+            timeoutExpiresAt = _systemTime.CurrentTime.Add(timeSpan);
+            _timerService.StartProgrammingTimer(game.GameId, timeSpan);
+        }
+        
+        bool allPlayersHaveLockedRegisters = game.Players.All(p => p.HasLockedRegisters(game.RoundCount));
+        if (allPlayersHaveLockedRegisters)
+        {
+            _timerService.CancelProgrammingTimer(game.GameId);
+        }
+        
         await _unitOfWork.SaveChangesAsync(ct);
 
         // Broadcast that the player has locked in their registers
         await _gameBroadcaster.BroadcastPlayerLockedInRegisterAsync(command.Username,
-            command.GameId, ct);
+            timeoutExpiresAt?.ToString("O") ?? string.Empty, command.GameId, ct);
     }
 }

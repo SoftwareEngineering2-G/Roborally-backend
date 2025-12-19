@@ -4,6 +4,8 @@ using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Roborally.core.application;
+using Roborally.core.application.ApplicationContracts.GameTimer;
+using Roborally.core.application.Services;
 using Roborally.infrastructure.persistence;
 using Roborally.infrastructure.broadcaster;
 using Roborally.infrastructure.persistence.Migrations;
@@ -64,6 +66,7 @@ builder.Services.AddFastEndpoints().SwaggerDocument();
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddProblemDetails();
+builder.Services.AddScoped<IProgrammingTimeoutHandler, ProgrammingTimeoutHandler>();
 var app = builder.Build();
 app.Services.RegisterApplicationModule();
 
