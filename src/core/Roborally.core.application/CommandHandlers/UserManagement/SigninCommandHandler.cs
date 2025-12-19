@@ -21,6 +21,7 @@ public class SigninCommandHandler : ICommandHandler<SignInCommand, SignInCommand
         _jwtService = jwtService;
     }
 
+/// <author name="Gaurav Pandey 2025-11-27 21:00:00 +0100 24" />
     public async Task<SignInCommandResponse> ExecuteAsync(SignInCommand command, CancellationToken ct)
     {
         // Find user by username

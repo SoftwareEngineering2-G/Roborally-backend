@@ -11,6 +11,7 @@ public class GameBoardSeeder
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<GameBoardSeeder> _logger;
 
+/// <author name="Satish Gurung 2025-11-03 14:12:46 +0100 14" />
     private static readonly Dictionary<string, string> BoardFiles = new()
     {
         { "Starter Course", "StarterCourse.json" },
@@ -27,6 +28,7 @@ public class GameBoardSeeder
         _logger = logger;
     }
 
+/// <author name="Satish Gurung 2025-11-03 14:12:46 +0100 30" />
     public async Task SeedBoardsAsync(CancellationToken ct = default)
     {
         _logger.LogInformation("Starting game board seeding...");

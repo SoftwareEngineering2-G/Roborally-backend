@@ -8,6 +8,7 @@ namespace Roborally.infrastructure.persistence.Migrations
     public partial class checkpointEvent : Migration
     {
         /// <inheritdoc />
+/// <author name="Suhani Pandey 2025-11-13 16:20:36 +0100 11" />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
@@ -38,6 +39,7 @@ namespace Roborally.infrastructure.persistence.Migrations
         }
 
         /// <inheritdoc />
+/// <author name="Suhani Pandey 2025-11-13 16:20:36 +0100 41" />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

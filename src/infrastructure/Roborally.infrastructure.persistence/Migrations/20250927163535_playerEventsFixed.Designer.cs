@@ -17,6 +17,7 @@ namespace Roborally.infrastructure.persistence.Migrations
     partial class playerEventsFixed
     {
         /// <inheritdoc />
+/// <author name="Sachin Baral 2025-09-28 13:55:14 +0200 20" />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618

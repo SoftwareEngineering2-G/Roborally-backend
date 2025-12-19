@@ -7,6 +7,7 @@ public static class GameQueryExtensions {
     /// <summary>
     /// Gets all player events for the specified round, ordered by most recent first
     /// </summary>
+/// <author name="Sachin Baral 2025-11-04 21:24:56 +0100 10" />
     public static List<PlayerEvent> GetEventsForRound(this Player.Player player, int round) {
         return player.PlayerEvents
             .Where(pe => pe.Round == round)
@@ -17,6 +18,7 @@ public static class GameQueryExtensions {
     /// <summary>
     /// Gets the most recent RegistersProgrammedEvent for the specified round
     /// </summary>
+/// <author name="Sachin Baral 2025-11-04 21:24:56 +0100 20" />
     public static RegistersProgrammedEvent? GetRegistersProgrammedEvent(this Player.Player player, int round) {
         return player.GetEventsForRound(round)
             .OfType<RegistersProgrammedEvent>()
@@ -26,6 +28,7 @@ public static class GameQueryExtensions {
     /// <summary>
     /// Gets the ProgrammingCardsDealtEvent for the specified round
     /// </summary>
+/// <author name="Sachin Baral 2025-11-04 21:24:56 +0100 29" />
     public static ProgrammingCardsDealtEvent? GetCardsDealtEvent(this Player.Player player, int round) {
         return player.GetEventsForRound(round)
             .OfType<ProgrammingCardsDealtEvent>()
@@ -35,6 +38,7 @@ public static class GameQueryExtensions {
     /// <summary>
     /// Gets the dealt cards for the specified round as display names
     /// </summary>
+/// <author name="Sachin Baral 2025-11-04 21:24:56 +0100 38" />
     public static List<string>? GetDealtCardsDisplayNames(this Player.Player player, int round) {
         return player.GetCardsDealtEvent(round)?.DealtCards
             .Select(card => card.DisplayName)
@@ -44,6 +48,7 @@ public static class GameQueryExtensions {
     /// <summary>
     /// Gets the programmed registers for the specified round as display names
     /// </summary>
+/// <author name="Sachin Baral 2025-11-04 21:24:56 +0100 47" />
     public static List<string>? GetProgrammedRegistersDisplayNames(this Player.Player player, int round) {
         return player.GetRegistersProgrammedEvent(round)?.ProgrammedCardsInOrder
             .Select(card => card.DisplayName)
@@ -53,6 +58,7 @@ public static class GameQueryExtensions {
     /// <summary>
     /// Gets the revealed cards (up to the current revealed register) for the specified round as display names
     /// </summary>
+/// <author name="Sachin Baral 2025-11-04 21:24:56 +0100 56" />
     public static List<string> GetRevealedCardsDisplayNames(this Player.Player player, int round, int currentRevealedRegister) {
         var programmedEvent = player.GetRegistersProgrammedEvent(round);
 
@@ -71,6 +77,7 @@ public static class GameQueryExtensions {
     /// <summary>
     /// Checks if the player has locked in their registers for the specified round
     /// </summary>
+/// <author name="Sachin Baral 2025-11-04 21:24:56 +0100 74" />
     public static bool HasLockedRegisters(this Player.Player player, int round) {
         return player.GetRegistersProgrammedEvent(round) is not null;
     }
@@ -78,6 +85,7 @@ public static class GameQueryExtensions {
     /// <summary>
     /// Gets the most recent CardExecutedEvent for the specified round
     /// </summary>
+/// <author name="Truong Son NGO 2025-11-12 15:35:28 +0100 81" />
     public static CardExecutedEvent? GetLastCardExecutedEvent(this Player.Player player, int round, int register)
     {
         var cardExcecutedEventsThisRound = 
@@ -91,6 +99,7 @@ public static class GameQueryExtensions {
     /// Gets the last player who executed a card in the specified round for the current register
     /// Returns null if no one has executed yet
     /// </summary>
+/// <author name="Sachin Baral 2025-11-04 21:24:56 +0100 94" />
     public static Player.Player? GetLastPlayerToExecuteCard(this Game game, int round, int currentRegister) {
         // Get all players who have executed a card in this round
         var playersWithExecutions = game.Players
@@ -114,6 +123,7 @@ public static class GameQueryExtensions {
     /// <summary>
     /// Gets players ordered by age (oldest first = youngest birthday)
     /// </summary>
+/// <author name="Sachin Baral 2025-11-04 21:24:56 +0100 117" />
     public static List<Player.Player> GetPlayersByTurnOrder(this Game game) {
         return game.Players
             .OrderBy(p => p.User?.Birthday ?? DateOnly.MaxValue) // Earlier birthday = older = goes first, null users go last

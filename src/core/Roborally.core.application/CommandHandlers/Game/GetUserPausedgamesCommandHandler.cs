@@ -9,6 +9,7 @@ namespace Roborally.core.application.CommandHandlers.GameLobby;
 public class GetUserPausedGamesCommandHandler : ICommandHandler<GetUserPausedGamesCommand, IList<GetUserPausedGamesResponse>> {
     private readonly IGameRepository _gameRepository;
 
+/// <author name="Truong Son NGO 2025-11-12 15:35:28 +0100 12" />
     public GetUserPausedGamesCommandHandler(IGameRepository gameRepository) {
         _gameRepository = gameRepository;
     }

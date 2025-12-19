@@ -9,4 +9,3 @@ public interface IGameLobbyBroadcaster
     Task BroadcastGameStartedAsync(Guid gameId, CancellationToken cancellationToken = default);
     Task BroadcastGameContinuedAsync(Guid gameId, CancellationToken cancellationToken = default);
 }
-

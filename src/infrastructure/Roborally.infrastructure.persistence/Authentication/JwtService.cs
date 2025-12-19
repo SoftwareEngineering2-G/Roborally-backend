@@ -15,6 +15,7 @@ public class JwtService : IJwtService
     private readonly JwtSettings _jwtSettings;
     private readonly JwtSecurityTokenHandler _tokenHandler;
 
+/// <author name="Gaurav Pandey 2025-11-27 21:00:00 +0100 18" />
     public JwtService(IOptions<JwtSettings> jwtSettings)
     {
         _jwtSettings = jwtSettings.Value;
@@ -24,6 +25,7 @@ public class JwtService : IJwtService
     /// <summary>
     /// Generates a JWT token containing the username claim
     /// </summary>
+/// <author name="Gaurav Pandey 2025-11-27 21:00:00 +0100 27" />
     public string GenerateToken(string username)
     {
         // Create claims (data stored in the token)
@@ -58,6 +60,7 @@ public class JwtService : IJwtService
     /// <summary>
     /// Validates a JWT token and extracts the username
     /// </summary>
+/// <author name="Gaurav Pandey 2025-11-27 21:00:00 +0100 61" />
     public string? ValidateToken(string token)
     {
         try

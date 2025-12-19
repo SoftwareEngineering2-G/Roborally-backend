@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Roborally.infrastructure.persistence.Game;
 
 public class GameConfiguration : IEntityTypeConfiguration<core.domain.Game.Game> {
+/// <author name="Sachin Baral 2025-09-28 13:55:14 +0200 7" />
     public void Configure(EntityTypeBuilder<core.domain.Game.Game> builder) {
         builder.HasKey(x => x.GameId);
 

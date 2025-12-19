@@ -9,6 +9,7 @@ namespace Roborally.core.application.CommandHandlers.GameLobby;
 public class FindPublicGameLobbyCommandHandler : ICommandHandler<GetActiveGameLobbiesCommand, IList<GetActiveGameLobbyCommandResponse>> {
     private readonly IGameLobbyRepository _gameLobbyRepository;
 
+/// <author name="Sachin Baral 2025-09-21 21:45:34 +0200 12" />
     public FindPublicGameLobbyCommandHandler(IGameLobbyRepository gameLobbyRepository) {
         _gameLobbyRepository = gameLobbyRepository;
     }

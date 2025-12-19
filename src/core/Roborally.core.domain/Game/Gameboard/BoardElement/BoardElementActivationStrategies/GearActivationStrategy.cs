@@ -1,6 +1,7 @@
 ﻿namespace Roborally.core.domain.Game.Gameboard.BoardElement.BoardElementActivationStrategies;
 
 public class GearActivationStrategy : IBoardElementActivationStrategy {
+/// <author name="Nilanjana Devkota 2025-10-14 19:37:00 +0200 4" />
     public void Activate(Game game, Player.Player player, BoardElement boardElement) {
         if (boardElement is not Gear gear) {
             throw new ArgumentException("boardElement must be of type Gear");

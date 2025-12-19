@@ -12,6 +12,7 @@ public class CompleteGameEndpoint : Endpoint<CompleteGameRequest>
     private readonly IUnitOfWork _unitOfWork;
     private readonly ISystemTime _systemTime;
 
+/// <author name="Sachin Baral 2025-11-15 19:46:26 +0100 15" />
     public CompleteGameEndpoint(IGameRepository gameRepository, IUnitOfWork unitOfWork, ISystemTime systemTime)
     {
         _gameRepository = gameRepository;
@@ -19,12 +20,14 @@ public class CompleteGameEndpoint : Endpoint<CompleteGameRequest>
         _systemTime = systemTime;
     }
 
+/// <author name="Sachin Baral 2025-11-15 19:46:26 +0100 22" />
     public override void Configure()
     {
         Post("/test/complete-game");
         AllowAnonymous();
     }
 
+/// <author name="Sachin Baral 2025-11-15 19:46:26 +0100 28" />
     public override async Task HandleAsync(CompleteGameRequest req, CancellationToken ct)
     {
         var game = await _gameRepository.FindAsync(req.GameId, ct);
@@ -50,4 +53,3 @@ public class CompleteGameRequest
 {
     public Guid GameId { get; set; }
 }
-

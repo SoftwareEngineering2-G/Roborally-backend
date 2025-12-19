@@ -4,6 +4,7 @@ namespace Roborally.core.application;
 
 public static class ApplicationModuleInstallation
 {
+/// <author name="Truong Son NGO 2025-09-19 17:04:26 +0200 7" />
     public static IServiceProvider RegisterApplicationModule(this IServiceProvider services)
     {
         var assembly = typeof(ApplicationModuleInstallation).Assembly;

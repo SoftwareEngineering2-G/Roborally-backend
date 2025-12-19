@@ -8,12 +8,14 @@ namespace Roborally.infrastructure.persistence.Migrations
     public partial class GameboardSupportsBoardElement : Migration
     {
         /// <inheritdoc />
+/// <author name="Nilanjana Devkota 2025-10-19 11:13:58 +0200 11" />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
 
         }
 
         /// <inheritdoc />
+/// <author name="Nilanjana Devkota 2025-10-19 11:13:58 +0200 17" />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
 

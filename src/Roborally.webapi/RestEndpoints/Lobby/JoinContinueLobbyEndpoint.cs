@@ -4,6 +4,7 @@ using Roborally.core.application.CommandContracts;
 namespace Roborally.webapi.RestEndpoints.Lobby;
 
 public class JoinContinueLobbyEndpoint : Endpoint<JoinContinueLobbyRequest> {
+/// <author name="Truong Son NGO 2025-11-12 15:35:28 +0100 7" />
     public override void Configure() {
         Post("/game-lobbies/{gameId}/join-continue");
         Summary(s => {
@@ -15,6 +16,7 @@ public class JoinContinueLobbyEndpoint : Endpoint<JoinContinueLobbyRequest> {
         });
     }
 
+/// <author name="Truong Son NGO 2025-11-12 15:35:28 +0100 18" />
     public override async Task HandleAsync(JoinContinueLobbyRequest req, CancellationToken ct) {
         JoinContinueLobbyCommand command = new JoinContinueLobbyCommand() {
             Username = req.Username,

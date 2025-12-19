@@ -9,6 +9,7 @@ namespace Roborally.infrastructure.persistence.Migrations
     public partial class MArkedStartedAsNullable : Migration
     {
         /// <inheritdoc />
+/// <author name="Suhani Pandey 2025-09-17 13:49:31 +0200 12" />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<DateTime>(
@@ -21,6 +22,7 @@ namespace Roborally.infrastructure.persistence.Migrations
         }
 
         /// <inheritdoc />
+/// <author name="Suhani Pandey 2025-09-17 13:49:31 +0200 24" />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<DateTime>(

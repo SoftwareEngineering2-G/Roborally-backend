@@ -4,10 +4,12 @@ using Roborally.core.application.CommandContracts;
 namespace Roborally.webapi.RestEndpoints.Lobby;
 
 public class GetActiveGameLobbies : EndpointWithoutRequest<IList<GetActiveGameLobbiesResponse>> {
+/// <author name="Sachin Baral 2025-09-21 21:45:34 +0200 7" />
     public override void Configure() {
         Get("/game-lobbies");
     }
 
+/// <author name="Sachin Baral 2025-09-21 21:45:34 +0200 11" />
     public override async Task HandleAsync(CancellationToken ct) {
         GetActiveGameLobbiesCommand command = new GetActiveGameLobbiesCommand() { };
         var lobbies = await command.ExecuteAsync(ct);

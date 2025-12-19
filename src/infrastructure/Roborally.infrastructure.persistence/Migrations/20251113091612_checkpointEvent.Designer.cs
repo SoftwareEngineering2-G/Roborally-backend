@@ -17,6 +17,7 @@ namespace Roborally.infrastructure.persistence.Migrations
     partial class checkpointEvent
     {
         /// <inheritdoc />
+/// <author name="Suhani Pandey 2025-11-13 16:20:36 +0100 20" />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618

@@ -6,6 +6,7 @@ namespace Roborally.infrastructure.persistence.Game.Player.Events;
 
 public class PlayerEventConfiguration : IEntityTypeConfiguration<PlayerEvent>
 {
+/// <author name="Sachin Baral 2025-09-28 13:55:14 +0200 9" />
     public void Configure(EntityTypeBuilder<PlayerEvent> builder)
     {
         builder.ToTable("PlayerEvents");
@@ -22,6 +23,5 @@ public class PlayerEventConfiguration : IEntityTypeConfiguration<PlayerEvent>
         builder.UseTptMappingStrategy();
     }
 }
-
 
 

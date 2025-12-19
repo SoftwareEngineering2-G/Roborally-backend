@@ -8,6 +8,7 @@ namespace Roborally.infrastructure.persistence.Migrations
     public partial class UpdateModelSchema : Migration
     {
         /// <inheritdoc />
+/// <author name="Suhani Pandey 2025-10-10 13:01:53 +0200 11" />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
@@ -19,6 +20,7 @@ namespace Roborally.infrastructure.persistence.Migrations
         }
 
         /// <inheritdoc />
+/// <author name="Suhani Pandey 2025-10-10 13:01:53 +0200 22" />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(

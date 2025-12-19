@@ -10,6 +10,7 @@ namespace Roborally.infrastructure.persistence.Game.Player.Events;
 
 public class DiscardPilesShuffledIntoPickPilesEventConfiguration : IEntityTypeConfiguration<DiscardPilesShuffledIntoPickPilesEvent>
 {
+/// <author name="Truong Son NGO 2025-11-28 15:36:33 +0100 13" />
     public void Configure(EntityTypeBuilder<DiscardPilesShuffledIntoPickPilesEvent> builder)
     {
         builder.ToTable("DiscardPilesShuffledIntoPickPilesEvent");

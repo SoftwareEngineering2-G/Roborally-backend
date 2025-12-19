@@ -14,6 +14,7 @@ namespace Roborally.infrastructure.persistence.Migrations
     [DbContext(typeof(AppDatabaseContext))]
     partial class AppDatabaseContextModelSnapshot : ModelSnapshot
     {
+/// <author name="Sachin Baral 2025-09-14 12:59:43 +0200 17" />
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618

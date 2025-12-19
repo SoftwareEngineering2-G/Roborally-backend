@@ -9,8 +9,10 @@ public class GameLobby {
     private const int MaxLobbySize = 6;
     
     private readonly List<User.User> _joinedUsers;
+/// <author name="Sachin Baral 2025-09-19 13:01:07 +0200 12" />
     public IReadOnlyList<User.User> JoinedUsers => _joinedUsers.AsReadOnly();
     private readonly List<User.User> _requiredUsers;
+/// <author name="Truong Son NGO 2025-11-12 15:35:28 +0100 14" />
     public IReadOnlyList<User.User> RequiredUsers => _requiredUsers.AsReadOnly();
     
     private readonly string _name = string.Empty;
@@ -38,6 +40,7 @@ public class GameLobby {
 
     public bool IsActive => StartedAt == null;
 
+/// <author name="Sachin Baral 2025-09-19 13:01:07 +0200 41" />
     private GameLobby() {
         _joinedUsers = new List<User.User>();
         _requiredUsers = new List<User.User>();
@@ -45,6 +48,7 @@ public class GameLobby {
         _name = string.Empty;
     } // for EFC
 
+/// <author name="Sachin Baral 2025-09-20 20:52:08 +0200 48" />
     public GameLobby(User.User hostUser, bool isPrivate, string name, ISystemTime systemTime) {
         HostUsername = hostUser.Username;
         _joinedUsers = new List<User.User>(MaxLobbySize) {
@@ -59,6 +63,7 @@ public class GameLobby {
         StartedAt = null;
     }
 
+/// <author name="Sachin Baral 2025-09-19 13:01:07 +0200 62" />
     public void JoinLobby(User.User user) {
         if (!IsActive)
             throw new CustomException("Cannot join lobby - game has already started", 400);
@@ -75,6 +80,7 @@ public class GameLobby {
         _joinedUsers.Add(user);
     }
 
+/// <author name="Sachin Baral 2025-09-19 13:01:07 +0200 78" />
     public void LeaveLobby(User.User user) {
         if (!_joinedUsers.Contains(user))
             return;
@@ -87,6 +93,7 @@ public class GameLobby {
 
     }
 
+/// <author name="Sachin Baral 2025-10-01 21:53:45 +0200 90" />
     public Game.Game StartGame(string username, ISystemTime systemTime, GameBoard gameBoard) {
         if (!username.ToLower().Equals(HostUsername.ToLower())) {
             throw new CustomException("Only the host can start the game", 403);
@@ -114,6 +121,7 @@ public class GameLobby {
         return game;
     }
     
+/// <author name="Truong Son NGO 2025-11-12 15:35:28 +0100 117" />
     public void ContinueGame(string username, ISystemTime systemTime) {
         if (!username.ToLower().Equals(HostUsername.ToLower())) 
             throw new CustomException("Only the host can continue the game", 403);
@@ -125,6 +133,7 @@ public class GameLobby {
         this._joinedUsers.Clear();
     }
     
+/// <author name="Truong Son NGO 2025-11-12 15:35:28 +0100 128" />
     public void InitLobbyToContinue(List<User.User> users) {
         _requiredUsers.Clear();
         _requiredUsers.AddRange(users);

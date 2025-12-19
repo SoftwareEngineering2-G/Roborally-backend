@@ -9,6 +9,7 @@ namespace Roborally.infrastructure.persistence.Migrations
     public partial class games : Migration
     {
         /// <inheritdoc />
+/// <author name="Sachin Baral 2025-09-28 13:55:14 +0200 12" />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -70,6 +71,7 @@ namespace Roborally.infrastructure.persistence.Migrations
         }
 
         /// <inheritdoc />
+/// <author name="Sachin Baral 2025-09-28 13:55:14 +0200 73" />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(

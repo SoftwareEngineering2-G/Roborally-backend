@@ -19,6 +19,7 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
     private readonly IGameBroadcaster _gameBroadcaster;
     private readonly ISystemTime _systemTime;
 
+/// <author name="Suhani Pandey 2025-10-15 21:47:56 +0200 22" />
     public ExecuteProgrammingCardCommandHandler(IGameRepository gameRepository, IUnitOfWork unitOfWork, IGameBroadcaster gameBroadcaster, ISystemTime systemTime)
     {
         _gameRepository = gameRepository;
@@ -27,6 +28,7 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
         _systemTime = systemTime;
     }
 
+/// <author name="Nilanjana Devkota 2025-11-13 19:56:43 +0100 30" />
     public async Task ExecuteAsync(ExecuteProgrammingCardCommand command, CancellationToken ct)
     {
         // Find the game
@@ -51,17 +53,11 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
         var executionContext = BuildExecutionContext(command);
         
         // Get count of checkpoint events before execution
-        int checkpointEventsCountBefore = game.GameEvents.OfType<CheckpointReachedEvent>().Count();
-        
+
         // Execute card and get all affected players (executor + pushed robots)
         List<Player> affectedPlayers = game.ExecuteProgrammingCard(command.Username, card, _systemTime, executionContext);
         
-        // Check if a new checkpoint event was added during card execution
-        var newCheckpointEvents = game.GameEvents
-            .OfType<CheckpointReachedEvent>()
-            .Skip(checkpointEventsCountBefore)
-            .Where(e => e.Username == command.Username)
-            .ToList();
+
         
         await _unitOfWork.SaveChangesAsync(ct);
         
@@ -81,20 +77,11 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
                 ct);
         }
 
-        // Broadcast checkpoint reached if a new checkpoint was reached during this execution
-        foreach (var checkpointEvent in newCheckpointEvents)
-        {
-            await _gameBroadcaster.BroadcastCheckpointReachedAsync(
-                command.GameId,
-                command.Username,
-                checkpointEvent.CheckpointNumber,
-                ct);
-        }
-
         Player? nextPlayer = game.GetNextExecutingPlayer();
         await _gameBroadcaster.BroadcastNextPlayerInTurn(command.GameId, nextPlayer?.Username, ct);
     }
 
+/// <author name="Satish Gurung 2025-11-24 10:20:04 +0100 98" />
     private static CardExecutionContext? BuildExecutionContext(ExecuteProgrammingCardCommand command)
     {
         if (command.InteractiveInput is null)

@@ -5,6 +5,7 @@ public class ProgrammingDeck {
     public List<ProgrammingCard> DiscardedPiles { get; set; }
 
     // Fisher-Yates shuffle utility
+/// <author name="Sachin Baral 2025-10-01 21:53:45 +0200 8" />
     private static void ShuffleList<T>(List<T> list) {
         var rng = Random.Shared;
         for (int i = list.Count - 1; i > 0; i--) {
@@ -14,6 +15,7 @@ public class ProgrammingDeck {
     }
 
     // Creates a new shuffled programming deck
+/// <author name="Sachin Baral 2025-09-28 13:55:14 +0200 17" />
     public static ProgrammingDeck NewShuffled() {
         List<ProgrammingCard> cards = new List<ProgrammingCard>(21);
         // 4 copies of Move 1, rotate right, rotate left
@@ -36,16 +38,19 @@ public class ProgrammingDeck {
         return new ProgrammingDeck(cards);
     }
 
+/// <author name="Sachin Baral 2025-09-28 13:55:14 +0200 39" />
     private ProgrammingDeck(List<ProgrammingCard> cards) {
         PickPiles = cards;
         DiscardedPiles = [];
     }
 
+/// <author name="Sachin Baral 2025-09-28 13:55:14 +0200 44" />
     private ProgrammingDeck() {
         // For EF Core
     }
 
     // Draw up to 'count' cards from PickPiles, removing them from the deck
+/// <author name="Sachin Baral 2025-10-01 21:53:45 +0200 49" />
     public List<ProgrammingCard> Draw(int count) {
         int take = Math.Min(count, PickPiles.Count);
         var drawn = PickPiles.Take(take).ToList();
@@ -54,6 +59,7 @@ public class ProgrammingDeck {
     }
 
     // Shuffle DiscardedPiles into PickPiles and clear DiscardedPiles
+/// <author name="Sachin Baral 2025-10-01 21:53:45 +0200 57" />
     public void RefillFromDiscard() {
         ShuffleList(DiscardedPiles);
         PickPiles = DiscardedPiles;
