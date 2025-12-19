@@ -1,5 +1,19 @@
 ﻿# RoboRally Backend
 
+## Team Members
+
+| Github username  | Official name     | DTU Student number |
+| ---------------- | ----------------- | ------------------ |
+| MrSachin7        | Sachin Baral      | s243871            |
+| Satish627        | Satish Gurung     | s243872            |
+| Nilanjanadevkota | Nilanjana Devkota | s250753            |
+| MUGEN1603        | Gaurav Pandey     | s252708            |
+| hanch            | Andrej Jurco      | s243889            |
+| son-ngo-2003     | Truong Son Ngo    | s251928            |
+| suhani-pandey    | Suhani Pandey     | s254119            |
+
+## Overview
+
 A .NET 9 backend API for the RoboRally game built using Clean Architecture principles with FastEndpoints and Entity Framework Core.
 
 ## 🏗️ Project Structure
