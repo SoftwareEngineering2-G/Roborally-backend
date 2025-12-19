@@ -28,7 +28,7 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
         _systemTime = systemTime;
     }
 
-/// <author name="nilanjanadevkota 2025-11-13 19:56:43 +0100 30" />
+/// <author name="Nilanjana Devkota 2025-11-13 19:56:43 +0100 30" />
     public async Task ExecuteAsync(ExecuteProgrammingCardCommand command, CancellationToken ct)
     {
         // Find the game
@@ -81,7 +81,7 @@ public class ExecuteProgrammingCardCommandHandler : ICommandHandler<ExecuteProgr
         await _gameBroadcaster.BroadcastNextPlayerInTurn(command.GameId, nextPlayer?.Username, ct);
     }
 
-/// <author name="Satish 2025-11-24 10:20:04 +0100 98" />
+/// <author name="Satish Gurung 2025-11-24 10:20:04 +0100 98" />
     private static CardExecutionContext? BuildExecutionContext(ExecuteProgrammingCardCommand command)
     {
         if (command.InteractiveInput is null)

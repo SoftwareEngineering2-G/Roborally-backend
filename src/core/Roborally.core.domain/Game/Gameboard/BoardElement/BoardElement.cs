@@ -2,7 +2,7 @@
 
 public abstract class BoardElement : Space.Space
 {
-/// <author name="nilanjanadevkota 2025-10-19 11:13:58 +0200 5" />
+/// <author name="Nilanjana Devkota 2025-10-19 11:13:58 +0200 5" />
     protected BoardElement() : base()
     {
     }

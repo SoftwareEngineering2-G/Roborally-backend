@@ -10,7 +10,7 @@ namespace Roborally.infrastructure.persistence.Migrations
     public partial class GameEvents : Migration
     {
         /// <inheritdoc />
-/// <author name="nilanjanadevkota 2025-10-14 19:37:00 +0200 13" />
+/// <author name="Nilanjana Devkota 2025-10-14 19:37:00 +0200 13" />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -58,7 +58,7 @@ namespace Roborally.infrastructure.persistence.Migrations
         }
 
         /// <inheritdoc />
-/// <author name="nilanjanadevkota 2025-10-14 19:37:00 +0200 60" />
+/// <author name="Nilanjana Devkota 2025-10-14 19:37:00 +0200 60" />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

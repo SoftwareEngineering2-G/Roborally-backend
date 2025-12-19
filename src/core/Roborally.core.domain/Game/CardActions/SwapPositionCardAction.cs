@@ -7,7 +7,7 @@ namespace Roborally.core.domain.Game.CardActions;
 
 public class SwapPositionCardAction : ICardAction
 {
-/// <author name="Satish 2025-11-24 10:20:04 +0100 10" />
+/// <author name="Satish Gurung 2025-11-24 10:20:04 +0100 10" />
     public void Execute(Player.Player player, Game game, Bases.ISystemTime systemTime, CardExecutionContext? context = null)
     {
         if (context?.TargetPlayerUsername is null)

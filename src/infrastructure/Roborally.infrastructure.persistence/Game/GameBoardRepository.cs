@@ -18,7 +18,7 @@ public class GameBoardRepository : IGameBoardRepository {
         return _context.GameBoards.FindAsync([name], ct).AsTask();
     }
 
-/// <author name="Satish 2025-11-03 14:12:46 +0100 19" />
+/// <author name="Satish Gurung 2025-11-03 14:12:46 +0100 19" />
     public async Task<List<GameBoard>> GetAllAsync(CancellationToken ct = default) {
         return await _context.GameBoards.ToListAsync(ct);
     }

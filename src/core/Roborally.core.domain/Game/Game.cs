@@ -78,7 +78,7 @@ public class Game {
         return playerDealtCards;
     }
 
-/// <author name="nilanjanadevkota 2025-10-14 19:37:00 +0200 79" />
+/// <author name="Nilanjana Devkota 2025-10-14 19:37:00 +0200 79" />
     public void LockInRegisters(string playerUsername, List<ProgrammingCard> lockedInCards, ISystemTime systemTime) {
         if (IsInActivationPhase()) {
             throw new CustomException("The game needs to be in programming phase", 400);
@@ -123,7 +123,7 @@ public class Game {
     }
 
     // Returns username mapped to the revealed card for that register
-/// <author name="nilanjanadevkota 2025-10-14 19:37:00 +0200 122" />
+/// <author name="Nilanjana Devkota 2025-10-14 19:37:00 +0200 122" />
     public Dictionary<string, ProgrammingCard> RevealNextRegister() {
         if (!IsInActivationPhase()) {
             throw new CustomException("The game needs to be in activation phase", 400);
@@ -247,7 +247,7 @@ public class Game {
         GameEvents.Add(roundCompletedEvent);
     }
 
-/// <author name="Satish 2025-11-24 10:20:04 +0100 243" />
+/// <author name="Satish Gurung 2025-11-24 10:20:04 +0100 243" />
     public List<Player.Player> ExecuteProgrammingCard(string username, ProgrammingCard card, ISystemTime systemTime, CardExecutionContext? context = null) {
         if (!IsInActivationPhase()) {
             throw new CustomException("The game needs to be in activation phase", 400);
@@ -392,12 +392,12 @@ public class Game {
         IsPaused = false;
     }
 
-/// <author name="nilanjanadevkota 2025-10-14 19:37:00 +0200 382" />
+/// <author name="Nilanjana Devkota 2025-10-14 19:37:00 +0200 382" />
     private bool IsInActivationPhase() {
         return CurrentPhase.Equals(GamePhase.ActivationPhase);
     }
 
-/// <author name="nilanjanadevkota 2025-10-14 19:37:00 +0200 386" />
+/// <author name="Nilanjana Devkota 2025-10-14 19:37:00 +0200 386" />
     private bool IsInProgrammingPhase() {
         return CurrentPhase.Equals(GamePhase.ProgrammingPhase);
     }

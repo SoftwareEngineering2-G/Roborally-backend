@@ -15,7 +15,7 @@ public static class BoardElementFactory {
         GearName
     };
 
-/// <author name="nilanjanadevkota 2025-10-14 19:37:00 +0200 18" />
+/// <author name="Nilanjana Devkota 2025-10-14 19:37:00 +0200 18" />
     public static BoardElement BlueConveyorBelt(Direction direction) {
         return new BlueConveyorBelt {
             Direction = direction
@@ -29,7 +29,7 @@ public static class BoardElementFactory {
         };
     }
 
-/// <author name="nilanjanadevkota 2025-10-14 19:37:00 +0200 30" />
+/// <author name="Nilanjana Devkota 2025-10-14 19:37:00 +0200 30" />
     public static BoardElement GreenConveyorBelt(Direction direction) {
         return new GreenConveyorBelt {
             Direction = direction
@@ -43,21 +43,21 @@ public static class BoardElementFactory {
         };
     }
 
-/// <author name="nilanjanadevkota 2025-10-14 19:37:00 +0200 42" />
+/// <author name="Nilanjana Devkota 2025-10-14 19:37:00 +0200 42" />
     public static BoardElement Gear(GearDirection direction) {
         return new Gear {
             Direction = direction
         };
     }
     
-/// <author name="nilanjanadevkota 2025-10-19 11:13:58 +0200 48" />
+/// <author name="Nilanjana Devkota 2025-10-19 11:13:58 +0200 48" />
     public static BoardElement Gear(GearDirection direction, Direction[] walls) {
         return new Gear(walls) {
             Direction = direction
         };
     }
 
-/// <author name="nilanjanadevkota 2025-10-14 19:37:00 +0200 54" />
+/// <author name="Nilanjana Devkota 2025-10-14 19:37:00 +0200 54" />
     public static string GetNextForActivation(string? lastActivatedElement) {
         if (string.IsNullOrEmpty(lastActivatedElement)) {
             return ActivationOrder[0];

@@ -50,7 +50,7 @@ public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
             .HasColumnType("json");
     }
 
-/// <author name="nilanjanadevkota 2025-10-19 11:13:58 +0200 52" />
+/// <author name="Nilanjana Devkota 2025-10-19 11:13:58 +0200 52" />
     private static SpaceDto SpaceToDto(Space space)
     {
         var dto = new SpaceDto
@@ -76,7 +76,7 @@ public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
         return dto;
     }
 
-/// <author name="nilanjanadevkota 2025-10-19 11:13:58 +0200 77" />
+/// <author name="Nilanjana Devkota 2025-10-19 11:13:58 +0200 77" />
     private static Space DtoToSpace(SpaceDto dto)
     {
         var walls = dto.Walls.Select(Direction.FromDisplayName).ToArray();
@@ -115,7 +115,7 @@ public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
         }
     }
 
-/// <author name="nilanjanadevkota 2025-10-19 11:13:58 +0200 115" />
+/// <author name="Nilanjana Devkota 2025-10-19 11:13:58 +0200 115" />
     private static Space CloneSpace(Space space)
     {
         // Clone a space for the value comparer
@@ -141,7 +141,7 @@ public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
         return true;
     }
 
-/// <author name="nilanjanadevkota 2025-10-19 11:13:58 +0200 139" />
+/// <author name="Nilanjana Devkota 2025-10-19 11:13:58 +0200 139" />
     private static bool CompareSpaces(Space space1, Space space2)
     {
         if (space1.Name() != space2.Name()) return false;

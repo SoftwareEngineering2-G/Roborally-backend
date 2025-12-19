@@ -21,7 +21,7 @@ public sealed class GetCurrentGameStateCommandResponse {
     public required string? CurrentTurnUsername { get; set; }
     public required int? CurrentExecutingRegister { get; set; }
     
-/// <author name="nilanjanadevkota 2025-10-19 11:13:58 +0200 24" />
+/// <author name="Nilanjana Devkota 2025-10-19 11:13:58 +0200 24" />
     public record Space(string Name, List<string> Walls, string? Direction = null);
 
     public record Player(

@@ -38,7 +38,7 @@ public class GameBoard {
     }
 
     
-/// <author name="nilanjanadevkota 2025-10-14 19:37:00 +0200 38" />
+/// <author name="Nilanjana Devkota 2025-10-14 19:37:00 +0200 38" />
     public Space.Space GetSpaceAt(Position position) {
         if (position.Y < 0 || position.Y>= Spaces.Length || position.X < 0 || position.X >= Spaces[0].Length)
             throw new ArgumentOutOfRangeException();
@@ -46,7 +46,7 @@ public class GameBoard {
     }
 
 
-/// <author name="nilanjanadevkota 2025-10-14 19:37:00 +0200 45" />
+/// <author name="Nilanjana Devkota 2025-10-14 19:37:00 +0200 45" />
     public List<T> GetAllSpacesOfType<T>() where T : Space.Space {
         var result = new List<T>();
         foreach (var row in Spaces) {
@@ -59,7 +59,7 @@ public class GameBoard {
         return result;
     }
 
-/// <author name="nilanjanadevkota 2025-10-14 19:37:00 +0200 57" />
+/// <author name="Nilanjana Devkota 2025-10-14 19:37:00 +0200 57" />
     public Dictionary<Player.Player, BoardElement.BoardElement> FilterPlayersOnBoardElements(List<Player.Player> players, string boardElementName) {
         var filtered = new Dictionary<Player.Player, BoardElement.BoardElement>();
         foreach (var player in players) {

@@ -17,7 +17,7 @@ namespace Roborally.infrastructure.persistence.Migrations
     partial class GameboardSupportsBoardElement
     {
         /// <inheritdoc />
-/// <author name="nilanjanadevkota 2025-10-19 11:13:58 +0200 20" />
+/// <author name="Nilanjana Devkota 2025-10-19 11:13:58 +0200 20" />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618

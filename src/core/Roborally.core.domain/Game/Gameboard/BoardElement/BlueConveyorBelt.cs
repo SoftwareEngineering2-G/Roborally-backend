@@ -6,13 +6,13 @@ public class BlueConveyorBelt : BoardElement {
     public required Direction Direction { get; set; }
 
 
-/// <author name="nilanjanadevkota 2025-10-14 19:37:00 +0200 9" />
+/// <author name="Nilanjana Devkota 2025-10-14 19:37:00 +0200 9" />
     public override string Name() {
         return BoardElementFactory.BlueConveyorBeltName;
     }
 
 
-/// <author name="nilanjanadevkota 2025-10-14 19:37:00 +0200 14" />
+/// <author name="Nilanjana Devkota 2025-10-14 19:37:00 +0200 14" />
     internal BlueConveyorBelt() {
     }
     

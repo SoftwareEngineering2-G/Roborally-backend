@@ -170,7 +170,7 @@ public class Player {
         CurrentFacingDirection = CurrentFacingDirection.Opposite();
     }
 
-/// <author name="nilanjanadevkota 2025-10-14 19:37:00 +0200 165" />
+/// <author name="Nilanjana Devkota 2025-10-14 19:37:00 +0200 165" />
     public Position GetNextPosition([Optional] Direction? direction) {
         return CurrentPosition.GetNext(direction ?? CurrentFacingDirection);
     }

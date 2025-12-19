@@ -21,9 +21,9 @@ public class ProgrammingCard : Enumeration
     public static readonly ProgrammingCard MoveBack = new ProgrammingCard("Move Back");
 /// <author name="Sachin Baral 2025-09-16 15:57:05 +0200 15" />
     public static readonly ProgrammingCard Again = new ProgrammingCard("Again");
-/// <author name="Satish 2025-11-24 10:20:04 +0100 16" />
+/// <author name="Satish Gurung 2025-11-24 10:20:04 +0100 16" />
     public static readonly ProgrammingCard SwapPosition = new ProgrammingCard("Swap Position");
-/// <author name="Satish 2025-11-24 10:20:04 +0100 17" />
+/// <author name="Satish Gurung 2025-11-24 10:20:04 +0100 17" />
     public static readonly ProgrammingCard MovementChoice = new ProgrammingCard("Movement Choice");
 
 /// <author name="Truong Son NGO 2025-09-19 17:04:26 +0200 19" />

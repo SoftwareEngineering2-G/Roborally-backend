@@ -8,7 +8,7 @@ public class GameEventConfiguration : IEntityTypeConfiguration<GameEvent> {
 
 
 
-/// <author name="nilanjanadevkota 2025-10-14 19:37:00 +0200 11" />
+/// <author name="Nilanjana Devkota 2025-10-14 19:37:00 +0200 11" />
     public void Configure(EntityTypeBuilder<GameEvent> builder) {
         builder.ToTable("GameEvents");
         

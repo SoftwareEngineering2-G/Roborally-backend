@@ -24,7 +24,7 @@ public class ActivateNextBoardElementCommandHandler : ICommandHandler<ActivateNe
         _systemTime = systemTime;
     }
 
-/// <author name="nilanjanadevkota 2025-10-14 19:37:00 +0200 27" />
+/// <author name="Nilanjana Devkota 2025-10-14 19:37:00 +0200 27" />
     public async Task ExecuteAsync(ActivateNextBoardElementCommand command, CancellationToken ct) {
         var game = await _gameRepository.FindAsync(command.GameId, ct);
         if (game is null) {

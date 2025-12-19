@@ -17,7 +17,7 @@ public class MovementChoiceCardAction : ICardAction
         ProgrammingCard.UTurn
     };
 
-/// <author name="Satish 2025-11-24 10:20:04 +0100 20" />
+/// <author name="Satish Gurung 2025-11-24 10:20:04 +0100 20" />
     public void Execute(Player.Player player, Game game, Bases.ISystemTime systemTime, CardExecutionContext? context = null)
     {
         var chosenCard = context?.SelectedMovementCard;
@@ -39,7 +39,7 @@ public class MovementChoiceCardAction : ICardAction
         player.RecordCardExecution(ProgrammingCard.MovementChoice, systemTime);
     }
 
-/// <author name="Satish 2025-11-24 10:20:04 +0100 41" />
+/// <author name="Satish Gurung 2025-11-24 10:20:04 +0100 41" />
     private static void ExecuteMovement(Player.Player player, Game game, ProgrammingCard card)
     {
         switch (card.DisplayName)
