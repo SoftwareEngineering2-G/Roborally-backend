@@ -9,14 +9,16 @@ public class ProgrammingTimeoutHandler : IProgrammingTimeoutHandler
 {
     private readonly IGameRepository _gameRepository;
     private readonly IGameBroadcaster _gameBroadcaster;
+    private readonly IIndividualPlayerBroadcaster _individualPlayerBroadcaster;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ISystemTime _systemTime;
 
     public ProgrammingTimeoutHandler(IGameRepository gameRepository, IGameBroadcaster gameBroadcaster,
-        IUnitOfWork unitOfWork, ISystemTime systemTime)
+        IIndividualPlayerBroadcaster individualPlayerBroadcaster, IUnitOfWork unitOfWork, ISystemTime systemTime)
     {
         _gameRepository = gameRepository;
         _gameBroadcaster = gameBroadcaster;
+        _individualPlayerBroadcaster = individualPlayerBroadcaster;
         _unitOfWork = unitOfWork;
         _systemTime = systemTime;
     }
@@ -29,10 +31,32 @@ public class ProgrammingTimeoutHandler : IProgrammingTimeoutHandler
 
         var assignedCards = game.AutoCompleteEmptyRegisters(_systemTime);
         await _unitOfWork.SaveChangesAsync(ct);
-        await _gameBroadcaster.BroadcastProgrammingTimeoutAsync(gameId, assignedCards, ct);
 
+        // Broadcast the assigned cards to the players who have not locked-in their register yet     
         var tasks = assignedCards
-            .Select(item => _gameBroadcaster.BroadcastPlayerLockedInRegisterAsync(item.Key, null, gameId, ct))
+            .Select(item =>
+            {
+                return _individualPlayerBroadcaster.BroadcastProgrammingTimeoutAsync(
+                    item.Key,
+                    gameId,
+                    item.Value.Select(card => card.DisplayName).ToList(), 
+                    ct
+                );
+            })
+            .ToList();
+        await Task.WhenAll(tasks);
+
+        // Broadcast the locked-in event to the players
+        tasks = assignedCards
+            .Select(item =>
+            {
+                return _gameBroadcaster.BroadcastPlayerLockedInRegisterAsync(
+                    item.Key, 
+                    null, 
+                    gameId, 
+                    ct
+                );
+            })
             .ToList();
         await Task.WhenAll(tasks);
     }

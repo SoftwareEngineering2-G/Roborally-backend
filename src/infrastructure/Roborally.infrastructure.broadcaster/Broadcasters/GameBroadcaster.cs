@@ -134,19 +134,4 @@ public class GameBroadcaster : IGameBroadcaster{
         };
         return _hubContext.Clients.Groups(GroupName(gameId)).SendAsync("RoundCompleted", payload, ct);
     }
-    
-/// <author name="Vincenzo Altaserse 2025-12-18 17:40:31 +0100 126" />
-    public Task BroadcastProgrammingTimeoutAsync(Guid gameId, Dictionary<string, List<ProgrammingCard>> assignedCards, CancellationToken ct)
-    {
-        var payload = new
-        {
-            gameId,
-            assignedCards = assignedCards.Select(kvp => new
-            {
-                username = kvp.Key,
-                cards = kvp.Value.Select(card => card.DisplayName).ToList()
-            }).ToList()
-        };
-        return _hubContext.Clients.Groups(GroupName(gameId)).SendAsync("ProgrammingTimeout", payload, ct);
-    }
 }

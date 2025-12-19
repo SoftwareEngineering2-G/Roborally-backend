@@ -27,4 +27,17 @@ public class IndividualPlayerBroadcaster : IIndividualPlayerBroadcaster {
 
         await _hubContext.Clients.Group(groupName).SendAsync("PlayerCardsDealt", payload, ct);
     }
+
+    public Task BroadcastProgrammingTimeoutAsync(string username, Guid gameId, List<string> assignedCards, CancellationToken ct)
+    {
+        string groupName = GroupName.IndividualPlayer(username, gameId.ToString());
+        
+        var payload = new
+        {
+            gameId,
+            username,
+            assignedCards
+        };
+        return _hubContext.Clients.Groups(groupName).SendAsync("ProgrammingTimeout", payload, ct);    
+    }
 }
