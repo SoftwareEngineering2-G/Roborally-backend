@@ -9,6 +9,7 @@ namespace Roborally.infrastructure.persistence.Migrations
     public partial class LobbyToContinueGame : Migration
     {
         /// <inheritdoc />
+/// <author name="Truong Son NGO 2025-11-12 15:35:28 +0100 12" />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -42,6 +43,7 @@ namespace Roborally.infrastructure.persistence.Migrations
         }
 
         /// <inheritdoc />
+/// <author name="Truong Son NGO 2025-11-12 15:35:28 +0100 45" />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

@@ -6,10 +6,12 @@ public class GameBoard {
     public required string Name { get; set; }
     public required Space.Space[][] Spaces { get; init; }
 
+/// <author name="Vincenzo Altaserse 2025-10-13 13:44:06 +0200 9" />
     internal GameBoard() {
 
     }
     
+/// <author name="Suhani Pandey 2025-10-10 13:01:53 +0200 13" />
     public bool IsWithinBounds(Position position) {
         if (position.Y < 0 || position.Y >= Spaces.Length) 
             return false;
@@ -18,6 +20,7 @@ public class GameBoard {
         return true;
     }
 
+/// <author name="Suhani Pandey 2025-10-10 13:01:53 +0200 21" />
     public bool HasWallBetween(Position from, Position to, Direction direction) {
         // Check adjacency in the specified direction
         Position expectedTo = direction.GetNextPosition(from);
@@ -35,6 +38,7 @@ public class GameBoard {
     }
 
     
+/// <author name="nilanjanadevkota 2025-10-14 19:37:00 +0200 38" />
     public Space.Space GetSpaceAt(Position position) {
         if (position.Y < 0 || position.Y>= Spaces.Length || position.X < 0 || position.X >= Spaces[0].Length)
             throw new ArgumentOutOfRangeException();
@@ -42,6 +46,7 @@ public class GameBoard {
     }
 
 
+/// <author name="nilanjanadevkota 2025-10-14 19:37:00 +0200 45" />
     public List<T> GetAllSpacesOfType<T>() where T : Space.Space {
         var result = new List<T>();
         foreach (var row in Spaces) {
@@ -54,6 +59,7 @@ public class GameBoard {
         return result;
     }
 
+/// <author name="nilanjanadevkota 2025-10-14 19:37:00 +0200 57" />
     public Dictionary<Player.Player, BoardElement.BoardElement> FilterPlayersOnBoardElements(List<Player.Player> players, string boardElementName) {
         var filtered = new Dictionary<Player.Player, BoardElement.BoardElement>();
         foreach (var player in players) {
@@ -65,6 +71,7 @@ public class GameBoard {
         return filtered;
     }
 
+/// <author name="Sachin Baral 2025-10-20 21:20:17 +0200 68" />
     public List<Position> GetPositionsForSpaceType(string spaceType) {
         var positions = new List<Position>();
         for (int y = 0; y < Spaces.Length; y++) {

@@ -9,6 +9,7 @@ namespace Roborally.infrastructure.persistence.Migrations
     public partial class AddCreatedAndUpdatedTime : Migration
     {
         /// <inheritdoc />
+/// <author name="Sachin Baral 2025-10-27 17:05:05 +0100 12" />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<DateTime>(
@@ -33,6 +34,7 @@ namespace Roborally.infrastructure.persistence.Migrations
         }
 
         /// <inheritdoc />
+/// <author name="Sachin Baral 2025-10-27 17:05:05 +0100 36" />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(

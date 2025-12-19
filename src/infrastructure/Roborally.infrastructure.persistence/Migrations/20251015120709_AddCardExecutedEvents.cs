@@ -8,6 +8,7 @@ namespace Roborally.infrastructure.persistence.Migrations
     public partial class AddCardExecutedEvents : Migration
     {
         /// <inheritdoc />
+/// <author name="Suhani Pandey 2025-10-15 21:47:56 +0200 11" />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
@@ -34,6 +35,7 @@ namespace Roborally.infrastructure.persistence.Migrations
         }
 
         /// <inheritdoc />
+/// <author name="Suhani Pandey 2025-10-15 21:47:56 +0200 37" />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

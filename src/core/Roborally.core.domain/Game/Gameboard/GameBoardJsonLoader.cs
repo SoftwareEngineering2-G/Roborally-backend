@@ -14,6 +14,7 @@ public static class GameBoardJsonLoader
         public string? Direction { get; set; }
     }
 
+/// <author name="Satish 2025-11-03 14:12:46 +0100 17" />
     public static GameBoard LoadFromJson(string jsonFilePath, string boardName)
     {
         if (!File.Exists(jsonFilePath))
@@ -40,6 +41,7 @@ public static class GameBoardJsonLoader
         };
     }
 
+/// <author name="Satish 2025-11-03 14:12:46 +0100 43" />
     private static Space.Space DtoToSpace(SpaceDto dto)
     {
         var walls = dto.Walls.Select(Direction.FromDisplayName).ToArray();
@@ -66,6 +68,7 @@ public static class GameBoardJsonLoader
         };
     }
     
+/// <author name="Suhani Pandey 2025-11-13 16:20:36 +0100 69" />
     private static Space.Space ParseCheckpoint(string name, Direction[] walls)
     {
         // Extract checkpoint number from name like "Checkpoint1", "Checkpoint2", etc.

@@ -10,6 +10,7 @@ namespace Roborally.infrastructure.persistence.Game.Player.Events;
 
 public class ProgrammingCardsDealtEventConfiguration : IEntityTypeConfiguration<ProgrammingCardsDealtEvent>
 {
+/// <author name="Sachin Baral 2025-10-01 21:53:45 +0200 13" />
     public void Configure(EntityTypeBuilder<ProgrammingCardsDealtEvent> builder)
     {
         builder.ToTable("ProgrammingCardsDealtEvents");

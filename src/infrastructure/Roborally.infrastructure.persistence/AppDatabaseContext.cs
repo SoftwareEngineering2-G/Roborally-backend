@@ -9,6 +9,7 @@ namespace Roborally.infrastructure.persistence;
 
 public class AppDatabaseContext : DbContext
 {
+/// <author name="Truong Son NGO 2025-09-19 17:04:26 +0200 12" />
     public AppDatabaseContext(DbContextOptions<AppDatabaseContext> options) : base(options)
     {
     }
@@ -20,6 +21,7 @@ public class AppDatabaseContext : DbContext
 
     public required DbSet<GameBoard> GameBoards { get; set; }
 
+/// <author name="Truong Son NGO 2025-09-19 17:04:26 +0200 23" />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDatabaseContext).Assembly);

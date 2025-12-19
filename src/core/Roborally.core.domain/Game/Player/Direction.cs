@@ -4,15 +4,21 @@ namespace Roborally.core.domain.Game.Player;
 
 public class Direction : Enumeration
 {
+/// <author name="Sachin Baral 2025-09-16 15:57:05 +0200 7" />
     public static readonly Direction North = new Direction("North");
+/// <author name="Sachin Baral 2025-09-16 15:57:05 +0200 8" />
     public static readonly Direction South = new Direction("South");
+/// <author name="Sachin Baral 2025-09-16 15:57:05 +0200 9" />
     public static readonly Direction East = new Direction("East");
+/// <author name="Sachin Baral 2025-09-16 15:57:05 +0200 10" />
     public static readonly Direction West = new Direction("West");
 
+/// <author name="Truong Son NGO 2025-09-19 17:04:26 +0200 12" />
     private Direction(string displayName) : base(displayName)
     {
     }
     
+/// <author name="Suhani Pandey 2025-10-10 13:01:53 +0200 16" />
     public Position GetNextPosition(Position currentPosition)
     {
         return DisplayName switch
@@ -25,6 +31,7 @@ public class Direction : Enumeration
         };
     }
 
+/// <author name="Suhani Pandey 2025-10-10 13:01:53 +0200 28" />
     public Position GetPositionBehind(Position currentPosition)
     {
         return DisplayName switch
@@ -37,6 +44,7 @@ public class Direction : Enumeration
         };
     }
 
+/// <author name="Suhani Pandey 2025-10-10 13:01:53 +0200 40" />
     public Direction RotateLeft()
     {
         return DisplayName switch
@@ -49,6 +57,7 @@ public class Direction : Enumeration
         };
     }
     
+/// <author name="Suhani Pandey 2025-10-10 13:01:53 +0200 52" />
     public Direction RotateRight()
     {
         return DisplayName switch
@@ -61,6 +70,7 @@ public class Direction : Enumeration
         };
     }
     
+/// <author name="Suhani Pandey 2025-10-10 13:01:53 +0200 64" />
     public Direction Opposite()
     {
         return DisplayName switch
@@ -73,6 +83,7 @@ public class Direction : Enumeration
         };
     }
 
+/// <author name="Truong Son NGO 2025-10-13 13:29:29 +0200 76" />
     public static Direction FromDisplayName(string displayName)
     {
         return displayName.ToLower() switch

@@ -8,6 +8,7 @@ namespace Roborally.infrastructure.persistence.Migrations
     public partial class ImplementRatings : Migration
     {
         /// <inheritdoc />
+/// <author name="Sachin Baral 2025-11-15 19:46:26 +0100 11" />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
@@ -48,6 +49,7 @@ namespace Roborally.infrastructure.persistence.Migrations
         }
 
         /// <inheritdoc />
+/// <author name="Sachin Baral 2025-11-15 19:46:26 +0100 51" />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(

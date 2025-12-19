@@ -8,6 +8,7 @@ namespace Roborally.infrastructure.persistence.Migrations
     public partial class AddShuffledDiscardEvent : Migration
     {
         /// <inheritdoc />
+/// <author name="Truong Son NGO 2025-11-28 15:36:33 +0100 11" />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -30,6 +31,7 @@ namespace Roborally.infrastructure.persistence.Migrations
         }
 
         /// <inheritdoc />
+/// <author name="Truong Son NGO 2025-11-28 15:36:33 +0100 33" />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

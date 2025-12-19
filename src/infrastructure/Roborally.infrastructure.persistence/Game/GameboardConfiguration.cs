@@ -16,6 +16,7 @@ public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
         public string? Direction { get; set; } // For conveyor belts and gears
     }
 
+/// <author name="Sachin Baral 2025-09-28 13:55:14 +0200 19" />
     public void Configure(EntityTypeBuilder<GameBoard> builder) {
         builder.HasKey(x => x.Name);
         
@@ -49,6 +50,7 @@ public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
             .HasColumnType("json");
     }
 
+/// <author name="nilanjanadevkota 2025-10-19 11:13:58 +0200 52" />
     private static SpaceDto SpaceToDto(Space space)
     {
         var dto = new SpaceDto
@@ -74,6 +76,7 @@ public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
         return dto;
     }
 
+/// <author name="nilanjanadevkota 2025-10-19 11:13:58 +0200 77" />
     private static Space DtoToSpace(SpaceDto dto)
     {
         var walls = dto.Walls.Select(Direction.FromDisplayName).ToArray();
@@ -112,6 +115,7 @@ public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
         }
     }
 
+/// <author name="nilanjanadevkota 2025-10-19 11:13:58 +0200 115" />
     private static Space CloneSpace(Space space)
     {
         // Clone a space for the value comparer
@@ -119,6 +123,7 @@ public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
         return DtoToSpace(dto);
     }
 
+/// <author name="Sachin Baral 2025-09-28 13:55:14 +0200 122" />
     private static bool CompareSpaceArrays(Space[][]? array1, Space[][]? array2)
     {
         if (array1 == null && array2 == null) return true;
@@ -136,6 +141,7 @@ public class GameboardConfiguration : IEntityTypeConfiguration<GameBoard> {
         return true;
     }
 
+/// <author name="nilanjanadevkota 2025-10-19 11:13:58 +0200 139" />
     private static bool CompareSpaces(Space space1, Space space2)
     {
         if (space1.Name() != space2.Name()) return false;

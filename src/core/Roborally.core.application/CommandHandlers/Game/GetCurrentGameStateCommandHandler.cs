@@ -13,6 +13,7 @@ public class
     private readonly IGameRepository _gameRepository;
 
 
+/// <author name="Sachin Baral 2025-10-01 21:53:45 +0200 16" />
     public GetCurrentGameStateCommandHandler(IGameRepository gameRepository) {
         _gameRepository = gameRepository;
     }

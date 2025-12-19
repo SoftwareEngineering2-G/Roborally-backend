@@ -4,10 +4,12 @@ using Roborally.core.application.QueryContracts;
 namespace Roborally.webapi.RestEndpoints.User.Queries;
 
 public class GetAllGamesEndpoint : Endpoint<GetAllGamesRequest, GetAllGamesEndpointResponse> {
+/// <author name="Sachin Baral 2025-10-27 17:05:05 +0100 7" />
     public override void Configure() {
         Get("/users/{username}/games");
     }
 
+/// <author name="Sachin Baral 2025-10-27 17:05:05 +0100 11" />
     public override async Task HandleAsync(GetAllGamesRequest req, CancellationToken ct) {
         GetGamesForUserQuery query = new GetGamesForUserQuery() {
             Username = req.Username,

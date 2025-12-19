@@ -5,11 +5,13 @@ namespace Roborally.webapi.RestEndpoints.Lobby;
 
 public class CreateGameLobbyEndpoint : Endpoint<CreateGameLobbyRequest, CreateGameLobbyResponse>
 {
+/// <author name="Suhani Pandey 2025-09-17 13:49:31 +0200 8" />
     public override void Configure()
     {
         Post("/game-lobbies");
     }
 
+/// <author name="Suhani Pandey 2025-09-17 13:49:31 +0200 13" />
     public override async Task HandleAsync(CreateGameLobbyRequest req, CancellationToken ct)
     {
         CreateGameLobbyCommand command = new CreateGameLobbyCommand()

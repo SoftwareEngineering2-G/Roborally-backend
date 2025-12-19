@@ -30,6 +30,7 @@ public class Game {
     // Make sure the list is ordered in a way where we can also get the next player
     private readonly List<Player.Player> _players;
 
+/// <author name="Sachin Baral 2025-09-28 13:55:14 +0200 33" />
     public IReadOnlyList<Player.Player> Players => _players.AsReadOnly();
 
     public List<GameEvent> GameEvents { get; set; } = [];
@@ -60,6 +61,7 @@ public class Game {
         RoundCount = 1;
     }
 
+/// <author name="Truong Son NGO 2025-11-28 15:36:33 +0100 63" />
     public Dictionary<Player.Player, DealCardInfo> DealDecksToAllPlayers(ISystemTime systemTime) {
         if (!IsInProgrammingPhase()) {
             throw new CustomException("The game needs to be in programming phase", 400);
@@ -76,6 +78,7 @@ public class Game {
         return playerDealtCards;
     }
 
+/// <author name="nilanjanadevkota 2025-10-14 19:37:00 +0200 79" />
     public void LockInRegisters(string playerUsername, List<ProgrammingCard> lockedInCards, ISystemTime systemTime) {
         if (IsInActivationPhase()) {
             throw new CustomException("The game needs to be in programming phase", 400);
@@ -93,6 +96,7 @@ public class Game {
 
     // Assigns random cards to players that have not locked in and have empty registers and automatically locks them in.
     // Returns a dictionary of username mapped to the cards assigned to that player
+/// <author name="Vincenzo Altaserse 2025-12-18 17:40:31 +0100 96" />
     public Dictionary<string, List<ProgrammingCard>> AutoCompleteEmptyRegisters(ISystemTime systemTime)
     {
         if (IsInActivationPhase())
@@ -119,6 +123,7 @@ public class Game {
     }
 
     // Returns username mapped to the revealed card for that register
+/// <author name="nilanjanadevkota 2025-10-14 19:37:00 +0200 122" />
     public Dictionary<string, ProgrammingCard> RevealNextRegister() {
         if (!IsInActivationPhase()) {
             throw new CustomException("The game needs to be in activation phase", 400);
@@ -149,6 +154,7 @@ public class Game {
         return revealedCards;
     }
 
+/// <author name="Sachin Baral 2025-11-15 19:46:26 +0100 152" />
     public async Task ActivateNextBoardElement(ISystemTime systemTime) {
         if (!IsInActivationPhase()) {
             throw new CustomException("The game needs to be in activation phase", 400);
@@ -193,6 +199,7 @@ public class Game {
         }
     }
 
+/// <author name="Suhani Pandey 2025-12-03 21:46:28 +0100 196" />
     public void StartNextRound(ISystemTime systemTime) {
         if (!IsInActivationPhase()) {
             throw new CustomException("Cannot start next round outside of activation phase", 400);
@@ -240,6 +247,7 @@ public class Game {
         GameEvents.Add(roundCompletedEvent);
     }
 
+/// <author name="Satish 2025-11-24 10:20:04 +0100 243" />
     public List<Player.Player> ExecuteProgrammingCard(string username, ProgrammingCard card, ISystemTime systemTime, CardExecutionContext? context = null) {
         if (!IsInActivationPhase()) {
             throw new CustomException("The game needs to be in activation phase", 400);
@@ -275,6 +283,7 @@ public class Game {
         return affectedPlayers;
     }
 
+/// <author name="Sachin Baral 2025-11-04 21:24:56 +0100 278" />
     public Player.Player? GetNextExecutingPlayer() {
         if (!IsInActivationPhase()) {
             return null;
@@ -305,6 +314,7 @@ public class Game {
             : null;
     }
 
+/// <author name="Truong Son NGO 2025-11-12 15:35:28 +0100 308" />
     public void RequestPauseGame(string requestedByUsername, ISystemTime systemTime) {
         if (IsPaused) {
             throw new CustomException("Game is already paused", 400);
@@ -326,6 +336,7 @@ public class Game {
         GameEvents.Add(requestedPauseEvent);
     }
 
+/// <author name="Truong Son NGO 2025-11-12 15:35:28 +0100 329" />
     public void ResponsePauseGame(string responderUsername, bool approved, ISystemTime systemTime) {
         Player.Player? respondingPlayer = _players.Find(p => p.Username.Equals(responderUsername));
         if (respondingPlayer is null) {
@@ -343,6 +354,7 @@ public class Game {
         GameEvents.Add(responsePauseEvent);
     }
 
+/// <author name="Truong Son NGO 2025-11-12 15:35:28 +0100 346" />
     public GamePauseState? GetGamePauseState() {
         var pauseRequestEvent = GameEvents.OfType<PauseGameEvent>()
             .Where(e => e.isRequest)
@@ -371,6 +383,7 @@ public class Game {
         };
     }
 
+/// <author name="Truong Son NGO 2025-11-12 15:35:28 +0100 374" />
     public void ContinueGame() {
         if (!IsPaused) {
             throw new CustomException("Game is not paused", 400);
@@ -379,14 +392,17 @@ public class Game {
         IsPaused = false;
     }
 
+/// <author name="nilanjanadevkota 2025-10-14 19:37:00 +0200 382" />
     private bool IsInActivationPhase() {
         return CurrentPhase.Equals(GamePhase.ActivationPhase);
     }
 
+/// <author name="nilanjanadevkota 2025-10-14 19:37:00 +0200 386" />
     private bool IsInProgrammingPhase() {
         return CurrentPhase.Equals(GamePhase.ProgrammingPhase);
     }
 
+/// <author name="Sachin Baral 2025-11-04 21:24:56 +0100 390" />
     public int? GetCurrentExecutingRegister() {
         if (!IsInActivationPhase()) {
             return null;
@@ -395,6 +411,7 @@ public class Game {
         return CurrentRevealedRegister;
     }
 
+/// <author name="Sachin Baral 2025-11-15 19:46:26 +0100 398" />
     public async Task HandleGameCompleted(Player.Player player, ISystemTime systemTime) {
         this.CompletedAt = systemTime.CurrentTime;
         this.Winner = player.Username;
@@ -420,12 +437,14 @@ public class Game {
 
     }
 
+/// <author name="Truong Son NGO 2025-11-12 15:35:28 +0100 423" />
     private Game() {
         // EFC needs the empty constructor , i know IDE warns it but please dont delete it.
         _players = [];
     }
 
 
+/// <author name="Sachin Baral 2025-11-15 19:46:26 +0100 429" />
     private void UpdatePlayerRatings() {
         if (Winner is null) {
             return;

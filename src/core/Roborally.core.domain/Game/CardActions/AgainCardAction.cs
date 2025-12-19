@@ -4,6 +4,7 @@ namespace Roborally.core.domain.Game.CardActions;
 
 public class AgainCardAction : ICardAction
 {
+/// <author name="Satish 2025-11-24 10:20:04 +0100 7" />
     public void Execute(Player.Player player, Game game, Bases.ISystemTime systemTime, CardExecutionContext? context = null)
     {
         // Check if there's a last executed card

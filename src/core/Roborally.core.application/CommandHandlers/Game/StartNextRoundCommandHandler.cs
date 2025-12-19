@@ -22,6 +22,7 @@ public class StartNextRoundCommandHandler : ICommandHandler<StartNextRoundComman
         _systemTime = systemTime;
     }
 
+/// <author name="Suhani Pandey 2025-12-03 21:46:28 +0100 25" />
     public async Task ExecuteAsync(StartNextRoundCommand command, CancellationToken ct) {
         var game = await _gameRepository.FindAsync(command.GameId, ct);
         if (game is null) {

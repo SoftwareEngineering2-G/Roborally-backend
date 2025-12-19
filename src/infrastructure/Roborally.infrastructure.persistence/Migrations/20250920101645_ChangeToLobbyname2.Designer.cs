@@ -16,6 +16,7 @@ namespace Roborally.infrastructure.persistence.Migrations
     partial class ChangeToLobbyname2
     {
         /// <inheritdoc />
+/// <author name="Sachin Baral 2025-09-20 20:52:08 +0200 19" />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618

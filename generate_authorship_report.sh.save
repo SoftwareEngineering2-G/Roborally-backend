@@ -1,0 +1,82 @@
+#!/bin/sh
+
+# ==============================
+# Configuration
+# ==============================
+
+SOURCE_DIR="src"
+OUTPUT_FILE="AUTHORSHIP_REPORT.txt"
+AUTHOR_MAP="authors.map"
+IGNORE_REVS=".git-blame-ignore-revs"
+
+# Minimum percentage to be listed as author
+THRESHOLD=20
+
+# ==============================
+# Script
+# ==============================
+
+echo "Generating authorship report..."
+echo "Minimum contribution threshold: ${THRESHOLD}%"
+
+echo "Authorship Report" > "$OUTPUT_FILE"
+echo "=================" >> "$OUTPUT_FILE"
+echo "" >> "$OUTPUT_FILE"
+
+# Blame options
+BLAME_OPTS="--line-porcelain"
+if [ -f "$IGNORE_REVS" ]; then
+  BLAME_OPTS="$BLAME_OPTS --ignore-revs-file $IGNORE_REVS"
+fi
+
+git ls-files "$SOURCE_DIR" | while read -r file; do
+  [ ! -s "$file" ] && continue
+
+  blame=$(git blame $BLAME_OPTS "$file" 2>/dev/null | grep "^author ")
+
+  total=$(echo "$blame" | wc -l | tr -d ' ')
+
+  [ "$total" -eq 0 ] && continue
+
+  authors=$(
+    echo "$blame" \
+      | sed "s/^author //" \
+      | sort \
+      | uniq -c \
+      | awk -v total="$total" -v threshold="$THRESHOLD" '
+          {
+            percent = ($1 / total) * 100
+            if (percent >= threshold)
+              printf "%s (%.0f%%), ", substr($0, index($0,$2))
+          }
+        ' \
+      | sed 's/, $//'
+  )
+
+  # Map names to student IDs if mapping exists
+  if [ -f "$AUTHOR_MAP" ]; then
+    mapped=""
+    IFS=','; for a in $authors; do
+      name=$(echo "$a" | sed 's/ (.*)//')
+      percent=$(echo "$a" | sed 's/.*(\(.*%\)).*/\1/')
+      id=$(grep "^$name[[:space:]]*=" "$AUTHOR_MAP" | cut -d= -f2 | xargs)
+      if [ -n "$id" ]; then
+        mapped="$mapped$id ($percent), "
+      else
+        mapped="$mapped$name ($percent), "
+      fi
+    done
+    authors=$(echo "$mapped" | sed 's/, $//')
+  fi
+
+  [ -z "$authors" ] && authors="Below threshold"
+
+  printf "%s → %s\n" "$file" "$authors" >> "$OUTPUT_FILE"
+done
+
+echo "" >> "$OUTPUT_FILE"
+echo "Notes:" >> "$OUTPUT_FILE"
+echo "- Authors listed if contribution ≥ ${THRESHOLD}% of lines (git blame)." >> "$OUTPUT_FILE"
+echo "- Percentages are approximate and line-based." >> "$OUTPUT_FILE"
+
+echo "Done. Report written to $OUTPUT_FILE"

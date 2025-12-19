@@ -17,6 +17,7 @@ namespace Roborally.infrastructure.persistence.Migrations
     partial class AddCreatedAndUpdatedTime
     {
         /// <inheritdoc />
+/// <author name="Sachin Baral 2025-10-27 17:05:05 +0100 20" />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618

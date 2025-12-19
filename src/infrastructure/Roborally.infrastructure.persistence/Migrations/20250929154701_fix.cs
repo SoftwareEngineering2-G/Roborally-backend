@@ -8,6 +8,7 @@ namespace Roborally.infrastructure.persistence.Migrations
     public partial class fix : Migration
     {
         /// <inheritdoc />
+/// <author name="Sachin Baral 2025-10-01 21:53:45 +0200 11" />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
@@ -33,6 +34,7 @@ namespace Roborally.infrastructure.persistence.Migrations
         }
 
         /// <inheritdoc />
+/// <author name="Sachin Baral 2025-10-01 21:53:45 +0200 36" />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(

@@ -24,6 +24,7 @@ public class RequestPauseGameCommandHandler : ICommandHandler<RequestPauseGameCo
         _systemTime = systemTime;
     }
 
+/// <author name="Truong Son NGO 2025-11-12 15:35:28 +0100 27" />
     public async Task ExecuteAsync(RequestPauseGameCommand command, CancellationToken ct) {
         var game = await _gameRepository.FindAsync(command.GameId, ct);
         if (game is null) {

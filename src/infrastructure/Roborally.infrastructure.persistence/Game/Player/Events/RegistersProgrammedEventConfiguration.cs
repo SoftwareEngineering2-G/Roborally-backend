@@ -9,6 +9,7 @@ namespace Roborally.infrastructure.persistence.Game.Player.Events;
 
 public class  RegistersProgrammedEventConfiguration : IEntityTypeConfiguration<RegistersProgrammedEvent>
 {
+/// <author name="Sachin Baral 2025-09-28 13:55:14 +0200 12" />
     public void Configure(EntityTypeBuilder<RegistersProgrammedEvent> builder)
     {
         builder.ToTable("RegisterProgrammedEvents");

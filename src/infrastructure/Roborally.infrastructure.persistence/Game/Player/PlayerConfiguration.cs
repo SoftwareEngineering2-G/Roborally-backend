@@ -7,6 +7,7 @@ using Roborally.core.domain.Game.Deck;
 namespace Roborally.infrastructure.persistence.Game.Player;
 
 public class PlayerConfiguration : IEntityTypeConfiguration<core.domain.Game.Player.Player> {
+/// <author name="Sachin Baral 2025-09-28 13:55:14 +0200 10" />
     public void Configure(EntityTypeBuilder<core.domain.Game.Player.Player> builder) {
         // Composite primary key (Username, GameId)
         builder.HasKey(x => new {x.GameId, x.Username});

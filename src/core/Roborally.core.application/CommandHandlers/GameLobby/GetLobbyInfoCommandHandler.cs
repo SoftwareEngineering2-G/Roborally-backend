@@ -10,12 +10,14 @@ public class GetLobbyInfoCommandHandler : ICommandHandler<GetLobbyInfoCommand, G
     private readonly IGameLobbyRepository _gameLobbyRepository;
     private readonly IGameRepository _gameRepository;
 
+/// <author name="Truong Son NGO 2025-11-12 15:35:28 +0100 13" />
     public GetLobbyInfoCommandHandler(IGameLobbyRepository gameLobbyRepository, IGameRepository gameRepository) {
         _gameLobbyRepository = gameLobbyRepository;
         _gameRepository = gameRepository;
     }
 
 
+/// <author name="Sachin Baral 2025-09-20 20:52:08 +0200 19" />
     public async Task<GetLobbyInfoCommandResponse> ExecuteAsync(GetLobbyInfoCommand command, CancellationToken ct) {
         domain.Lobby.GameLobby? lobby = await _gameLobbyRepository.FindAsync(command.GameId);
 

@@ -17,6 +17,7 @@ namespace Roborally.infrastructure.persistence.Migrations
     partial class AddWalls
     {
         /// <inheritdoc />
+/// <author name="Truong Son NGO 2025-10-13 13:29:29 +0200 20" />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618

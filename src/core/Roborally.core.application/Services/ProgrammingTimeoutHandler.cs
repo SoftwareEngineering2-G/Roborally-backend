@@ -21,6 +21,7 @@ public class ProgrammingTimeoutHandler : IProgrammingTimeoutHandler
         _systemTime = systemTime;
     }
 
+/// <author name="Vincenzo Altaserse 2025-12-18 17:40:31 +0100 24" />
     public async Task HandleTimeoutAsync(Guid gameId, CancellationToken ct)
     {
         var game = await _gameRepository.FindAsync(gameId, ct);
