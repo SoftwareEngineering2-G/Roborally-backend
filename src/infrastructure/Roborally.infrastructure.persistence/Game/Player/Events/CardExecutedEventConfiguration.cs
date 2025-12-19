@@ -6,6 +6,7 @@ namespace Roborally.infrastructure.persistence.Game.Player.Events;
 
 public class CardExecutedEventConfiguration : IEntityTypeConfiguration<CardExecutedEvent>
 {
+/// <author name="Suhani Pandey 2025-10-15 21:47:56 +0200 9" />
     public void Configure(EntityTypeBuilder<CardExecutedEvent> builder)
     {
         builder.ToTable("CardExecutedEvents");

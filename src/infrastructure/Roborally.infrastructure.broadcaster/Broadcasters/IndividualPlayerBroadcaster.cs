@@ -7,6 +7,7 @@ namespace Roborally.infrastructure.broadcaster.Broadcasters;
 public class IndividualPlayerBroadcaster : IIndividualPlayerBroadcaster {
     private readonly IHubContext<GameHub> _hubContext;
 
+/// <author name="Sachin Baral 2025-10-01 21:53:45 +0200 10" />
     public IndividualPlayerBroadcaster(IHubContext<GameHub> hubContext) {
         _hubContext = hubContext;
     }

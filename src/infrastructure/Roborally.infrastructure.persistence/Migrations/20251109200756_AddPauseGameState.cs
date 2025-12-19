@@ -8,6 +8,7 @@ namespace Roborally.infrastructure.persistence.Migrations
     public partial class AddPauseGameState : Migration
     {
         /// <inheritdoc />
+/// <author name="Truong Son NGO 2025-11-12 15:35:28 +0100 11" />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
@@ -17,6 +18,7 @@ namespace Roborally.infrastructure.persistence.Migrations
         }
 
         /// <inheritdoc />
+/// <author name="Truong Son NGO 2025-11-12 15:35:28 +0100 20" />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(

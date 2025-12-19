@@ -5,6 +5,7 @@ using Roborally.core.domain.Lobby;
 namespace Roborally.infrastructure.persistence.Lobby;
 
 public class GameLobbyConfiguration : IEntityTypeConfiguration<GameLobby>  {
+/// <author name="Suhani Pandey 2025-09-17 13:49:31 +0200 8" />
     public void Configure(EntityTypeBuilder<GameLobby> builder)
     {
         builder.HasKey(x => x.GameId);

@@ -34,6 +34,7 @@ public class ContinueGameCommandHandler : ICommandHandler<ContinueGameCommand> {
     }
 
 
+/// <author name="Truong Son NGO 2025-11-12 15:35:28 +0100 37" />
     public async Task ExecuteAsync(ContinueGameCommand command, CancellationToken ct) {
         bool userExists = await _userRepository.ExistsByUsernameAsync(command.Username, ct);
         if (!userExists) {

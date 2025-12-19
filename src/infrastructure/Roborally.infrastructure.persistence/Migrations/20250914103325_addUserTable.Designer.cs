@@ -16,6 +16,7 @@ namespace Roborally.infrastructure.persistence.Migrations
     partial class addUserTable
     {
         /// <inheritdoc />
+/// <author name="Sachin Baral 2025-09-14 12:59:43 +0200 19" />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618

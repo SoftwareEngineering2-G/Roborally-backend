@@ -1,0 +1,288 @@
+Authorship Report
+=================
+
+src/Dockerfile → MrSachin7
+src/Roborally.webapi/Middleware/GlobalExceptionHandler.cs → Sachin Baral
+src/Roborally.webapi/Program.cs → Gaurav Pandey
+src/Roborally.webapi/Properties/launchSettings.json → Truong Son NGO
+src/Roborally.webapi/RestEndpoints/Game/Commands/ActivateNextBoardElementEndpoint.cs → nilanjanadevkota
+src/Roborally.webapi/RestEndpoints/Game/Commands/DealDecksToAllEndpoint.cs → Sachin Baral
+src/Roborally.webapi/RestEndpoints/Game/Commands/ExecuteProgrammingCardEndpoint.cs → Suhani Pandey
+src/Roborally.webapi/RestEndpoints/Game/Commands/GetUserPausedGames.cs → Truong Son NGO
+src/Roborally.webapi/RestEndpoints/Game/Commands/RequestPauseGameEndpoint.cs → Truong Son NGO
+src/Roborally.webapi/RestEndpoints/Game/Commands/ResponsePauseGameEndpoint.cs → Truong Son NGO
+src/Roborally.webapi/RestEndpoints/Game/Commands/RevealNextRegisterEndpoint.cs → Suhani Pandey
+src/Roborally.webapi/RestEndpoints/Game/Commands/StartActivationPhaseEndpoint.cs → Suhani Pandey
+src/Roborally.webapi/RestEndpoints/Game/Commands/StartNextRoundEndpoint.cs → Suhani Pandey
+src/Roborally.webapi/RestEndpoints/Game/Queries/GetCurrentGameStateEndpoint.cs → Sachin Baral
+src/Roborally.webapi/RestEndpoints/GameBoard/GetAvailableBoardsEndpoint.cs → Satish
+src/Roborally.webapi/RestEndpoints/Leaderboard/GetLeaderboardEndpoint.cs → Sachin Baral
+src/Roborally.webapi/RestEndpoints/Lobby/ContinueGameEndpoint.cs → Truong Son NGO
+src/Roborally.webapi/RestEndpoints/Lobby/CreateGameLobbyEndpoint.cs → Suhani Pandey
+src/Roborally.webapi/RestEndpoints/Lobby/GetActiveGameLobbies.cs → Sachin Baral
+src/Roborally.webapi/RestEndpoints/Lobby/GetLobbyInfoEndpoint.cs → Sachin Baral
+src/Roborally.webapi/RestEndpoints/Lobby/JoinContinueLobbyEndpoint.cs → Truong Son NGO
+src/Roborally.webapi/RestEndpoints/Lobby/JoinLobbyEndpoint.cs → Sachin Baral
+src/Roborally.webapi/RestEndpoints/Lobby/LeaveLobbyEndpoint.cs → Vincenzo Altaserse
+src/Roborally.webapi/RestEndpoints/Lobby/StartGameEndpoint.cs → Sachin Baral
+src/Roborally.webapi/RestEndpoints/PlayerEvents/RegistersProgrammedEndpoint.cs → Sachin Baral
+src/Roborally.webapi/RestEndpoints/Test/CompleteGameEndpoint.cs → Sachin Baral
+src/Roborally.webapi/RestEndpoints/User/Queries/GetAllGamesEndpoint.cs → Sachin Baral
+src/Roborally.webapi/RestEndpoints/User/Queries/GetMyProfileInformation.cs → Sachin Baral
+src/Roborally.webapi/RestEndpoints/User/SigninUserEndpoint.cs → Sachin Baral
+src/Roborally.webapi/RestEndpoints/User/SignupUserEndpoint.cs → Gaurav Pandey
+src/Roborally.webapi/Roborally.webapi.csproj → MrSachin7
+src/Roborally.webapi/appsettings.Development.json → Truong Son NGO
+src/Roborally.webapi/appsettings.json → Truong Son NGO
+src/Roborally.webapi/scripts/dbMigrations → MrSachin7
+src/Roborally.webapi/scripts/dockerbuild → MrSachin7
+src/core/Roborally.core.application/ApplicationContracts/Broadcasters/IGameBroadcaster.cs → Sachin Baral
+src/core/Roborally.core.application/ApplicationContracts/Broadcasters/IGameLobbyBroadcaster.cs → Sachin Baral
+src/core/Roborally.core.application/ApplicationContracts/Broadcasters/IIndividualPlayerBroadcaster.cs → Sachin Baral
+src/core/Roborally.core.application/ApplicationContracts/GameTimer/IGameTimerService.cs → VicAl02
+src/core/Roborally.core.application/ApplicationContracts/GameTimer/IProgrammingTimeoutHandler.cs → VicAl02
+src/core/Roborally.core.application/ApplicationContracts/IJwtService.cs → Gaurav Pandey
+src/core/Roborally.core.application/ApplicationContracts/Persistence/IGameBoardRepository.cs → Sachin Baral
+src/core/Roborally.core.application/ApplicationContracts/Persistence/IGameLobbyRepository.cs → Suhani Pandey
+src/core/Roborally.core.application/ApplicationContracts/Persistence/IGameRepository.cs → Sachin Baral
+src/core/Roborally.core.application/ApplicationContracts/Persistence/IUserRepository.cs → Sachin Baral
+src/core/Roborally.core.application/ApplicationModuleInstallation.cs → MrSachin7
+src/core/Roborally.core.application/CommandContracts/ContinueGameCommand.cs → Truong Son NGO
+src/core/Roborally.core.application/CommandContracts/CreateGameLobbyCommand.cs → Suhani Pandey
+src/core/Roborally.core.application/CommandContracts/Game/ActivateNextBoardElementCommand.cs → nilanjanadevkota
+src/core/Roborally.core.application/CommandContracts/Game/DealDecksToAllCommand.cs → Sachin Baral
+src/core/Roborally.core.application/CommandContracts/Game/ExecuteProgrammingCardCommand.cs → Suhani Pandey
+src/core/Roborally.core.application/CommandContracts/Game/GetCurrentGameStateCommand.cs → Sachin Baral
+src/core/Roborally.core.application/CommandContracts/Game/RequestPauseGameCommand.cs → Truong Son NGO
+src/core/Roborally.core.application/CommandContracts/Game/ResponsePauseGameCommand.cs → Truong Son NGO
+src/core/Roborally.core.application/CommandContracts/Game/RevealNextRegisterCommand.cs → Suhani Pandey
+src/core/Roborally.core.application/CommandContracts/Game/StartActivationPhaseCommand.cs → Suhani Pandey
+src/core/Roborally.core.application/CommandContracts/Game/StartNextRoundCommand.cs → Suhani Pandey
+src/core/Roborally.core.application/CommandContracts/GetActiveGameLobbiesCommand.cs → Sachin Baral
+src/core/Roborally.core.application/CommandContracts/GetLobbyInfoCommand.cs → Sachin Baral
+src/core/Roborally.core.application/CommandContracts/GetUserPausedGamesCommand.cs → Truong Son NGO
+src/core/Roborally.core.application/CommandContracts/JoinContinueLobbyCommand.cs → Truong Son NGO
+src/core/Roborally.core.application/CommandContracts/JoinLobbyCommand.cs → Sachin Baral
+src/core/Roborally.core.application/CommandContracts/LeaveLobbyCommand.cs → Vincenzo Altaserse
+src/core/Roborally.core.application/CommandContracts/PlayerEvents/RegistersProgrammedCommand.cs → Sachin Baral
+src/core/Roborally.core.application/CommandContracts/SignInCommand.cs → Gaurav Pandey
+src/core/Roborally.core.application/CommandContracts/SignupCommand.cs → Gaurav Pandey
+src/core/Roborally.core.application/CommandContracts/StartGameCommand.cs → Sachin Baral
+src/core/Roborally.core.application/CommandHandlers/Game/ActivateNextBoardElementCommandHandler.cs → Sachin Baral
+src/core/Roborally.core.application/CommandHandlers/Game/DealDecksToAllCommandHandler.cs → Sachin Baral
+src/core/Roborally.core.application/CommandHandlers/Game/ExecuteProgrammingCardCommandHandler.cs → Suhani Pandey
+src/core/Roborally.core.application/CommandHandlers/Game/GetCurrentGameStateCommandHandler.cs → Sachin Baral
+src/core/Roborally.core.application/CommandHandlers/Game/GetUserPausedgamesCommandHandler.cs → Truong Son NGO
+src/core/Roborally.core.application/CommandHandlers/Game/RequestPauseGameCommandHandler.cs → Truong Son NGO
+src/core/Roborally.core.application/CommandHandlers/Game/ResponsePauseGameCommandHandler.cs → Truong Son NGO
+src/core/Roborally.core.application/CommandHandlers/Game/RevealNextRegisterCommandHandler.cs → Suhani Pandey
+src/core/Roborally.core.application/CommandHandlers/Game/StartActivationPhaseCommandHandler.cs → Suhani Pandey
+src/core/Roborally.core.application/CommandHandlers/Game/StartNextRoundCommandHandler.cs → Suhani Pandey
+src/core/Roborally.core.application/CommandHandlers/GameLobby/ContinueGameCommandHandler.cs → Truong Son NGO
+src/core/Roborally.core.application/CommandHandlers/GameLobby/CreateGameLobbyCommandHandler.cs → Suhani Pandey
+src/core/Roborally.core.application/CommandHandlers/GameLobby/FindPublicGameLobbyCommandHandler.cs → Sachin Baral
+src/core/Roborally.core.application/CommandHandlers/GameLobby/GetLobbyInfoCommandHandler.cs → Sachin Baral
+src/core/Roborally.core.application/CommandHandlers/GameLobby/JoinContinueLobbyCommandHandler.cs → Truong Son NGO
+src/core/Roborally.core.application/CommandHandlers/GameLobby/JoinLobbyCommandHandler.cs → Sachin Baral
+src/core/Roborally.core.application/CommandHandlers/GameLobby/LeaveLobbyCommandHandler.cs → Vincenzo Altaserse
+src/core/Roborally.core.application/CommandHandlers/GameLobby/StartGameCommandHandler.cs → Sachin Baral
+src/core/Roborally.core.application/CommandHandlers/PlayerEvents/RegistersProgrammedCommandHandler.cs → Sachin Baral
+src/core/Roborally.core.application/CommandHandlers/UserManagement/SigninCommandHandler.cs → Gaurav Pandey
+src/core/Roborally.core.application/CommandHandlers/UserManagement/SignupCommandHandler.cs → Gaurav Pandey
+src/core/Roborally.core.application/QueryContracts/GetGamesForUserQuery.cs → Sachin Baral
+src/core/Roborally.core.application/QueryContracts/GetLeaderboardQuery.cs → Sachin Baral
+src/core/Roborally.core.application/QueryContracts/GetMyProfileQuery.cs → Sachin Baral
+src/core/Roborally.core.application/QueryContracts/GetUserCurrentPlayingStatusQuery.cs → Sachin Baral
+src/core/Roborally.core.application/QueryHandlers/GetGamesForUserQueryHandler.cs → Sachin Baral
+src/core/Roborally.core.application/QueryHandlers/GetLeaderboardQueryHandler.cs → Sachin Baral
+src/core/Roborally.core.application/QueryHandlers/GetMyProfileQueryHandler.cs → Sachin Baral
+src/core/Roborally.core.application/QueryHandlers/GetUserCurrentPlayingStatusQueryHandler.cs → Sachin Baral
+src/core/Roborally.core.application/Roborally.core.application.csproj → MrSachin7
+src/core/Roborally.core.application/Services/ProgrammingTimeoutHandler.cs → VicAl02
+src/core/Roborally.core.domain/Bases/Enumeration.cs → Sachin Baral
+src/core/Roborally.core.domain/Bases/Event.cs → Sachin Baral
+src/core/Roborally.core.domain/Bases/ISystemTime.cs → Suhani Pandey
+src/core/Roborally.core.domain/Bases/IUnitOfWork.cs → MrSachin7
+src/core/Roborally.core.domain/BroadCastEvents/GameCompletedBroadcastEvent.cs → Sachin Baral
+src/core/Roborally.core.domain/CustomException.cs → Sachin Baral
+src/core/Roborally.core.domain/Game/CardActions/ActionFactory.cs → nilanjanadevkota
+src/core/Roborally.core.domain/Game/CardActions/AgainCardAction.cs → Suhani Pandey
+src/core/Roborally.core.domain/Game/CardActions/CardExecutionContext.cs → Satish
+src/core/Roborally.core.domain/Game/CardActions/ICardAction.cs → nilanjanadevkota
+src/core/Roborally.core.domain/Game/CardActions/Move1CardAction.cs → nilanjanadevkota
+src/core/Roborally.core.domain/Game/CardActions/Move2CardAction.cs → nilanjanadevkota
+src/core/Roborally.core.domain/Game/CardActions/Move3CardAction.cs → Suhani Pandey
+src/core/Roborally.core.domain/Game/CardActions/MoveBackwardCardAction.cs → Suhani Pandey
+src/core/Roborally.core.domain/Game/CardActions/MovementChoiceCardAction.cs → Satish
+src/core/Roborally.core.domain/Game/CardActions/RotateLeftCardAction.cs → Suhani Pandey
+src/core/Roborally.core.domain/Game/CardActions/RotateRightCardAction.cs → Suhani Pandey
+src/core/Roborally.core.domain/Game/CardActions/SwapPositionCardAction.cs → Satish
+src/core/Roborally.core.domain/Game/CardActions/UTurnCardAction.cs → Suhani Pandey
+src/core/Roborally.core.domain/Game/Deck/ProgrammingCard.cs → Sachin Baral
+src/core/Roborally.core.domain/Game/Deck/ProgrammingDeck.cs → Sachin Baral
+src/core/Roborally.core.domain/Game/Game.cs → Sachin Baral
+src/core/Roborally.core.domain/Game/GameEvents/BoardElementActivatedEvent.cs → nilanjanadevkota
+src/core/Roborally.core.domain/Game/GameEvents/CheckpointReachedEvent.cs → Suhani Pandey
+src/core/Roborally.core.domain/Game/GameEvents/DealCardInfo.cs → Truong Son NGO
+src/core/Roborally.core.domain/Game/GameEvents/GameCompletedEvent.cs → Sachin Baral
+src/core/Roborally.core.domain/Game/GameEvents/GameEvent.cs → nilanjanadevkota
+src/core/Roborally.core.domain/Game/GameEvents/PauseGameEvent.cs → Truong Son NGO
+src/core/Roborally.core.domain/Game/GameEvents/RoundCompletedEvent.cs → Suhani Pandey
+src/core/Roborally.core.domain/Game/GameMovementExtension.cs → nilanjanadevkota
+src/core/Roborally.core.domain/Game/GamePauseState.cs → Truong Son NGO
+src/core/Roborally.core.domain/Game/GamePhase.cs → Sachin Baral
+src/core/Roborally.core.domain/Game/GameQueryExtensions.cs → Sachin Baral
+src/core/Roborally.core.domain/Game/Gameboard/BoardElement/BlueConveyorBelt.cs → nilanjanadevkota
+src/core/Roborally.core.domain/Game/Gameboard/BoardElement/BoardElement.cs → nilanjanadevkota
+src/core/Roborally.core.domain/Game/Gameboard/BoardElement/BoardElementActivationStrategies/BlueConveyorBeltActivationStrategy.cs → nilanjanadevkota
+src/core/Roborally.core.domain/Game/Gameboard/BoardElement/BoardElementActivationStrategies/BoardElementActicationStrategyFactory.cs → nilanjanadevkota
+src/core/Roborally.core.domain/Game/Gameboard/BoardElement/BoardElementActivationStrategies/GearActivationStrategy.cs → nilanjanadevkota
+src/core/Roborally.core.domain/Game/Gameboard/BoardElement/BoardElementActivationStrategies/GreenConveyorBeltActivationStrategy.cs → nilanjanadevkota
+src/core/Roborally.core.domain/Game/Gameboard/BoardElement/BoardElementActivationStrategies/IBoardElementActivationStrategy.cs → nilanjanadevkota
+src/core/Roborally.core.domain/Game/Gameboard/BoardElement/BoardElementFactory.cs → nilanjanadevkota
+src/core/Roborally.core.domain/Game/Gameboard/BoardElement/Gear.cs → nilanjanadevkota
+src/core/Roborally.core.domain/Game/Gameboard/BoardElement/GearDirection.cs → nilanjanadevkota
+src/core/Roborally.core.domain/Game/Gameboard/BoardElement/GreenConveyorBelt.cs → nilanjanadevkota
+src/core/Roborally.core.domain/Game/Gameboard/GameBoard.cs → nilanjanadevkota
+src/core/Roborally.core.domain/Game/Gameboard/GameBoardFactory.cs → Sachin Baral
+src/core/Roborally.core.domain/Game/Gameboard/GameBoardJsonLoader.cs → Satish
+src/core/Roborally.core.domain/Game/Gameboard/Space/Checkpoint.cs → Suhani Pandey
+src/core/Roborally.core.domain/Game/Gameboard/Space/EmptySpace.cs → Sachin Baral
+src/core/Roborally.core.domain/Game/Gameboard/Space/Space.cs → Truong Son NGO
+src/core/Roborally.core.domain/Game/Gameboard/Space/SpaceFactory.cs → Sachin Baral
+src/core/Roborally.core.domain/Game/Gameboard/Space/SpwanPoint.cs → Sachin Baral
+src/core/Roborally.core.domain/Game/Gameboard/maps/CastleTour.json → satish627
+src/core/Roborally.core.domain/Game/Gameboard/maps/FinishTestMap.json → Andrej Jurco
+src/core/Roborally.core.domain/Game/Gameboard/maps/StarterCourse.json → Sachin Baral
+src/core/Roborally.core.domain/Game/Player/Direction.cs → Suhani Pandey
+src/core/Roborally.core.domain/Game/Player/Events/CardExecutedEvent.cs → Suhani Pandey
+src/core/Roborally.core.domain/Game/Player/Events/DiscardPilesShuffledIntoPickPilesEvent.cs → Truong Son NGO
+src/core/Roborally.core.domain/Game/Player/Events/PlayerEvent.cs → Sachin Baral
+src/core/Roborally.core.domain/Game/Player/Events/ProgrammingCardsDealtEvent.cs → Sachin Baral
+src/core/Roborally.core.domain/Game/Player/Events/RegistersProgrammedEvent.cs → Sachin Baral
+src/core/Roborally.core.domain/Game/Player/Player.cs → Sachin Baral
+src/core/Roborally.core.domain/Game/Player/Position.cs → Vincenzo Altaserse
+src/core/Roborally.core.domain/Game/Player/Robot.cs → Sachin Baral
+src/core/Roborally.core.domain/Lobby/GameLobby.cs → Sachin Baral
+src/core/Roborally.core.domain/Roborally.core.domain.csproj → MrSachin7
+src/core/Roborally.core.domain/User/User.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.broadcaster/BroadcastEventsHandlers/GameCompletedBroadcastEventHandler.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.broadcaster/BroadcasterModuleInstallation.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.broadcaster/Broadcasters/GameBroadcaster.cs → Suhani Pandey
+src/infrastructure/Roborally.infrastructure.broadcaster/Broadcasters/GameLobbyBroadcaster.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.broadcaster/Broadcasters/IndividualPlayerBroadcaster.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.broadcaster/Game/GameHub.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.broadcaster/GameLobby/GameLobbyHub.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.broadcaster/GroupName.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.broadcaster/Roborally.infrastructure.broadcaster.csproj → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/AppDatabaseContext.cs → MrSachin7
+src/infrastructure/Roborally.infrastructure.persistence/Authentication/JwtService.cs → Gaurav Pandey
+src/infrastructure/Roborally.infrastructure.persistence/Authentication/JwtSettings.cs → Gaurav Pandey
+src/infrastructure/Roborally.infrastructure.persistence/Contracts/SystemTime.cs → Suhani Pandey
+src/infrastructure/Roborally.infrastructure.persistence/Game/Events/BoardElementActivatedEventConfiguration.cs → nilanjanadevkota
+src/infrastructure/Roborally.infrastructure.persistence/Game/Events/CheckpointReachedEventConfiguration.cs → Suhani Pandey
+src/infrastructure/Roborally.infrastructure.persistence/Game/Events/GameEventConfiguration.cs → nilanjanadevkota
+src/infrastructure/Roborally.infrastructure.persistence/Game/Events/PauseGameEventConfiguration.cs → Truong Son NGO
+src/infrastructure/Roborally.infrastructure.persistence/Game/GameBoardRepository.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Game/GameBoardSeeder.cs → Satish
+src/infrastructure/Roborally.infrastructure.persistence/Game/GameConfiguration.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Game/GameRepository.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Game/GameboardConfiguration.cs → nilanjanadevkota
+src/infrastructure/Roborally.infrastructure.persistence/Game/Player/Events/CardExecutedEventConfiguration.cs → Suhani Pandey
+src/infrastructure/Roborally.infrastructure.persistence/Game/Player/Events/DiscardPilesShuffledIntoPickPilesEventConfiguration.cs → Truong Son NGO
+src/infrastructure/Roborally.infrastructure.persistence/Game/Player/Events/PlayerEventConfiguration.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Game/Player/Events/ProgrammingCardsDealtEventConfiguration.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Game/Player/Events/RegistersProgrammedEventConfiguration.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Game/Player/PlayerConfiguration.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/GameTimer/GameTimerService.cs → MrSachin7
+src/infrastructure/Roborally.infrastructure.persistence/GameTimer/ProgrammingTimeoutJob.cs → MrSachin7
+src/infrastructure/Roborally.infrastructure.persistence/Lobby/GameLobbyConfiguration.cs → Suhani Pandey
+src/infrastructure/Roborally.infrastructure.persistence/Lobby/GameLobbyRepository.cs → Suhani Pandey
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250914103325_addUserTable.Designer.cs → MrSachin7
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250914103325_addUserTable.cs → MrSachin7
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250917111954_createGameLobby.Designer.cs → Suhani Pandey
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250917111954_createGameLobby.cs → Suhani Pandey
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250917113118_MArkedStartedAsNullable.Designer.cs → Suhani Pandey
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250917113118_MArkedStartedAsNullable.cs → Suhani Pandey
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250919084037_updateUseer.Designer.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250919084037_updateUseer.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250919085251_gameLobbyManyToMany.Designer.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250919085251_gameLobbyManyToMany.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250919085704_updateUserTable.Designer.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250919085704_updateUserTable.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250919090948_updateUserTableAgain2.Designer.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250919090948_updateUserTableAgain2.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250920101645_ChangeToLobbyname2.Designer.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250920101645_ChangeToLobbyname2.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250927161019_playerEvents.Designer.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250927161019_playerEvents.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250927161308_playerEventsValueComparer.Designer.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250927161308_playerEventsValueComparer.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250927162500_playerEventsCorrectly.Designer.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250927162500_playerEventsCorrectly.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250927163535_playerEventsFixed.Designer.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250927163535_playerEventsFixed.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250928113326_games.Designer.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250928113326_games.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250929154701_fix.Designer.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20250929154701_fix.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251001165226_CardsDealtEvents.Designer.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251001165226_CardsDealtEvents.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251001165355_CardsDealtEvents2.Designer.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251001165355_CardsDealtEvents2.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251001182155_Updategane.Designer.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251001182155_Updategane.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251009100340_UpdateModelSchema.Designer.cs → Suhani Pandey
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251009100340_UpdateModelSchema.cs → Suhani Pandey
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251009193556_UpdateGameTable.Designer.cs → Suhani Pandey
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251009193556_UpdateGameTable.cs → Suhani Pandey
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251009201231_UpdateLastExecutedAction.Designer.cs → Suhani Pandey
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251009201231_UpdateLastExecutedAction.cs → Suhani Pandey
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251010113052_AddWalls.Designer.cs → Truong Son NGO
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251010113052_AddWalls.cs → Truong Son NGO
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251014172023_GameEvents.Designer.cs → nilanjanadevkota
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251014172023_GameEvents.cs → nilanjanadevkota
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251015120709_AddCardExecutedEvents.Designer.cs → Suhani Pandey
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251015120709_AddCardExecutedEvents.cs → Suhani Pandey
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251018122812_GameboardSupportsBoardElement.Designer.cs → nilanjanadevkota
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251018122812_GameboardSupportsBoardElement.cs → nilanjanadevkota
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251027140619_AddCreatedAndUpdatedTime.Designer.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251027140619_AddCreatedAndUpdatedTime.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251103210956_RoundCOunt.Designer.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251103210956_RoundCOunt.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251103213420_RoundOnGame.Designer.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251103213420_RoundOnGame.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251104200314_AddUsernavigation.Designer.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251104200314_AddUsernavigation.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251104200808_AddUsernavigation2.Designer.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251104200808_AddUsernavigation2.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251104213330_PauseGameEvent.Designer.cs → Truong Son NGO
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251104213330_PauseGameEvent.cs → Truong Son NGO
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251107131230_PauseGameState.Designer.cs → Truong Son NGO
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251107131230_PauseGameState.cs → Truong Son NGO
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251108100219_LobbyToContinueGame.Designer.cs → Truong Son NGO
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251108100219_LobbyToContinueGame.cs → Truong Son NGO
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251109200756_AddPauseGameState.Designer.cs → Truong Son NGO
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251109200756_AddPauseGameState.cs → Truong Son NGO
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251113091612_checkpointEvent.Designer.cs → Suhani Pandey
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251113091612_checkpointEvent.cs → Suhani Pandey
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251114220129_ImplementRatings.Designer.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251114220129_ImplementRatings.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251115125744_user.Designer.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251115125744_user.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251115130614_FixUserNavigationProperty.Designer.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251115130614_FixUserNavigationProperty.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251125093605_AddShuffledDiscardEvent.Designer.cs → Truong Son NGO
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/20251125093605_AddShuffledDiscardEvent.cs → Truong Son NGO
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/AppDatabaseContextModelSnapshot.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/Migrations/MigrationsExtensions.cs → Sachin Baral
+src/infrastructure/Roborally.infrastructure.persistence/PersistenceModuleInstallation.cs → MrSachin7
+src/infrastructure/Roborally.infrastructure.persistence/Roborally.infrastructure.persistence.csproj → MrSachin7
+src/infrastructure/Roborally.infrastructure.persistence/UnitOfWork.cs → MrSachin7
+src/infrastructure/Roborally.infrastructure.persistence/User/UserConfiguration.cs → MrSachin7
+src/infrastructure/Roborally.infrastructure.persistence/User/UserRepository.cs → Sachin Baral
+src/infrastructure/Roborally.persistence/Player/PlayerConfiguration.cs → Sachin Baral
+
+Notes:
+- Primary author per file determined via git blame (majority of lines).
+- Git history remains the authoritative source of contributions.

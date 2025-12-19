@@ -25,6 +25,7 @@ public class LeaveLobbyCommandHandler : ICommandHandler<LeaveLobbyCommand>
         _gameLobbyBroadcaster = gameLobbyBroadcaster;
     }
 
+/// <author name="Vincenzo Altaserse 2025-10-18 13:11:59 +0200 28" />
     public async Task ExecuteAsync(LeaveLobbyCommand command, CancellationToken ct)
     {
         var user = await _userRepository.FindAsync(command.Username, ct);

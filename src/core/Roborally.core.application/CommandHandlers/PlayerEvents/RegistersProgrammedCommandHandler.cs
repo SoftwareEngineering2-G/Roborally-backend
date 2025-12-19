@@ -27,6 +27,7 @@ public class RegistersProgrammedCommandHandler : ICommandHandler<RegistersProgra
         _timerService = timerService;
     }
 
+/// <author name="Sachin Baral 2025-10-01 21:53:45 +0200 30" />
     public async Task ExecuteAsync(RegistersProgrammedCommand command, CancellationToken ct) {
         domain.Game.Game? game = await _gameRepository.FindAsync(command.GameId, ct);
         if (game is null)

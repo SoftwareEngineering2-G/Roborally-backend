@@ -8,11 +8,13 @@ namespace Roborally.core.application.QueryHandlers;
 
 public class GetMyProfileQueryHandler : ICommandHandler<GetMyProfileQuery, GetMyProfileResponse>{
     private readonly IUserRepository _userRepository;
+/// <author name="Sachin Baral 2025-11-15 19:46:26 +0100 11" />
     public GetMyProfileQueryHandler(IUserRepository userRepository) {
         _userRepository = userRepository;
     }
 
 
+/// <author name="Sachin Baral 2025-11-15 19:46:26 +0100 16" />
     public async Task<GetMyProfileResponse> ExecuteAsync(GetMyProfileQuery command, CancellationToken ct) {
         User? user = await _userRepository.FindAsync(command.Username, ct);
         if (user is null) {
@@ -27,4 +29,3 @@ public class GetMyProfileQueryHandler : ICommandHandler<GetMyProfileQuery, GetMy
 
     }
 }
-

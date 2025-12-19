@@ -6,11 +6,13 @@ public class MoveBackwardCardAction : ICardAction
 {
     private readonly int _spaces;
     
+/// <author name="Nilanjana Devkota 2025-10-14 19:37:00 +0200 9" />
     public MoveBackwardCardAction(int spaces)
     {
         _spaces = spaces;
     }
 
+/// <author name="Satish Gurung 2025-11-24 10:20:04 +0100 14" />
     public void Execute(Player.Player player, Game game, Bases.ISystemTime systemTime, CardExecutionContext? context = null)
     {
         for (int i = 0; i < _spaces; i++)

@@ -6,6 +6,7 @@ using Space;
 using BoardElement; // allow referring to BoardElementFactory and types
 
 public static class GameBoardFactory {
+/// <author name="Sachin Baral 2025-10-20 21:20:17 +0200 9" />
     private static readonly Lock Lock = new ();
     private static GameBoard? _emptyBoard;
     private static GameBoard? _boardWithWalls;
@@ -13,6 +14,7 @@ public static class GameBoardFactory {
     private const int BoardWidth = 15;
     private const int BoardHeight = 12;
 
+/// <author name="Sachin Baral 2025-10-20 21:20:17 +0200 16" />
     public static GameBoard GetEmptyBoard() {
         if (_emptyBoard is not null) {
             return _emptyBoard;
@@ -42,6 +44,7 @@ public static class GameBoardFactory {
         return _emptyBoard;
     }
     
+/// <author name="Sachin Baral 2025-10-20 21:20:17 +0200 45" />
     public static GameBoard GetBoardWithWalls() {
         if (_boardWithWalls is not null) {
             return _boardWithWalls;
@@ -133,6 +136,7 @@ public static class GameBoardFactory {
         
         return _boardWithWalls;
     }
+/// <author name="Sachin Baral 2025-10-20 21:20:17 +0200 136" />
     public static GameBoard GetStarterCourse()
     {
         // Create a 15x12 board initialized with empty spaces

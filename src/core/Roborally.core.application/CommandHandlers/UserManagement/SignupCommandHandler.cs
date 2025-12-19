@@ -25,6 +25,7 @@ public class SignupCommandHandler : ICommandHandler<SignupCommand, SignupCommand
         _jwtService = jwtService;
     }
 
+/// <author name="Gaurav Pandey 2025-11-27 21:00:00 +0100 28" />
     public async Task<SignupCommandResponse> ExecuteAsync(SignupCommand command, CancellationToken ct)
     {
         bool alreadyExists = await _userRepository.ExistsByUsernameAsync(command.Username, ct);

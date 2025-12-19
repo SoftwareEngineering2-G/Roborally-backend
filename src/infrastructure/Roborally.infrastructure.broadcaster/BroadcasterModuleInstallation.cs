@@ -10,6 +10,7 @@ namespace Roborally.infrastructure.broadcaster;
 
 public static class BroadcasterModuleInstallation
 {
+/// <author name="Sachin Baral 2025-09-19 13:01:07 +0200 13" />
     public static IServiceCollection InstallBroadcasterModule(this IServiceCollection services)
     {
         services.AddSignalR();
@@ -20,6 +21,7 @@ public static class BroadcasterModuleInstallation
         return services;
     }
 
+/// <author name="Sachin Baral 2025-09-28 13:55:14 +0200 23" />
     public static WebApplication InstallBroadcasterModule(this WebApplication application)
     {
         // This method can be used to resolve services if needed

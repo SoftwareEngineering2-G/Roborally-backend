@@ -24,6 +24,7 @@ public class RevealNextRegisterCommandHandler : ICommandHandler<RevealNextRegist
         _unitOfWork = unitOfWork;
     }
 
+/// <author name="Sachin Baral 2025-11-04 21:24:56 +0100 27" />
     public async Task ExecuteAsync(RevealNextRegisterCommand command, CancellationToken ct)
     {
         domain.Game.Game? game = await _gameRepository.FindAsync(command.GameId, ct);

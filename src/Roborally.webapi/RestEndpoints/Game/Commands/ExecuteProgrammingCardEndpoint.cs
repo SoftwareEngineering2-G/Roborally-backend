@@ -5,11 +5,13 @@ namespace Roborally.webapi.RestEndpoints.Game.Commands;
 
 public class ExecuteProgrammingCardEndpoint : Endpoint<ExecuteProgrammingCardRequest>
 {
+/// <author name="Suhani Pandey 2025-10-10 13:01:53 +0200 8" />
     public override void Configure()
     {
         Post("/games/{gameId}/players/{username}/execute-card");
     }
 
+/// <author name="Suhani Pandey 2025-10-10 13:01:53 +0200 13" />
     public override async Task HandleAsync(ExecuteProgrammingCardRequest req, CancellationToken ct)
     {
         var command = new ExecuteProgrammingCardCommand

@@ -4,10 +4,12 @@ using Roborally.core.application.CommandContracts;
 namespace Roborally.webapi.RestEndpoints.Lobby;
 
 public class GetUserPausedGames : Endpoint<GetUserPausedGamesRequest, List<GetUserPausedGamesResponse>> {
+/// <author name="Truong Son NGO 2025-11-12 15:35:28 +0100 7" />
     public override void Configure() {
         Get("/games/paused");
     }
 
+/// <author name="Truong Son NGO 2025-11-12 15:35:28 +0100 11" />
     public override async Task HandleAsync(GetUserPausedGamesRequest request, CancellationToken ct) {
         GetUserPausedGamesCommand command = new GetUserPausedGamesCommand() {
             Username = request.Username,

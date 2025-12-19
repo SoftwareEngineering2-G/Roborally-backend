@@ -69,6 +69,7 @@ public static class GameMovementExtension {
     /// <summary>
     /// Checks if the player is on a checkpoint
     /// </summary>
+/// <author name="Sachin Baral 2025-11-15 19:46:26 +0100 72" />
     public static async Task CheckAndRecordCheckpoint(this Game game, ISystemTime systemTime) {
 
         // Check if the player is on a checkpoint

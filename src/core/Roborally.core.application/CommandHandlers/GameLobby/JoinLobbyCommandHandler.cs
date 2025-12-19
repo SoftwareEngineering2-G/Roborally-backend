@@ -23,6 +23,7 @@ public class JoinLobbyCommandHandler : ICommandHandler<JoinLobbyCommand> {
         _gameLobbyBroadcaster = gameLobbyBroadcaster;
     }
 
+/// <author name="Sachin Baral 2025-09-19 13:01:07 +0200 26" />
     public async Task ExecuteAsync(JoinLobbyCommand command, CancellationToken ct) {
         // Get the user by username
         var user = await _userRepository.FindAsync(command.Username, ct);

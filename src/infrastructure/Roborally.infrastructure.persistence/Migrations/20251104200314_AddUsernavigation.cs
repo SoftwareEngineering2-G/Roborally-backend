@@ -8,6 +8,7 @@ namespace Roborally.infrastructure.persistence.Migrations
     public partial class AddUsernavigation : Migration
     {
         /// <inheritdoc />
+/// <author name="Sachin Baral 2025-11-04 21:24:56 +0100 11" />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
@@ -30,6 +31,7 @@ namespace Roborally.infrastructure.persistence.Migrations
         }
 
         /// <inheritdoc />
+/// <author name="Sachin Baral 2025-11-04 21:24:56 +0100 33" />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(

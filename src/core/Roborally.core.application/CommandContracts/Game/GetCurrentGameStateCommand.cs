@@ -21,6 +21,7 @@ public sealed class GetCurrentGameStateCommandResponse {
     public required string? CurrentTurnUsername { get; set; }
     public required int? CurrentExecutingRegister { get; set; }
     
+/// <author name="Nilanjana Devkota 2025-10-19 11:13:58 +0200 24" />
     public record Space(string Name, List<string> Walls, string? Direction = null);
 
     public record Player(
@@ -35,7 +36,9 @@ public sealed class GetCurrentGameStateCommandResponse {
         int CurrentCheckpointPassed,
         int RoundCount);
 
+/// <author name="Truong Son NGO 2025-11-28 15:36:33 +0100 38" />
     public record MyState(List<string>? LockedInCards, List<string>? DealtCards, int ProgrammingPickPilesCount, int DiscardPilesCount);
+/// <author name="Sachin Baral 2025-11-04 21:24:56 +0100 39" />
     public record GameBoardSpaces(string Name, Space[][] Spaces);
 
 }

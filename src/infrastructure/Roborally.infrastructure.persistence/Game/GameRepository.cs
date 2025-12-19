@@ -7,14 +7,17 @@ namespace Roborally.infrastructure.persistence.Game;
 public class GameRepository : IGameRepository {
     private readonly AppDatabaseContext _context;
 
+/// <author name="Sachin Baral 2025-09-28 13:55:14 +0200 10" />
     public GameRepository(AppDatabaseContext context) {
         _context = context;
     }
 
+/// <author name="Sachin Baral 2025-09-28 13:55:14 +0200 14" />
     public Task AddAsync(core.domain.Game.Game game, CancellationToken ct) {
         return _context.Games.AddAsync(game, ct).AsTask();
     }
 
+/// <author name="Sachin Baral 2025-09-28 13:55:14 +0200 18" />
     public Task<core.domain.Game.Game?> FindAsync(Guid gameId, CancellationToken ct) {
         return _context.Games.Include(game => game.Players)
             .ThenInclude(player => player.PlayerEvents)
@@ -25,6 +28,7 @@ public class GameRepository : IGameRepository {
             .FirstOrDefaultAsync(game => game.GameId.Equals(gameId), ct);
     }
     
+/// <author name="Truong Son NGO 2025-11-12 15:35:28 +0100 28" />
     public Task<List<core.domain.Game.Game>> FindPausedGamesForUserAsync(string username, CancellationToken ct) {
         return _context.Games
             .Where(game => game.Players.Select(player => player.Username).Contains(username))

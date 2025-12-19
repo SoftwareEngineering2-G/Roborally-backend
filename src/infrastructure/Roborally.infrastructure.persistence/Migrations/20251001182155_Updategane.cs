@@ -8,6 +8,7 @@ namespace Roborally.infrastructure.persistence.Migrations
     public partial class Updategane : Migration
     {
         /// <inheritdoc />
+/// <author name="Sachin Baral 2025-10-01 21:53:45 +0200 11" />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
@@ -41,6 +42,7 @@ namespace Roborally.infrastructure.persistence.Migrations
         }
 
         /// <inheritdoc />
+/// <author name="Sachin Baral 2025-10-01 21:53:45 +0200 44" />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(

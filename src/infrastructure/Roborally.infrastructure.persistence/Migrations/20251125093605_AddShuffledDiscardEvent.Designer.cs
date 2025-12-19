@@ -17,6 +17,7 @@ namespace Roborally.infrastructure.persistence.Migrations
     partial class AddShuffledDiscardEvent
     {
         /// <inheritdoc />
+/// <author name="Truong Son NGO 2025-11-28 15:36:33 +0100 20" />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618

@@ -9,6 +9,7 @@ public static class SpaceFactory {
     internal const string CheckpointName = "Checkpoint";
 
 
+/// <author name="Sachin Baral 2025-09-28 13:55:14 +0200 12" />
     public static Space FromName(string name) {
         switch (name) {
             case EmptySpaceName:
@@ -22,6 +23,7 @@ public static class SpaceFactory {
         }
     }
     
+/// <author name="Truong Son NGO 2025-10-13 13:29:29 +0200 25" />
     public static Space FromNameAndWalls(string name, Direction[] walls) {
         switch (name) {
             case EmptySpaceName:
@@ -35,14 +37,17 @@ public static class SpaceFactory {
         }
     }
     
+/// <author name="Sachin Baral 2025-10-20 21:20:17 +0200 38" />
     public static SpawnPoint SpawnPoint(Direction[]? walls = null) {
         return new SpawnPoint(walls);
     }
 
+/// <author name="Sachin Baral 2025-10-20 21:20:17 +0200 42" />
     public static EmptySpace EmptySpace(Direction[]? walls = null) {
         return new EmptySpace(walls);
     }
     
+/// <author name="Suhani Pandey 2025-11-13 16:20:36 +0100 46" />
     public static Checkpoint Checkpoint(int checkpointNumber, Direction[]? walls = null) {
         return new Checkpoint(walls) { CheckpointNumber = checkpointNumber };
     }

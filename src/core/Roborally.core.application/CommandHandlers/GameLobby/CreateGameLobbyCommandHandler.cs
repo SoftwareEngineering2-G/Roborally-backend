@@ -15,6 +15,7 @@ public class CreateGameLobbyCommandHandler : ICommandHandler<CreateGameLobbyComm
     private readonly IUnitOfWork _unitOfWork;
     private readonly ISystemTime _systemTime;
 
+/// <author name="Suhani Pandey 2025-09-17 13:49:31 +0200 18" />
     public CreateGameLobbyCommandHandler(IGameLobbyRepository gameLobbyRepository, IUserRepository userRepository, IUnitOfWork unitOfWork, ISystemTime systemTime)
     {
         _gameLobbyRepository = gameLobbyRepository;
@@ -23,6 +24,7 @@ public class CreateGameLobbyCommandHandler : ICommandHandler<CreateGameLobbyComm
         _systemTime = systemTime;
     }
 
+/// <author name="Suhani Pandey 2025-09-17 13:49:31 +0200 26" />
     public async Task<Guid> ExecuteAsync(CreateGameLobbyCommand command, CancellationToken ct)
     {
         var hostUser = await _userRepository.FindAsync(command.HostUsername, ct);

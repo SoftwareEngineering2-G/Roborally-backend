@@ -8,6 +8,7 @@ namespace Roborally.infrastructure.persistence.Migrations
     public partial class AddWalls : Migration
     {
         /// <inheritdoc />
+/// <author name="Truong Son NGO 2025-10-13 13:29:29 +0200 11" />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql(@"
@@ -29,6 +30,7 @@ namespace Roborally.infrastructure.persistence.Migrations
         }
 
         /// <inheritdoc />
+/// <author name="Truong Son NGO 2025-10-13 13:29:29 +0200 32" />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql(@"

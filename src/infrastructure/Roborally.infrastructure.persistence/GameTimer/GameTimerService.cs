@@ -7,11 +7,13 @@ public class GameTimerService : IGameTimerService
 {
     private readonly ISchedulerFactory _schedulerFactory;
 
+/// <author name="Vincenzo Altaserse 2025-12-18 17:40:31 +0100 10" />
     public GameTimerService(ISchedulerFactory schedulerFactory)
     {
         _schedulerFactory = schedulerFactory;
     }
 
+/// <author name="Vincenzo Altaserse 2025-12-18 17:40:31 +0100 15" />
     public void StartProgrammingTimer(Guid gameId, TimeSpan duration)
     {
         Task.Run(async () =>
@@ -42,6 +44,7 @@ public class GameTimerService : IGameTimerService
         });
     }
 
+/// <author name="Vincenzo Altaserse 2025-12-18 17:40:31 +0100 45" />
     public void CancelProgrammingTimer(Guid gameId)
     {
         Task.Run(async () =>

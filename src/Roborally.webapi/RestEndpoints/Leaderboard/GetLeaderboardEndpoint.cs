@@ -4,11 +4,13 @@ using Roborally.core.application.QueryContracts;
 namespace Roborally.webapi.RestEndpoints.Leaderboard;
 
 public class GetLeaderboardEndpoint : Endpoint<GetLeaderboardRequest, GetLeaderboardEndpointResponse> {
+/// <author name="Sachin Baral 2025-11-15 19:46:26 +0100 7" />
     public override void Configure() {
         Get("/leaderboard");
         AllowAnonymous();
     }
 
+/// <author name="Sachin Baral 2025-11-15 19:46:26 +0100 12" />
     public override async Task HandleAsync(GetLeaderboardRequest req, CancellationToken ct) {
         GetLeaderboardQuery query = new GetLeaderboardQuery() {
             PageNumber = req.PageNumber,

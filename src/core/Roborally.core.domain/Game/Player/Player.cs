@@ -26,10 +26,12 @@ public class Player {
     // Navigation property to User for accessing age/birthday
     public User.User? User { get; init; }
 
+/// <author name="Sachin Baral 2025-09-28 13:55:14 +0200 29" />
     private Player() {
         // For EF Core
     }
 
+/// <author name="Sachin Baral 2025-09-28 13:55:14 +0200 33" />
     public Player(string username, Guid gameId, Position spawnPosition, Robot robot) {
         Username = username;
         GameId = gameId;
@@ -43,6 +45,7 @@ public class Player {
     }
 
 
+/// <author name="Sachin Baral 2025-10-01 21:53:45 +0200 46" />
     internal void LockInRegisters(List<ProgrammingCard> lockedInCards, ISystemTime systemTime) {
         var lastLockedInEvent = this.GetRegistersProgrammedEvent(RoundCount);
 
@@ -83,6 +86,7 @@ public class Player {
         this.PlayerEvents.Add(lockedInEvent);
     }
 
+/// <author name="Vincenzo Altaserse 2025-12-18 17:40:31 +0100 86" />
         internal List<ProgrammingCard> AutoCompleteRegisters(ISystemTime systemTime) {
             var lastProgrammingCardsDealtEvent = this.GetCardsDealtEvent(RoundCount);
 
@@ -105,6 +109,7 @@ public class Player {
             return assignedCards;
         }
     
+/// <author name="Truong Son NGO 2025-11-28 15:36:33 +0100 108" />
     internal DealCardInfo DealProgrammingCards(int count, ISystemTime systemTime) {
         var lastDealtEvent = this.GetCardsDealtEvent(RoundCount);
         if (lastDealtEvent is not null) {
@@ -150,30 +155,37 @@ public class Player {
         };
     }
 
+/// <author name="Suhani Pandey 2025-10-10 13:01:53 +0200 153" />
     public void RotateLeft() {
         CurrentFacingDirection = CurrentFacingDirection.RotateLeft();
     }
 
+/// <author name="Suhani Pandey 2025-10-10 13:01:53 +0200 157" />
     public void RotateRight() {
         CurrentFacingDirection = CurrentFacingDirection.RotateRight();
     }
 
+/// <author name="Suhani Pandey 2025-10-10 13:01:53 +0200 161" />
     public void UTurn() {
         CurrentFacingDirection = CurrentFacingDirection.Opposite();
     }
 
+/// <author name="Nilanjana Devkota 2025-10-14 19:37:00 +0200 165" />
     public Position GetNextPosition([Optional] Direction? direction) {
         return CurrentPosition.GetNext(direction ?? CurrentFacingDirection);
     }
 
+/// <author name="Suhani Pandey 2025-10-10 13:01:53 +0200 169" />
     public Position GetPositionBehind() {
         return CurrentPosition.GetNext(CurrentFacingDirection.Opposite());
     }
 
+/// <author name="Suhani Pandey 2025-10-10 13:01:53 +0200 173" />
     public void MoveTo(Position newPosition) {
         CurrentPosition = newPosition;
     }
 
+/// <author name="Suhani Pandey 2025-10-15 21:47:56 +0200 177" />
     public void RecordCardExecution(ProgrammingCard card, ISystemTime systemTime) {
         CardExecutedEvent executedEvent = new CardExecutedEvent() {
             HappenedAt = systemTime.CurrentTime,
@@ -185,6 +197,7 @@ public class Player {
         this.PlayerEvents.Add(executedEvent);
     }
 
+/// <author name="Suhani Pandey 2025-10-15 21:47:56 +0200 188" />
     public ProgrammingCard? GetLastExecutedCard() {
         return this.PlayerEvents
             .OfType<CardExecutedEvent>()
@@ -192,6 +205,7 @@ public class Player {
             .FirstOrDefault()?.Card;
     }
 
+/// <author name="Sachin Baral 2025-11-15 19:46:26 +0100 195" />
     public void ReachCheckpoint(Checkpoint checkpoint, ISystemTime systemTime) {
         if (checkpoint.CheckpointNumber != CurrentCheckpointPassed + 1) {
             return;
@@ -208,6 +222,7 @@ public class Player {
         this.PlayerEvents.Add(reachedEvent);
     }
 
+/// <author name="Sachin Baral 2025-11-15 19:46:26 +0100 211" />
     public bool HasCompletedAllCheckpoints(int totalCheckpoints) {
         return CurrentCheckpointPassed >= totalCheckpoints;
     }
