@@ -2,4 +2,5 @@
 
 public interface IIndividualPlayerBroadcaster {
     public Task BroadcastHandToPlayerAsync(string username, Guid gameId, List<string> dealtCards, bool isDeckReshuffled, int programmingPickPilesCount, int discardPilesCount, CancellationToken ct);
+    public Task BroadcastProgrammingTimeoutAsync(string username, Guid gameId, List<string> assignedCards, CancellationToken ct);
 }
